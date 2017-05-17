@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript">
+function checkInputSize(input) { 
+    input.value = input.value.replace(/[^\d]/g, '');
+};
+
+function matrixCheck(input)
+{
+	input.value = (input.value == "0" || input.value == "1") ? input.value : "";
+	
+	var mirror_id_arr = input.id.split("_");
+	var tmp = mirror_id_arr[2];
+	mirror_id_arr[2] = mirror_id_arr[1];
+	mirror_id_arr[1] = tmp;
+	var mirror_id = mirror_id_arr.join("_");
+	document.getElementById(mirror_id).value = input.value;
+
+};
+
+function generateMatrix() {
+	count = parseInt(document.getElementById("count").value);
+	if (count == NaN || count == 0)
+	{
+			document.getElementById("demo").innerHTML = "";
+	}
+	else if ( count >= 2 && count <=30)
+    {
+    	document.getElementById("demo").innerHTML = "Matrix size is "+count;
+    	matrix_html = ""
+    	for (i = 0; i < count; i++) { 
+    		for (j =0; j< count; j++)
+    		{
+    			matrix_html +='<input id="el_'+i+'_'+j+'" type="text" value="0" size="1" maxlength="1" onkeyup="return matrixCheck(this);" onchange="return matrixCheck(this)"; style="text-align:center">';
+    		}
+    		matrix_html+="<br>\n";
+		}
+    	document.getElementById("matrix_holder").innerHTML = matrix_html;
+
+    }
+    else if (count <2)
+    {
+    	document.getElementById("demo").innerHTML = "Too small number.";
+    }
+    else if (count > 30)
+    {
+    	document.getElementById("demo").innerHTML = "Too much, should be less or equal 30";
+    }
+};
+</script>
+<body>
+
+Please input  size of matrix (between more then 1 and less then 30)<br>  
+<input id="count" type="text" name="summa" value="" size="5" maxlength="2" onkeyup="return checkInputSize(this);" onchange="return checkInputSize(this);">
+
+<button onclick="generateMatrix()">Make matrix</button>
+
+<div id="alert_toomuch"></div>
+<div id="demo"></div>
+
+<div id="matrix_holder" ></div>
+
+
+
+</body>
+</html>
