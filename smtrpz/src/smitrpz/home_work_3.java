@@ -40,7 +40,7 @@ public class home_work_3 {
 		unlimited
 	}
 	
-	class  TicketBase implements AbstractTicketInterface
+	public static class TicketBase implements AbstractTicketInterface
 	{
 		protected final UUID uid = UUID.randomUUID();
 		protected LocalDateTime timeCreated = LocalDateTime.now();
@@ -97,7 +97,7 @@ public class home_work_3 {
 		}
 	}
 	
-	class LimitedCountedTicket extends TicketBase
+	public static class LimitedCountedTicket extends TicketBase
 	{
 		private int count;
 		public LimitedCountedTicket(CountType cnt, PaymentType payment)
@@ -129,7 +129,7 @@ public class home_work_3 {
 		}
 	}
 	
-	class LimitedTimeTicket extends TicketBase
+	public static class LimitedTimeTicket extends TicketBase
 	{
 		private LocalDateTime startDay;
 		private LocalDateTime lastDay;
@@ -174,7 +174,7 @@ public class home_work_3 {
 		}
 	}
 	
-	class LimitedBalanceTicket extends TicketBase
+	public static class LimitedBalanceTicket extends TicketBase
 	{
 		private int balance;
 		public LimitedBalanceTicket(int stbalance, PaymentType payment)
@@ -208,7 +208,7 @@ public class home_work_3 {
 	}
 	
 	
-	class Record
+	public static class Record
 	{
 		private UUID uid;
 		private int balance;
@@ -220,6 +220,7 @@ public class home_work_3 {
 		private PaymentType paymentType;
 		private int availableTrip;
 		private boolean isSuccess;
+		private String ticketType;
 		
 		public Record(TicketBase ticket, boolean success)
 		{
@@ -233,35 +234,40 @@ public class home_work_3 {
 			startTime = null;
 			expiredTime = null;
 			
-			isSuccess = success
-			
-			
+			isSuccess = success;
+		
 			if (durType == DurationType.noDuration && countType == CountType.unlimited)
 			{
 				availableTrip = ((LimitedBalanceTicket)ticket).GetBalance();
+				ticketType = "LimitedBalanceTicket";
 			}
 			else if (durType !=  DurationType.noDuration)
 			{
 				startTime = ((LimitedTimeTicket)ticket).getStartDay();
 				expiredTime= ((LimitedTimeTicket)ticket).getLastDay();
+				ticketType = "LimitedTimeTicket";
+			}
+			else
+			{
+				ticketType = "LimitedCountedTicket";
 			}
 		}
-		public UUID getUid() {
+		private UUID getUid() {
 			return uid;
 		}
-		public int getBalance() {
+		private int getBalance() {
 			return balance;
 		}
-		public LocalDateTime getCreatedTime() {
+		private LocalDateTime getCreatedTime() {
 			return created;
 		}
-		public LocalDateTime getStartTime() {
+		private LocalDateTime getStartTime() {
 			return startTime;
 		}
-		public LocalDateTime getExpiredTime() {
+		private LocalDateTime getExpiredTime() {
 			return expiredTime;
 		}
-		public String getDurType() {
+		private String getDurType() {
 			
 			switch (durType) {
 			case fiveDay:
@@ -273,7 +279,7 @@ public class home_work_3 {
 
 			}
 		}
-		public String getCountType() {
+		private String getCountType() {
 			switch (countType)
 			{
 			case five:
@@ -284,7 +290,7 @@ public class home_work_3 {
 				return "Unlimited";
 			}
 		}
-		public String getPaymentType() {
+		private String getPaymentType() {
 			switch (paymentType) {
 			case schoolchild:
 				return "School";
@@ -296,21 +302,46 @@ public class home_work_3 {
 				return "no type";
 			}
 		}
-		public int getAvailableTrip() {
+		private int getAvailableTrip() {
 			return availableTrip;
 		}
-		public boolean getIsSuccess()
+		private boolean getIsSuccess()
 		{
 			return isSuccess;
 		}
+		
+		public String geTicketType()
+		{
+			return ticketType;
+		}
+		
+		public String getTotalInfo()
+		{
+			StringBuffer strBuf = new StringBuffer();
+			strBuf.append("TicketType: " + geTicketType() + "\n");
+			strBuf.append("UUID: "+getUid().toString()+"\n");
+			strBuf.append("CreatedTime: "+getCreatedTime().toString()+"\n");
+			strBuf.append("StartTime: "+getStartTime().toString()+"\n");
+			strBuf.append("EndTime: "+getExpiredTime()+"\n");
+			strBuf.append("Available trip count: "+getAvailableTrip()+"\n");
+			strBuf.append("Was success: "+getIsSuccess()+"\n");
+			strBuf.append("Get payment type: "+getPaymentType()+"\n");
+			strBuf.append(": "++"\n")
+			
+			
+			return strBuf.toString();
+		}
+		
+		
 	}
 	
-	class Wicket
+	public static class Wicket
 	{
 		private ArrayList<Record> createdList;
 		private ArrayList<Record> recAttempList;
 		public Wicket() {
 			recAttempList = new ArrayList<Record>();
+			createdList = new ArrayList<Record>();
 		}
 		
 		public boolean tryToPass(TicketBase ticket)
@@ -320,38 +351,63 @@ public class home_work_3 {
 			return result;
 		}
 		
-		public int getRecordSuccess()
+		public ArrayList<Record> getRecordSuccess()
 		{
-			int count = 0
+			ArrayList<Record> rl = new ArrayList<Record>();
 			for (Record i : recAttempList)
 			{
-				if (i.getIsSuccess())
-					count++;
+				if (i.getIsSuccess());
+					rl.add(i);
 			}
-			return count;
+			return rl;
 		}
 		
-		public int getRecordfailed()
+		public ArrayList<Record> getRecordfailed()
 		{
-			int count = 0
+			ArrayList<Record> rl = new ArrayList<Record>();
 			for (Record i : recAttempList)
-			{
+			{	
 				if (! i.getIsSuccess())
-					count++;
+					rl.add(i);
 			}
-			return count;
+			return rl;
 		}
 		
-		LimitedCountedTicket createdLimitedCountedTicket()
-		{}
-		LimitedTimeTicket createdLimitedTimeTicket()
-		{}
-		LimitedBalanceTicket createdLimitedBalanceTicket()
-		{}
+		LimitedCountedTicket createdLimitedCountedTicket(CountType cnt, PaymentType payment)
+		{
+			LimitedCountedTicket lct = new LimitedCountedTicket(cnt, payment);
+			createdList.add(new Record(lct, false));
+			return lct;
+		}
+		LimitedTimeTicket createdLimitedTimeTicket(LocalDateTime startTime, DurationType dur, PaymentType payment)
+		{
+			LimitedTimeTicket ltt = new LimitedTimeTicket(startTime, dur, payment);
+			createdList.add( new Record(ltt, false));
+			return ltt;
+		}
+		LimitedBalanceTicket createdLimitedBalanceTicket(int stbalance, PaymentType payment)
+		{
+			LimitedBalanceTicket lbt =  new LimitedBalanceTicket(stbalance, payment);
+			createdList.add( new Record(lbt, false));
+			return lbt;
+		}
 	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		Wicket wkt = new Wicket();
+		
+		LimitedTimeTicket ltt = wkt.createdLimitedTimeTicket(LocalDateTime.now().plusDays(1), DurationType.fiveDay, PaymentType.adult);
+		LimitedBalanceTicket lbt = wkt.createdLimitedBalanceTicket(5, PaymentType.schoolchild);
+		LimitedCountedTicket lct = wkt.createdLimitedCountedTicket(CountType.ten, PaymentType.student);
+		
+		wkt.tryToPass(ltt);
+		wkt.tryToPass(lct);
+		wkt.tryToPass(lbt);
+		ArrayList<Record> failed = wkt.getRecordfailed();
+		ArrayList<Record> success = wkt.getRecordSuccess();
+		System.out.println(""+failed+"  "+success);
 	}
 
 }
