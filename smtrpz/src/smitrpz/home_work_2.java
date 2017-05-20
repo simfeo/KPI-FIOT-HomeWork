@@ -2,6 +2,9 @@ package smitrpz;
 
 public class home_work_2 {
 
+// Task 1
+// Among simple number that a smaller then given number, find simple number
+//	which contains maximal count of 1 in binary view
 
     public static boolean IsSimple(int n)
     {
