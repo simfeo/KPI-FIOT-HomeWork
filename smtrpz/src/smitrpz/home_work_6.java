@@ -57,7 +57,7 @@ public class home_work_6 {
 	
 	public static void main (String [] argv)
 	{
-		int [] arr = {1,2344, 23424, 1000, 2342342};
+		int [] arr = {15, 23 -47, 98, 13229, 896987, 65768};
 		System.out.println(Arrays.toString(sortBySum(arr)));
 	}
 }
