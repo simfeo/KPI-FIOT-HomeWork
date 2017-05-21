@@ -104,7 +104,14 @@ public class home_work_3Test {
 		Wicket wkt = new Wicket();
 		
 		LimitedTimeTicket ltt = wkt.createdLimitedTimeTicket(LocalDateTime.now(), DurationType.fiveDay, PaymentType.adult);
-				
+	
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		wkt.tryToPass(ltt);
 		ArrayList<Record> success = wkt.getRecordSuccess();
 		assertEquals(1, success.size());
