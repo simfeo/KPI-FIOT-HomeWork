@@ -1,9 +1,7 @@
 package smitrpz;
-import java.awt.List;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 
 public class home_work_3 {
@@ -102,6 +100,7 @@ public class home_work_3 {
 		private int count;
 		public LimitedCountedTicket(CountType cnt, PaymentType payment)
 		{
+			super();
 			switch (cnt)
 			{
 			case five:
@@ -135,6 +134,7 @@ public class home_work_3 {
 		private LocalDateTime lastDay;
 		public LimitedTimeTicket(LocalDateTime startTime, DurationType dur, PaymentType payment)
 		{
+			super();
 			switch (dur)
 			{
 			case fiveDay:
@@ -179,6 +179,7 @@ public class home_work_3 {
 		private int balance;
 		public LimitedBalanceTicket(int stbalance, PaymentType payment)
 		{
+			super();
 			if (stbalance <1)
 				throw new RuntimeException("Balance shoudl be more then 1");
 			balance = stbalance;
@@ -325,9 +326,10 @@ public class home_work_3 {
 			strBuf.append("EndTime: "+getExpiredTime()+"\n");
 			strBuf.append("Available trip count: "+getAvailableTrip()+"\n");
 			strBuf.append("Was success: "+getIsSuccess()+"\n");
-			strBuf.append("Get payment type: "+getPaymentType()+"\n");
-			strBuf.append(": "++"\n")
-			
+			strBuf.append("Payment type: "+getPaymentType()+"\n");
+			strBuf.append("Count type: "+getCountType()+"\n");
+			strBuf.append("Current balance:"+getBalance()+"\n");
+			strBuf.append("Duartion type"+getDurType()+"\n");
 			
 			return strBuf.toString();
 		}
