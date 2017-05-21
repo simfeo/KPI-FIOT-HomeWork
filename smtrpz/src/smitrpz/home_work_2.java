@@ -58,7 +58,7 @@ public class home_work_2 {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println(getSimpleNumberWithMaximal_0b1(17));
-		System.out.println(getSimpleNumberWithMaximal_0b1(137));
+		System.out.println(getSimpleNumberWithMaximal_0b1(300));
 	}
 
 }

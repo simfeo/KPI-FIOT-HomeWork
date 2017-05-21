@@ -121,6 +121,8 @@ public class home_work_3 {
 		@Override
 		public boolean makePass()
 		{
+			if (blocked)
+				return false;
 			if (count == 0)
 				return false;
 			--count;
@@ -166,6 +168,8 @@ public class home_work_3 {
 		@Override
 		public boolean makePass()
 		{
+			if (blocked)
+				return false;
             LocalDateTime curTime = LocalDateTime.now();
             if(lastDay.isAfter(curTime) && startDay.isBefore(curTime)){
                 return true;
@@ -191,6 +195,8 @@ public class home_work_3 {
 		@Override
 		public boolean makePass()
 		{
+			if(blocked)
+				return false;
             if(balance == 0)
 	            return false;
             --balance;
@@ -199,7 +205,10 @@ public class home_work_3 {
 		
 		public void AddBalance(int count)
 		{
+			if (count <= 0)
+				throw new RuntimeException("Wroung add amount");
 			balance +=count;
+			blocked = false;
 		}
 		
 		public int GetBalance()
@@ -222,6 +231,7 @@ public class home_work_3 {
 		private int availableTrip;
 		private boolean isSuccess;
 		private String ticketType;
+		private boolean isBlocked;
 		
 		public Record(TicketBase ticket, boolean success)
 		{
@@ -236,6 +246,7 @@ public class home_work_3 {
 			expiredTime = null;
 			
 			isSuccess = success;
+			isBlocked = ticket.isBlocked();
 		
 			if (durType == DurationType.noDuration && countType == CountType.unlimited)
 			{
@@ -306,7 +317,7 @@ public class home_work_3 {
 		private int getAvailableTrip() {
 			return availableTrip;
 		}
-		private boolean getIsSuccess()
+		public boolean getIsSuccess()
 		{
 			return isSuccess;
 		}
@@ -314,6 +325,11 @@ public class home_work_3 {
 		public String geTicketType()
 		{
 			return ticketType;
+		}
+		
+		public boolean getIsTicketBlocked()
+		{
+			return isBlocked;
 		}
 		
 		public String getTotalInfo()
@@ -330,6 +346,7 @@ public class home_work_3 {
 			strBuf.append("Count type: "+getCountType()+"\n");
 			strBuf.append("Current balance:"+getBalance()+"\n");
 			strBuf.append("Duartion type"+getDurType()+"\n");
+			strBuf.append("Blocked: "+getIsTicketBlocked()+"\n");
 			
 			return strBuf.toString();
 		}
@@ -349,8 +366,38 @@ public class home_work_3 {
 		public boolean tryToPass(TicketBase ticket)
 		{
 			boolean result = ticket.makePass();
+			if (! result)
+			{
+				if (ticket.getDurationType() == DurationType.noDuration && ticket.getCountType() == CountType.unlimited)
+				{
+					// LimitedBalanceTicket
+					ticket.blockCard();
+				}
+				else if (ticket.getDurationType() !=  DurationType.noDuration)
+				{
+					// LimitedCountTicket
+					ticket.blockCard();
+				}
+				else
+				{
+					//LimitedTimeTicked
+					LocalDateTime lastday = ((LimitedTimeTicket)ticket).getLastDay();
+					if (lastday.isBefore(LocalDateTime.now()))
+						ticket.blockCard();
+				}
+			}
 			recAttempList.add(new Record(ticket, result));
 			return result;
+		}
+		
+		public ArrayList<Record> getRecodeCreated()
+		{
+			ArrayList<Record> rl = new ArrayList<Record>();
+			for (Record i : recAttempList)
+			{
+				rl.add(i);
+			}
+			return rl;
 		}
 		
 		public ArrayList<Record> getRecordSuccess()
@@ -358,13 +405,13 @@ public class home_work_3 {
 			ArrayList<Record> rl = new ArrayList<Record>();
 			for (Record i : recAttempList)
 			{
-				if (i.getIsSuccess());
+				if (i.getIsSuccess())
 					rl.add(i);
 			}
 			return rl;
 		}
 		
-		public ArrayList<Record> getRecordfailed()
+		public ArrayList<Record> getRecordFailed()
 		{
 			ArrayList<Record> rl = new ArrayList<Record>();
 			for (Record i : recAttempList)
@@ -407,7 +454,7 @@ public class home_work_3 {
 		wkt.tryToPass(ltt);
 		wkt.tryToPass(lct);
 		wkt.tryToPass(lbt);
-		ArrayList<Record> failed = wkt.getRecordfailed();
+		ArrayList<Record> failed = wkt.getRecordFailed();
 		ArrayList<Record> success = wkt.getRecordSuccess();
 		System.out.println(""+failed+"  "+success);
 	}
