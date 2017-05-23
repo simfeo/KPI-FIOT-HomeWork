@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Makiyan_cursovaya_sem2.Data;
 
 namespace Makiyan_Cursovaya_sem2
 {
@@ -25,6 +26,18 @@ namespace Makiyan_Cursovaya_sem2
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Point p = new Point((int)numericUpDownX.Value, (int)numericUpDownY.Value);
+
+            string type = (string)listBoxType.SelectedItem;
+
+            BaseGameElement gameEl = null;
+
+            if (type == "Brick")
+            { gameEl = new Brick(p); }
+            else if (type == "User")
+            { gameEl = new User(p); }
+            else if (type == "Enemy")
+            { gameEl = new Enemy(p); }
 
         }
 

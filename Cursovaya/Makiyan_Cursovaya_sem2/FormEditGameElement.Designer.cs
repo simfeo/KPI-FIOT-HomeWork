@@ -29,15 +29,14 @@
         private void InitializeComponent()
         {
             this.listBoxType = new System.Windows.Forms.ListBox();
-            this.radioIsStatic = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.numericUpDownX = new System.Windows.Forms.NumericUpDown();
+            this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.numericUpDownY = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).BeginInit();
+            this.numericUpDownX = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).BeginInit();
             this.SuspendLayout();
             // 
             // listBoxType
@@ -48,17 +47,6 @@
             this.listBoxType.Size = new System.Drawing.Size(120, 95);
             this.listBoxType.TabIndex = 2;
             this.listBoxType.SelectedIndexChanged += new System.EventHandler(this.listBoxType_SelectedIndexChanged);
-            // 
-            // radioIsStatic
-            // 
-            this.radioIsStatic.AutoSize = true;
-            this.radioIsStatic.Location = new System.Drawing.Point(13, 134);
-            this.radioIsStatic.Name = "radioIsStatic";
-            this.radioIsStatic.Size = new System.Drawing.Size(59, 17);
-            this.radioIsStatic.TabIndex = 3;
-            this.radioIsStatic.TabStop = true;
-            this.radioIsStatic.Text = "isStatic";
-            this.radioIsStatic.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -78,37 +66,25 @@
             this.label2.TabIndex = 7;
             this.label2.Text = "Y";
             // 
-            // button2
+            // buttonCancel
             // 
-            this.button2.Location = new System.Drawing.Point(141, 222);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Cancel";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonCancel.Location = new System.Drawing.Point(141, 222);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.TabIndex = 9;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button1
+            // buttonSave
             // 
-            this.button1.Location = new System.Drawing.Point(31, 222);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Save";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // numericUpDownX
-            // 
-            this.numericUpDownX.Location = new System.Drawing.Point(233, 12);
-            this.numericUpDownX.Maximum = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
-            this.numericUpDownX.Name = "numericUpDownX";
-            this.numericUpDownX.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDownX.TabIndex = 10;
+            this.buttonSave.Location = new System.Drawing.Point(31, 222);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(75, 23);
+            this.buttonSave.TabIndex = 8;
+            this.buttonSave.Text = "Save";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.button1_Click);
             // 
             // numericUpDownY
             // 
@@ -122,6 +98,18 @@
             this.numericUpDownY.Size = new System.Drawing.Size(120, 20);
             this.numericUpDownY.TabIndex = 11;
             // 
+            // numericUpDownX
+            // 
+            this.numericUpDownX.Location = new System.Drawing.Point(233, 12);
+            this.numericUpDownX.Maximum = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.numericUpDownX.Name = "numericUpDownX";
+            this.numericUpDownX.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownX.TabIndex = 10;
+            // 
             // FormEditGameElement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -129,16 +117,15 @@
             this.ClientSize = new System.Drawing.Size(438, 257);
             this.Controls.Add(this.numericUpDownY);
             this.Controls.Add(this.numericUpDownX);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.radioIsStatic);
             this.Controls.Add(this.listBoxType);
             this.Name = "FormEditGameElement";
             this.Text = "ForEditGameElement";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -147,12 +134,11 @@
         #endregion
 
         private System.Windows.Forms.ListBox listBoxType;
-        private System.Windows.Forms.RadioButton radioIsStatic;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.NumericUpDown numericUpDownX;
+        private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.NumericUpDown numericUpDownY;
+        private System.Windows.Forms.NumericUpDown numericUpDownX;
     }
 }

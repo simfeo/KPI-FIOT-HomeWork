@@ -13,9 +13,14 @@ namespace Makiyan_Cursovaya_sem2
 {
     public partial class FormEditLevel : Form
     {
-        public FormEditLevel()
+        private Level currentLevel;
+        public FormEditLevel(Level lv = null)
         {
             InitializeComponent();
+            if (lv == null)
+                currentLevel = new Level();
+            else
+                currentLevel = lv;
         }
 
         private void FormEditLevel_Load(object sender, EventArgs e)
@@ -25,9 +30,8 @@ namespace Makiyan_Cursovaya_sem2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Level nl = new Level();
-            nl.Name = name.Text;
-            Level.levels.Add(nl);
+            currentLevel.Name = name.Text;
+            Level.levels.Add(currentLevel);
             Close();
         }
 
