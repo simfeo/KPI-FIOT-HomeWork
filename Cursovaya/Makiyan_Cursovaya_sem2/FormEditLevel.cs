@@ -30,5 +30,10 @@ namespace Makiyan_Cursovaya_sem2
             Level.levels.Add(nl);
             Close();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

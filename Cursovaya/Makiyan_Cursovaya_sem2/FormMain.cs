@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Makiyan_cursovaya_sem2.Data;
 
 namespace Makiyan_Cursovaya_sem2
 {
@@ -24,5 +25,15 @@ namespace Makiyan_Cursovaya_sem2
 
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Level.levels.Remove((Level)LevelsList.SelectedItem);
+            RefreshLevelsList();
+        }
+
+        private void LevelsList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

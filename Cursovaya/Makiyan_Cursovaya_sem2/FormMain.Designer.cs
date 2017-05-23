@@ -57,6 +57,7 @@ namespace Makiyan_Cursovaya_sem2
             this.button2.TabIndex = 2;
             this.button2.Text = "Remove Level";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label1
             // 
@@ -74,6 +75,7 @@ namespace Makiyan_Cursovaya_sem2
             this.LevelsList.Name = "LevelsList";
             this.LevelsList.Size = new System.Drawing.Size(120, 95);
             this.LevelsList.TabIndex = 4;
+            this.LevelsList.SelectedIndexChanged += new System.EventHandler(this.LevelsList_SelectedIndexChanged);
             // 
             // FormMain
             // 
