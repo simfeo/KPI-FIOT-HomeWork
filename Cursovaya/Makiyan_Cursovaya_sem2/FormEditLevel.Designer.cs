@@ -32,6 +32,9 @@
             this.button2 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.name = new System.Windows.Forms.TextBox();
+            this.listBoxGameObjects = new System.Windows.Forms.ListBox();
+            this.buttonAddGameElement = new System.Windows.Forms.Button();
+            this.buttonRemovegameElement = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -70,11 +73,43 @@
             this.name.Size = new System.Drawing.Size(100, 20);
             this.name.TabIndex = 3;
             // 
+            // listBoxGameObjects
+            // 
+            this.listBoxGameObjects.FormattingEnabled = true;
+            this.listBoxGameObjects.Location = new System.Drawing.Point(162, 30);
+            this.listBoxGameObjects.Name = "listBoxGameObjects";
+            this.listBoxGameObjects.Size = new System.Drawing.Size(408, 264);
+            this.listBoxGameObjects.TabIndex = 4;
+            this.listBoxGameObjects.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
+            // buttonAddGameElement
+            // 
+            this.buttonAddGameElement.Location = new System.Drawing.Point(596, 30);
+            this.buttonAddGameElement.Name = "buttonAddGameElement";
+            this.buttonAddGameElement.Size = new System.Drawing.Size(75, 23);
+            this.buttonAddGameElement.TabIndex = 5;
+            this.buttonAddGameElement.Text = "Add";
+            this.buttonAddGameElement.UseVisualStyleBackColor = true;
+            this.buttonAddGameElement.Click += new System.EventHandler(this.buttonAddGameElement_Click);
+            // 
+            // buttonRemovegameElement
+            // 
+            this.buttonRemovegameElement.Location = new System.Drawing.Point(596, 78);
+            this.buttonRemovegameElement.Name = "buttonRemovegameElement";
+            this.buttonRemovegameElement.Size = new System.Drawing.Size(75, 23);
+            this.buttonRemovegameElement.TabIndex = 6;
+            this.buttonRemovegameElement.Text = "Remove";
+            this.buttonRemovegameElement.UseVisualStyleBackColor = true;
+            this.buttonRemovegameElement.Click += new System.EventHandler(this.button4_Click);
+            // 
             // FormEditLevel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(806, 387);
+            this.Controls.Add(this.buttonRemovegameElement);
+            this.Controls.Add(this.buttonAddGameElement);
+            this.Controls.Add(this.listBoxGameObjects);
             this.Controls.Add(this.name);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
@@ -93,5 +128,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox name;
+        private System.Windows.Forms.ListBox listBoxGameObjects;
+        private System.Windows.Forms.Button buttonAddGameElement;
+        private System.Windows.Forms.Button buttonRemovegameElement;
     }
 }

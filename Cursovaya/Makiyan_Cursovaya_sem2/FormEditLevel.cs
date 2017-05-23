@@ -35,5 +35,20 @@ namespace Makiyan_Cursovaya_sem2
         {
             Close();
         }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonAddGameElement_Click(object sender, EventArgs e)
+        {
+            new FormEditLevel().ShowDialog();
+        }
     }
 }
