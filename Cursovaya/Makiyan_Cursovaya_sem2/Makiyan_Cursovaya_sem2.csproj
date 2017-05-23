@@ -66,11 +66,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ForEditGameElement.cs">
+    <Compile Include="FormEditGameElement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ForEditGameElement.Designer.cs">
-      <DependentUpon>ForEditGameElement.cs</DependentUpon>
+    <Compile Include="FormEditGameElement.Designer.cs">
+      <DependentUpon>FormEditGameElement.cs</DependentUpon>
     </Compile>
     <Compile Include="FormEditLevel.cs">
       <SubType>Form</SubType>
@@ -86,8 +86,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ForEditGameElement.resx">
-      <DependentUpon>ForEditGameElement.cs</DependentUpon>
+    <EmbeddedResource Include="FormEditGameElement.resx">
+      <DependentUpon>FormEditGameElement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormEditLevel.resx">
       <DependentUpon>FormEditLevel.cs</DependentUpon>
