@@ -30,12 +30,14 @@
         {
             this.listBoxType = new System.Windows.Forms.ListBox();
             this.radioIsStatic = new System.Windows.Forms.RadioButton();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.numericUpDownX = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownY = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY)).BeginInit();
             this.SuspendLayout();
             // 
             // listBoxType
@@ -45,6 +47,7 @@
             this.listBoxType.Name = "listBoxType";
             this.listBoxType.Size = new System.Drawing.Size(120, 95);
             this.listBoxType.TabIndex = 2;
+            this.listBoxType.SelectedIndexChanged += new System.EventHandler(this.listBoxType_SelectedIndexChanged);
             // 
             // radioIsStatic
             // 
@@ -56,20 +59,6 @@
             this.radioIsStatic.TabStop = true;
             this.radioIsStatic.Text = "isStatic";
             this.radioIsStatic.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(249, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 4;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(249, 48);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 5;
             // 
             // label1
             // 
@@ -109,21 +98,47 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // ForEditGameElement
+            // numericUpDownX
+            // 
+            this.numericUpDownX.Location = new System.Drawing.Point(233, 12);
+            this.numericUpDownX.Maximum = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.numericUpDownX.Name = "numericUpDownX";
+            this.numericUpDownX.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownX.TabIndex = 10;
+            // 
+            // numericUpDownY
+            // 
+            this.numericUpDownY.Location = new System.Drawing.Point(233, 48);
+            this.numericUpDownY.Maximum = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.numericUpDownY.Name = "numericUpDownY";
+            this.numericUpDownY.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownY.TabIndex = 11;
+            // 
+            // FormEditGameElement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(438, 257);
+            this.Controls.Add(this.numericUpDownY);
+            this.Controls.Add(this.numericUpDownX);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.radioIsStatic);
             this.Controls.Add(this.listBoxType);
-            this.Name = "ForEditGameElement";
+            this.Name = "FormEditGameElement";
             this.Text = "ForEditGameElement";
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -133,11 +148,11 @@
 
         private System.Windows.Forms.ListBox listBoxType;
         private System.Windows.Forms.RadioButton radioIsStatic;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericUpDown numericUpDownX;
+        private System.Windows.Forms.NumericUpDown numericUpDownY;
     }
 }

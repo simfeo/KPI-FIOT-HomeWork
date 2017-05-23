@@ -48,7 +48,7 @@ namespace Makiyan_Cursovaya_sem2
 
         private void buttonAddGameElement_Click(object sender, EventArgs e)
         {
-            new FormEditLevel().ShowDialog();
+            new FormEditGameElement().ShowDialog();
         }
     }
 }

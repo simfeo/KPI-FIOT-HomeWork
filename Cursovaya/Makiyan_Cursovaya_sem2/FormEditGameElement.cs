@@ -11,9 +11,11 @@ namespace Makiyan_Cursovaya_sem2
 {
     public partial class FormEditGameElement : Form
     {
+        private List<String> availableTypes = new List < String >{ "Brick", "User", "Enemy" };
         public FormEditGameElement()
         {
             InitializeComponent();
+            listBoxType.DataSource = availableTypes;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -22,6 +24,11 @@ namespace Makiyan_Cursovaya_sem2
         }
 
         private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBoxType_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
