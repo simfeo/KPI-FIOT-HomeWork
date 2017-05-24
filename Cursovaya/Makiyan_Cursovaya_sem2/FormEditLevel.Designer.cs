@@ -35,6 +35,7 @@
             this.listBoxGameObjects = new System.Windows.Forms.ListBox();
             this.buttonAddGameElement = new System.Windows.Forms.Button();
             this.buttonRemovegameElement = new System.Windows.Forms.Button();
+            this.buttonEditGameElement = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -94,7 +95,7 @@
             // 
             // buttonRemovegameElement
             // 
-            this.buttonRemovegameElement.Location = new System.Drawing.Point(596, 78);
+            this.buttonRemovegameElement.Location = new System.Drawing.Point(596, 88);
             this.buttonRemovegameElement.Name = "buttonRemovegameElement";
             this.buttonRemovegameElement.Size = new System.Drawing.Size(75, 23);
             this.buttonRemovegameElement.TabIndex = 6;
@@ -102,11 +103,22 @@
             this.buttonRemovegameElement.UseVisualStyleBackColor = true;
             this.buttonRemovegameElement.Click += new System.EventHandler(this.button4_Click);
             // 
+            // buttonEditGameElement
+            // 
+            this.buttonEditGameElement.Location = new System.Drawing.Point(596, 59);
+            this.buttonEditGameElement.Name = "buttonEditGameElement";
+            this.buttonEditGameElement.Size = new System.Drawing.Size(75, 23);
+            this.buttonEditGameElement.TabIndex = 7;
+            this.buttonEditGameElement.Text = "Edit";
+            this.buttonEditGameElement.UseVisualStyleBackColor = true;
+            this.buttonEditGameElement.Click += new System.EventHandler(this.buttonEditGameElement_Click);
+            // 
             // FormEditLevel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(806, 387);
+            this.Controls.Add(this.buttonEditGameElement);
             this.Controls.Add(this.buttonRemovegameElement);
             this.Controls.Add(this.buttonAddGameElement);
             this.Controls.Add(this.listBoxGameObjects);
@@ -131,5 +143,6 @@
         private System.Windows.Forms.ListBox listBoxGameObjects;
         private System.Windows.Forms.Button buttonAddGameElement;
         private System.Windows.Forms.Button buttonRemovegameElement;
+        private System.Windows.Forms.Button buttonEditGameElement;
     }
 }
