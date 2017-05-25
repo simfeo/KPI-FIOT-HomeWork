@@ -12,6 +12,7 @@ namespace Makiyan_cursovaya_sem2.Data
     public class Level
     {
         public static List<Level> levels = new List<Level>();
+        public static Level tempLevel = new Level();
 
         [DataMember]
         public Guid Id { get; private set; }

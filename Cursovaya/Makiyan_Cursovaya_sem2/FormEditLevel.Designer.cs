@@ -36,6 +36,7 @@
             this.buttonAddGameElement = new System.Windows.Forms.Button();
             this.buttonRemovegameElement = new System.Windows.Forms.Button();
             this.buttonEditGameElement = new System.Windows.Forms.Button();
+            this.buttonStat = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -73,6 +74,7 @@
             this.name.Name = "name";
             this.name.Size = new System.Drawing.Size(100, 20);
             this.name.TabIndex = 3;
+            this.name.TextChanged += new System.EventHandler(this.name_TextChanged);
             // 
             // listBoxGameObjects
             // 
@@ -113,11 +115,22 @@
             this.buttonEditGameElement.UseVisualStyleBackColor = true;
             this.buttonEditGameElement.Click += new System.EventHandler(this.buttonEditGameElement_Click);
             // 
+            // buttonStat
+            // 
+            this.buttonStat.Location = new System.Drawing.Point(596, 117);
+            this.buttonStat.Name = "buttonStat";
+            this.buttonStat.Size = new System.Drawing.Size(75, 23);
+            this.buttonStat.TabIndex = 8;
+            this.buttonStat.Text = "Statistics";
+            this.buttonStat.UseVisualStyleBackColor = true;
+            this.buttonStat.Click += new System.EventHandler(this.buttonStat_Click);
+            // 
             // FormEditLevel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(806, 387);
+            this.Controls.Add(this.buttonStat);
             this.Controls.Add(this.buttonEditGameElement);
             this.Controls.Add(this.buttonRemovegameElement);
             this.Controls.Add(this.buttonAddGameElement);
@@ -144,5 +157,6 @@
         private System.Windows.Forms.Button buttonAddGameElement;
         private System.Windows.Forms.Button buttonRemovegameElement;
         private System.Windows.Forms.Button buttonEditGameElement;
+        private System.Windows.Forms.Button buttonStat;
     }
 }

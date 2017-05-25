@@ -26,11 +26,13 @@ namespace Makiyan_Cursovaya_sem2
             {
                 BaseGameElement bs = level.GetGameElement(poinClass);
 
-                if (bs.Name == "brick")
+                Point dummyPoint = new Point(-1, -1);
+
+                if (bs.Name == new Brick(dummyPoint).Name)
                 {
                     listBoxType.SetSelected(0, true);
                 }
-                else if (bs.Name == "user")
+                else if (bs.Name == new User(dummyPoint).Name)
                 {
                     listBoxType.SetSelected(1, true);
                 }
@@ -68,6 +70,7 @@ namespace Makiyan_Cursovaya_sem2
             { gameEl = new User(p); }
             else if (type == "Enemy")
             { gameEl = new Enemy(p); }
+            gameEl.LevelId = level.Id;
             level.SetGameElement(p, gameEl);
             Close();
         }

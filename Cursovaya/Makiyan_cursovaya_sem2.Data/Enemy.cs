@@ -6,9 +6,9 @@ using System.Drawing;
 
 namespace Makiyan_cursovaya_sem2.Data
 {
-    public class Enemy : BaseGameElement
+    public class Enemy : BaseMovingGameElement
     {
-        public Enemy(Point initPoint) : base("enemy", false, initPoint)
+        public Enemy(Point initPoint) : base("enemy", initPoint)
         {
 
         }
