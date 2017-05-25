@@ -20,9 +20,12 @@ namespace Makiyan_Cursovaya_sem2
             if (lv == null)
                 currentLevel = new Level();
             else
+            {
                 currentLevel = lv;
-
-            Level.tempLevel = currentLevel;
+                name.Text = currentLevel.Name;
+            }
+            Level.tempLevel = new Level( currentLevel);
+            refreshGameElementsList();
         }
 
         private void FormEditLevel_Load(object sender, EventArgs e)
@@ -39,9 +42,51 @@ namespace Makiyan_Cursovaya_sem2
             }
             else
             {
-                currentLevel.Name = name.Text.Trim();
-                Level.levels.Add(currentLevel);
-                Close();
+                string sName = name.Text.Trim();
+                bool shouldAddLevel = true;
+                bool shouldClose = true;
+                foreach (Level l in Level.levels)
+                {
+                    if (sName == l.Name)
+                    {
+                        shouldAddLevel = false;
+                        if (currentLevel.Id == l.Id)
+                        {
+                            currentLevel = new Level(Level.tempLevel);
+                            int index = Level.levels.IndexOf(l);
+                            Level.levels[index] = currentLevel;
+                        }
+                        else
+                        {
+                            shouldClose = false;
+                            MessageBox.Show("Another level with same name already exists");
+                        }
+                        break;
+                    }
+                    else if (currentLevel.Id == l.Id)
+                    {
+                        shouldAddLevel = false;
+                        Level.tempLevel.Name = sName;
+                        currentLevel = new Level(Level.tempLevel);
+                        int index = Level.levels.IndexOf(l);
+                        Level.levels[index] = currentLevel;
+                        break;
+                    }
+                }
+                if (shouldClose)
+                {
+                    currentLevel.Name = sName;
+                }
+                if (shouldAddLevel)
+                {
+                    Level.tempLevel.Name = sName;
+                    currentLevel = new Level(Level.tempLevel);
+                    Level.levels.Add(currentLevel);
+                }
+                if (shouldClose)
+                {
+                    Close();
+                }
             }
         }
 
@@ -59,47 +104,57 @@ namespace Makiyan_Cursovaya_sem2
 
         private void button4_Click(object sender, EventArgs e)
         {
-            string pointAndName = listBoxGameObjects.SelectedItem.ToString();
-            string pointName = pointAndName.Split(':')[0];
-            foreach (char i in "{XY=}")
+            try
             {
-                string ss = "" + i;
-                pointName = pointName.Replace(ss, "");
-            }
-            string[] coords = pointName.Split(',');
-            Point point = new Point(int.Parse(coords[0]), int.Parse(coords[1]));
+                string pointAndName = listBoxGameObjects.SelectedItem.ToString();
+                string pointName = pointAndName.Split(':')[0];
+                foreach (char i in "{XY=}")
+                {
+                    string ss = "" + i;
+                    pointName = pointName.Replace(ss, "");
+                }
+                string[] coords = pointName.Split(',');
+                Point point = new Point(int.Parse(coords[0]), int.Parse(coords[1]));
 
-            currentLevel.elements.Remove(point);
-            refreshGameElementsList();
+                Level.tempLevel.elements.Remove(point);
+                refreshGameElementsList();
+            }
+            catch
+            { }
         }
 
         private void buttonAddGameElement_Click(object sender, EventArgs e)
         {
-            new FormEditGameElement(currentLevel, new Point(-1, -1)).ShowDialog();
+            new FormEditGameElement(Level.tempLevel, new Point(-1, -1)).ShowDialog();
             refreshGameElementsList();
         }
 
         private void buttonEditGameElement_Click(object sender, EventArgs e)
         {
-            string pointAndName = listBoxGameObjects.SelectedItem.ToString();
-            string pointName = pointAndName.Split(':')[0];
-            foreach (char i in "{XY=}")
+            try
             {
-                string ss = "" + i;
-                pointName = pointName.Replace(ss, "");
-            }
-            string[] coords = pointName.Split(',');
-            Point point = new Point(int.Parse(coords[0]), int.Parse(coords[1]));
+                string pointAndName = listBoxGameObjects.SelectedItem.ToString();
+                string pointName = pointAndName.Split(':')[0];
+                foreach (char i in "{XY=}")
+                {
+                    string ss = "" + i;
+                    pointName = pointName.Replace(ss, "");
+                }
+                string[] coords = pointName.Split(',');
+                Point point = new Point(int.Parse(coords[0]), int.Parse(coords[1]));
 
-            new FormEditGameElement(currentLevel, point).ShowDialog();
-            refreshGameElementsList();
+                new FormEditGameElement(Level.tempLevel, point).ShowDialog();
+                refreshGameElementsList();
+            }
+            catch
+            { }
         }
 
         private void refreshGameElementsList()
         {
             listBoxGameObjects.DataSource = null;
             List<string> gameElementsList = new List<string>();
-            foreach (KeyValuePair<Point, BaseGameElement> kv in currentLevel.elements)
+            foreach (KeyValuePair<Point, BaseGameElement> kv in Level.tempLevel.elements)
             {
                 gameElementsList.Add(kv.Key.ToString() + "::" + kv.Value.Name);
             }
@@ -108,22 +163,26 @@ namespace Makiyan_Cursovaya_sem2
 
         private void buttonStat_Click(object sender, EventArgs e)
         {
-            string pointAndName = listBoxGameObjects.SelectedItem.ToString();
-            if (pointAndName.Trim().Length == 0)
+            try
             {
-                return;
-            }
+                string pointAndName = listBoxGameObjects.SelectedItem.ToString();
+                if (pointAndName.Trim().Length == 0)
+                {
+                    return;
+                }
 
-             string pointName = pointAndName.Split(':')[0];
-            foreach (char i in "{XY=}")
-            {
-                string ss = "" + i;
-                pointName = pointName.Replace(ss, "");
-            }
-            string[] coords = pointName.Split(',');
-            Point point = new Point(int.Parse(coords[0]), int.Parse(coords[1]));
+                string pointName = pointAndName.Split(':')[0];
+                foreach (char i in "{XY=}")
+                {
+                    string ss = "" + i;
+                    pointName = pointName.Replace(ss, "");
+                }
+                string[] coords = pointName.Split(',');
+                Point point = new Point(int.Parse(coords[0]), int.Parse(coords[1]));
 
-            new ForrmElementsStat(currentLevel, point).ShowDialog();
+                new FormElementsStat(Level.tempLevel, point).ShowDialog();
+            }
+            catch { }
         }
 
         private void name_TextChanged(object sender, EventArgs e)

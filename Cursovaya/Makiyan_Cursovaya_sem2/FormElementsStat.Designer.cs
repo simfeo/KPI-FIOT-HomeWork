@@ -1,6 +1,6 @@
 ﻿namespace Makiyan_Cursovaya_sem2
 {
-    partial class ForrmElementsStat
+    partial class FormElementsStat
     {
         /// <summary>
         /// Required designer variable.

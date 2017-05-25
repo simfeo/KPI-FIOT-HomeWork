@@ -35,5 +35,27 @@ namespace Makiyan_Cursovaya_sem2
         {
 
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Level lv = null;
+                string name = LevelsList.SelectedItem.ToString();
+
+                foreach (Level l in Level.levels)
+                {
+                    if (l.Name == name)
+                    {
+                        lv = l;
+                        break;
+                    }
+                }
+
+                new FormEditLevel(lv).ShowDialog();
+                RefreshLevelsList();
+            }
+            catch { }
+        }
     }
 }

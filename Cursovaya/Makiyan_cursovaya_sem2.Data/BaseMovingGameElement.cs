@@ -13,14 +13,6 @@ namespace Makiyan_cursovaya_sem2.Data
         {
             List<BaseGameElement> el = new List<BaseGameElement>();
             Level lv = Level.tempLevel;
-            foreach (Level l in Level.levels)
-            {
-                if (l.Id == LevelId)
-                {
-                    lv = l;
-                    break;
-                }
-            }
             
             Dictionary<Point, BaseGameElement> res = new Dictionary<Point, BaseGameElement>();
             foreach (KeyValuePair<Point, BaseGameElement> mm in lv.elements)

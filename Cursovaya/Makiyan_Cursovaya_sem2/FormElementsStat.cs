@@ -10,13 +10,13 @@ using Makiyan_cursovaya_sem2.Data;
 
 namespace Makiyan_Cursovaya_sem2
 {
-    public partial class ForrmElementsStat : Form
+    public partial class FormElementsStat : Form
     {
         private Level currentLevel;
         private Point point;
         
 
-        public ForrmElementsStat(Level currentLevel, Point point)
+        public FormElementsStat(Level currentLevel, Point point)
         {
             InitializeComponent();
             this.currentLevel = currentLevel;

@@ -39,6 +39,17 @@ namespace Makiyan_cursovaya_sem2.Data
             elements = new Dictionary<Point, BaseGameElement>();
         }
 
+        public Level(Level orig)
+        {
+            Id = orig.Id;
+            Name = orig.Name;
+            elements = new Dictionary<Point, BaseGameElement>();
+            foreach (KeyValuePair<Point, BaseGameElement> kv in orig.elements)
+            {
+                elements[kv.Key] = kv.Value;
+            }
+        }
+
         public override string ToString()
         {
             return Name;
