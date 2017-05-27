@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Makiyan_cursovaya_sem2.Data;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.IO;
 
 namespace Makiyan_Cursovaya_sem2
 {
@@ -19,6 +20,8 @@ namespace Makiyan_Cursovaya_sem2
         public FormMain()
         {
             InitializeComponent();
+            FormMain.levels = (List<Level>)Load("level.xml", typeof(List<Level>));
+            RefreshLevelsList();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -75,5 +78,19 @@ namespace Makiyan_Cursovaya_sem2
         {
             Save(FormMain.levels, "level.xml");
         }
+
+        private object Load(string filaName, Type t)
+        {
+            if (File.Exists("level.xml"))
+            {
+                DataContractSerializer dcs = new DataContractSerializer(t);
+                XmlReader xmlr = XmlReader.Create(filaName);
+                object res = dcs.ReadObject(xmlr);
+                xmlr.Close();
+                return res;
+            }
+            return new List<Level>();
+        }
+
     }
 }
