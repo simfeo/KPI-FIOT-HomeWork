@@ -45,7 +45,7 @@ namespace Makiyan_Cursovaya_sem2
                 string sName = name.Text.Trim();
                 bool shouldAddLevel = true;
                 bool shouldClose = true;
-                foreach (Level l in Level.levels)
+                foreach (Level l in FormMain.levels)
                 {
                     if (sName == l.Name)
                     {
@@ -53,8 +53,8 @@ namespace Makiyan_Cursovaya_sem2
                         if (currentLevel.Id == l.Id)
                         {
                             currentLevel = new Level(Level.tempLevel);
-                            int index = Level.levels.IndexOf(l);
-                            Level.levels[index] = currentLevel;
+                            int index = FormMain.levels.IndexOf(l);
+                            FormMain.levels[index] = currentLevel;
                         }
                         else
                         {
@@ -68,8 +68,8 @@ namespace Makiyan_Cursovaya_sem2
                         shouldAddLevel = false;
                         Level.tempLevel.Name = sName;
                         currentLevel = new Level(Level.tempLevel);
-                        int index = Level.levels.IndexOf(l);
-                        Level.levels[index] = currentLevel;
+                        int index = FormMain.levels.IndexOf(l);
+                        FormMain.levels[index] = currentLevel;
                         break;
                     }
                 }
@@ -81,7 +81,7 @@ namespace Makiyan_Cursovaya_sem2
                 {
                     Level.tempLevel.Name = sName;
                     currentLevel = new Level(Level.tempLevel);
-                    Level.levels.Add(currentLevel);
+                    FormMain.levels.Add(currentLevel);
                 }
                 if (shouldClose)
                 {

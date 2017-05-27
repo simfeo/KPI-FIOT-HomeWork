@@ -8,11 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Makiyan_cursovaya_sem2.Data;
+using System.Runtime.Serialization;
+using System.Xml;
 
 namespace Makiyan_Cursovaya_sem2
 {
     public partial class FormMain : Form
     {
+        public static List<Level> levels = new List<Level>();
         public FormMain()
         {
             InitializeComponent();
@@ -27,7 +30,7 @@ namespace Makiyan_Cursovaya_sem2
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Level.levels.Remove((Level)LevelsList.SelectedItem);
+            FormMain.levels.Remove((Level)LevelsList.SelectedItem);
             RefreshLevelsList();
         }
 
@@ -43,7 +46,7 @@ namespace Makiyan_Cursovaya_sem2
                 Level lv = null;
                 string name = LevelsList.SelectedItem.ToString();
 
-                foreach (Level l in Level.levels)
+                foreach (Level l in FormMain.levels)
                 {
                     if (l.Name == name)
                     {
@@ -56,6 +59,21 @@ namespace Makiyan_Cursovaya_sem2
                 RefreshLevelsList();
             }
             catch { }
+        }
+
+
+        
+        private void Save(object obj, string filaName)
+        {
+            DataContractSerializer dcs = new DataContractSerializer(obj.GetType());
+            XmlWriter xmlw = XmlWriter.Create(filaName);
+            dcs.WriteObject(xmlw, obj);
+            xmlw.Close();
+        }
+
+        private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Save(FormMain.levels, "level.xml");
         }
     }
 }

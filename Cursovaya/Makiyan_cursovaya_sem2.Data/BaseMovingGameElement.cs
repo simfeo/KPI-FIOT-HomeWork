@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime.Serialization;
 
 namespace Makiyan_cursovaya_sem2.Data
 {
+    [DataContract]
     public class BaseMovingGameElement : BaseGameElement
     {
         public BaseMovingGameElement(string name, Point initPoint) : base(name, false, initPoint)

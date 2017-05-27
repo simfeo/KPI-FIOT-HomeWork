@@ -7,15 +7,23 @@ using System.Text;
 
 namespace Makiyan_cursovaya_sem2.Data
 {
+    [DataContract]
+    [KnownType(typeof(Brick))]
+    [KnownType(typeof(BaseMovingGameElement))]
+    [KnownType(typeof(Enemy))]
+    [KnownType(typeof(User))]
     public class BaseGameElement
     {
         [DataMember]
         public string Name { get; private set; }
 
+        [DataMember]
         public Boolean IsStatic { get; private set; }
 
+        [DataMember]
         public Point InitialPoint { get; private set; }
 
+        [DataMember]
         public Guid LevelId { get; set; }
 
         public BaseGameElement(string name, Boolean stat, Point initPoint)

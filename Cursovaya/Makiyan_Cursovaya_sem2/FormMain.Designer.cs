@@ -100,6 +100,7 @@ namespace Makiyan_Cursovaya_sem2
             this.Controls.Add(this.button1);
             this.Name = "FormMain";
             this.Text = "Form1";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,7 +115,7 @@ namespace Makiyan_Cursovaya_sem2
         void RefreshLevelsList()
         {
             LevelsList.DataSource = null;
-            LevelsList.DataSource = Level.levels;
+            LevelsList.DataSource = FormMain.levels;
         }
 
         private System.Windows.Forms.Button button3;

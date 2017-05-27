@@ -11,7 +11,6 @@ namespace Makiyan_cursovaya_sem2.Data
     [DataContract]
     public class Level
     {
-        public static List<Level> levels = new List<Level>();
         public static Level tempLevel = new Level();
 
         [DataMember]
@@ -19,6 +18,7 @@ namespace Makiyan_cursovaya_sem2.Data
         [DataMember]
         public string Name { get; set; }
 
+        [DataMember]
         public Dictionary<Point, BaseGameElement> elements { get; private set; }
 
         public BaseGameElement GetGameElement(Point inPoint)
