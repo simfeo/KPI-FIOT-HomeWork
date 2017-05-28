@@ -6,7 +6,6 @@ namespace Makiyan_Cursovaya_sem2
 {
     partial class FormMain
     {
-        List<Level> _lvl;
         /// <summary>
         /// Required designer variable.
         /// </summary>

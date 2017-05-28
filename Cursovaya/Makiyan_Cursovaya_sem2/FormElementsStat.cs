@@ -30,9 +30,9 @@ namespace Makiyan_Cursovaya_sem2
 
             listBoxCollide.DataSource = null;
             List<string> gameElementsList = new List<string>();
-            foreach (KeyValuePair<Point, BaseGameElement> kv in bs.CollidesWith())
+            foreach ( BaseGameElement el in bs.CollidesWith())
             {
-                gameElementsList.Add(kv.Key.ToString() + "::" + kv.Value.Name);
+                gameElementsList.Add(el.InitialPoint.ToString() + "::" + el.Name);
             }
             listBoxCollide.DataSource = gameElementsList;
         }

@@ -59,11 +59,7 @@ namespace Makiyan_Cursovaya_sem2
 
             BaseGameElement gameEl = null;
 
-            if (p == poinClass && poinClass != new Point(-1, -1))
-            {
-                level.elements.Remove(poinClass);
-            }
-
+            
             if (type == "Brick")
             { gameEl = new Brick(p); }
             else if (type == "User")
@@ -71,7 +67,7 @@ namespace Makiyan_Cursovaya_sem2
             else if (type == "Enemy")
             { gameEl = new Enemy(p); }
             gameEl.LevelId = level.Id;
-            level.SetGameElement(p, gameEl);
+            level.SetGameElement(gameEl);
             Close();
         }
 

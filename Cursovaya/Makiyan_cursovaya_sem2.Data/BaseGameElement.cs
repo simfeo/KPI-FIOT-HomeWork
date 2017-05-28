@@ -33,9 +33,9 @@ namespace Makiyan_cursovaya_sem2.Data
             InitialPoint = initPoint;
         }
 
-        public virtual Dictionary<Point, BaseGameElement> CollidesWith()
+        public virtual List<BaseGameElement> CollidesWith()
         {
-            return new Dictionary<Point, BaseGameElement>();
+            return new List<BaseGameElement>();
         }
     }
 }

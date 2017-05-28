@@ -116,7 +116,7 @@ namespace Makiyan_Cursovaya_sem2
                 string[] coords = pointName.Split(',');
                 Point point = new Point(int.Parse(coords[0]), int.Parse(coords[1]));
 
-                Level.tempLevel.elements.Remove(point);
+                Level.tempLevel.RemoveEelement(point);
                 refreshGameElementsList();
             }
             catch
@@ -154,9 +154,9 @@ namespace Makiyan_Cursovaya_sem2
         {
             listBoxGameObjects.DataSource = null;
             List<string> gameElementsList = new List<string>();
-            foreach (KeyValuePair<Point, BaseGameElement> kv in Level.tempLevel.elements)
+            foreach ( BaseGameElement el in Level.tempLevel.elements)
             {
-                gameElementsList.Add(kv.Key.ToString() + "::" + kv.Value.Name);
+                gameElementsList.Add(el.InitialPoint.ToString() + "::" + el.Name);
             }
             listBoxGameObjects.DataSource = gameElementsList;
         }

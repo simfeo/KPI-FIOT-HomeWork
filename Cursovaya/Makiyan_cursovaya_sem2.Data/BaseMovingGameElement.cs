@@ -11,17 +11,17 @@ namespace Makiyan_cursovaya_sem2.Data
         {
         }
 
-        public override Dictionary<Point, BaseGameElement> CollidesWith()
+        public override List<BaseGameElement> CollidesWith()
         {
             List<BaseGameElement> el = new List<BaseGameElement>();
             Level lv = Level.tempLevel;
-            
-            Dictionary<Point, BaseGameElement> res = new Dictionary<Point, BaseGameElement>();
-            foreach (KeyValuePair<Point, BaseGameElement> mm in lv.elements)
+
+            List<BaseGameElement> res = new List< BaseGameElement>();
+            foreach (BaseGameElement mm in lv.elements)
             {
-                if (mm.Key != InitialPoint)
+                if (mm.InitialPoint != InitialPoint)
                 {
-                    res[mm.Key] = mm.Value;
+                    res.Add(mm);
                 }
             }
 

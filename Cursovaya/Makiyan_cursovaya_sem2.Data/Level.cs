@@ -19,34 +19,72 @@ namespace Makiyan_cursovaya_sem2.Data
         public string Name { get; set; }
 
         [DataMember]
-        public Dictionary<Point, BaseGameElement> elements { get; private set; }
+        public List<BaseGameElement> elements { get; private set; }
 
         public BaseGameElement GetGameElement(Point inPoint)
         {
-            return elements[inPoint];
+            foreach (BaseGameElement el in elements)
+            {
+                if (el.InitialPoint == inPoint)
+                    return el;
+            }
+            return null;
         }
 
-        public void SetGameElement(Point inPoint, BaseGameElement value)
+        public void SetGameElement(BaseGameElement gameEl)
         {
-            elements[inPoint] = value;
+            BaseGameElement e = null;
+            foreach (BaseGameElement el in elements)
+            {
+                if (el.InitialPoint == gameEl.InitialPoint)
+                {
+                    e = el;
+                    break;
+                }
+            }
+            if (e != null)
+            {
+                int index = elements.IndexOf(e);
+                elements[index] = gameEl;
+            }
+            else
+            {
+                elements.Add(gameEl);
+            }
         }
 
+        public void RemoveEelement(Point p)
+        {
+            BaseGameElement e = null; 
+            foreach (BaseGameElement el in elements)
+            {
+                if (el.InitialPoint == p)
+                {
+                    e = el;
+                    break;
+                }
+            }
+            if (e != null)
+            {
+                elements.Remove(e);
+            }
+        }
 
         public Level(string name = null)
         {
             Id = Guid.NewGuid();
             Name = name;
-            elements = new Dictionary<Point, BaseGameElement>();
+            elements = new List<BaseGameElement>();
         }
 
         public Level(Level orig)
         {
             Id = orig.Id;
             Name = orig.Name;
-            elements = new Dictionary<Point, BaseGameElement>();
-            foreach (KeyValuePair<Point, BaseGameElement> kv in orig.elements)
+            elements = new List<BaseGameElement>();
+            foreach ( BaseGameElement el in orig.elements)
             {
-                elements[kv.Key] = kv.Value;
+                elements.Add(el);
             }
         }
 
