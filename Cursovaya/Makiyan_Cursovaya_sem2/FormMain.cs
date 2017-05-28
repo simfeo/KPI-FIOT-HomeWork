@@ -20,8 +20,12 @@ namespace Makiyan_Cursovaya_sem2
         public FormMain()
         {
             InitializeComponent();
-            FormMain.levels = (List<Level>)Load("level.xml", typeof(List<Level>));
-            RefreshLevelsList();
+            try
+            {
+                FormMain.levels = (List<Level>)Load("level.xml", typeof(List<Level>));
+                RefreshLevelsList();
+            }
+            catch { }
         }
 
         private void button1_Click(object sender, EventArgs e)
