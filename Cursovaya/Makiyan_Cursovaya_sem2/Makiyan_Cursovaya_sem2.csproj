@@ -148,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="base_KKI_icon.ico" />
+    <None Include="Sounds\start.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
