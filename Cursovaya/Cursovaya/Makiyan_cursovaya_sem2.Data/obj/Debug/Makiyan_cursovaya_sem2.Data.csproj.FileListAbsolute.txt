@@ -1,0 +1,5 @@
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_cursovaya_sem2.Data\obj\Debug\Makiyan_cursovaya_sem2.Data.csprojResolveAssemblyReference.cache
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_cursovaya_sem2.Data\bin\Debug\BattleCityLevelConstructor.Data.dll
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_cursovaya_sem2.Data\bin\Debug\BattleCityLevelConstructor.Data.pdb
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_cursovaya_sem2.Data\obj\Debug\BattleCityLevelConstructor.Data.dll
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_cursovaya_sem2.Data\obj\Debug\BattleCityLevelConstructor.Data.pdb

@@ -1,0 +1,14 @@
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\obj\x86\Release\Makiyan_Cursovaya_sem2.csprojResolveAssemblyReference.cache
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\obj\x86\Release\Makiyan_Cursovaya_sem2.FormEditGameElement.resources
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\obj\x86\Release\Makiyan_Cursovaya_sem2.FormEditLevel.resources
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\obj\x86\Release\Makiyan_Cursovaya_sem2.FormMain.resources
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\obj\x86\Release\Makiyan_Cursovaya_sem2.FormElementsStat.resources
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\obj\x86\Release\Makiyan_Cursovaya_sem2.Properties.Resources.resources
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\obj\x86\Release\Makiyan_Cursovaya_sem2.csproj.GenerateResource.Cache
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\bin\x86\Release\BattleCityLevelConstructor.exe.config
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\bin\x86\Release\BattleCityLevelConstructor.exe
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\bin\x86\Release\BattleCityLevelConstructor.pdb
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\obj\x86\Release\BattleCityLevelConstructor.exe
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\obj\x86\Release\BattleCityLevelConstructor.pdb
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\bin\x86\Release\BattleCityLevelConstructor.Data.dll
+E:\Workspace\VS2017\Makiyan_Cursovaya_sem2\Makiyan_Cursovaya_sem2\bin\x86\Release\BattleCityLevelConstructor.Data.pdb
