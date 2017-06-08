@@ -3,9 +3,12 @@
 import sys
 import networkx as nx
 from networkx.algorithms.flow.utils import *
+from networkx.generators.classic import empty_graph
 import random
 from collections import deque
 from itertools import islice
+import pprint
+import re
 
 def draw_incident_matrix(G):
 	nodes = G.nodes()
@@ -329,14 +332,94 @@ def input_vertices():
 			print ("Not an integer value...\nfor exiting write - 'exit'")
 
 
+def getList(in_list, message):
+	while True:
+		num_inp = raw_input("\n{} ".format(message))
+		for string in num_inp.split(","):
+			try:
+				first = int(string)
+				in_list.append(first)
+			except ValueError:
+				in_list = []
+				print ("Not an integer value...")
+				continue
+		break
+
+
+def read_data_from_file(f_name):
+	f = open(f_name)
+	kk = f.readlines()
+	f.close()
+	G = None
+	G_list = []
+	list_source = []
+	list_sink = []
+	for line in kk:
+		if line.strip().startswith("#"):
+			continue
+		ll = line.strip().replace(" ","")
+		res = ll.split("=")
+		if len(res) < 2:
+			continue
+		name = res[0]
+		val = res[1]
+
+		if name == "Graph":
+			size = 0
+			val = val.replace("[","")
+			vals = val.split("]")
+			rx = re.compile("\((\d+),(\d+)\):(\d+)")
+			for el in vals:
+				re_res = re.search(rx,el)
+				if re_res:
+					in_point, outp_point, weight = map(int,re_res.groups())
+					G_list.append((in_point,outp_point,weight))
+					size = max(in_point, size)
+					size = max (outp_point,size)
+			if G_list == []:
+				continue
+			G = empty_graph(size)
+			for i in G_list:
+				G.add_edge(i[0],i[1],capacity=i[2])
+
+
+		elif name == "Source":
+			for string in val.split(","):
+				try:
+					first = int(string)
+					list_source.append(first)
+				except ValueError:
+					list_source = []
+		elif name == "Sink":
+			for string in val.split(","):
+				try:
+					first = int(string)
+					list_sink.append(first)
+				except ValueError:
+					list_sink = []
+
+
+	if G == none or list_source == [] or list_sink == []:
+		raise RuntimeError("invalid config file. State G={}, list_src={},list_sink={}".format(G,list_source, list_sink))
+	return G, list_source, list_sink
+
+
 if __name__ == "__main__":
 	vertices = input_vertices()
 
-		
+	if len(sys.argv) <2:
+		probability = random.randrange(2,8,1)
+		probability /= 10.0
+		G=nx.fast_gnp_random_graph(vertices,probability)
+		list_src = []
+		list_sink = []
 
-	probability = random.randrange(2,8,1)
-	probability /= 10.0
-	G=nx.fast_gnp_random_graph(vertices,probability)
+		getList(list_src,"Enter sources list (separated with coma) -")
+		getList(list_sink, "Enter sinks list (separated with coma) - ")
+	else:
+		G, list_src, list_sink = read_data_from_file (sys.argv[1] )
+
+
 
 	print ("{:*^30}".format(""))
 	print ("{:*^30}".format("Incident Matrix is"))
@@ -352,30 +435,8 @@ if __name__ == "__main__":
 
 	print ("")
 
-	flag = "N"
-	list_src = []
-	list_sink = []
-	while flag == "N":
-		num_src = raw_input("\nEnter the sources - ")
-		for string in num_src.split(","):
-			try:
-				first = int(string)
-				list_src.append(first)
-			except ValueError:
-				list_src=[]
-				print ("Not an integer value...")
-				continue
 
-		num_sink = raw_input("Enter the sinks - ")
-		for string in num_sink.split(","):
-			try:
-				second = int(string)
-				list_sink.append(second)
-			except ValueError:
-				list_sink=[]
-				print ("Not an integer value...")
-				continue
-		flag = "Y"
+
 	for src in list_src:
 		G.add_edge("source",src)
 	for sink in list_sink:
@@ -385,7 +446,9 @@ if __name__ == "__main__":
 
 	flow_value, flow_dict = nx.maximum_flow(G,"source","sink")
 
-	print ("{:*^30}".format("Maximum value of flow - {0}".format(flow_value)))
-	print ("The value of flow that went through each edge".format(flow_dict))
+	print ("{:*^30}".format("Maximum value of flow - {}".format(flow_value)))
+	print ("The value of flow that went through each edge ")
+	pp = pprint.PrettyPrinter(indent=4)
+	pp.pprint(flow_dict)
 	print ("{:*^30}".format(""))
 		
