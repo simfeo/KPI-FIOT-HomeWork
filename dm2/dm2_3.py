@@ -399,15 +399,14 @@ def read_data_from_file(f_name):
 					list_sink = []
 
 
-	if G == none or list_source == [] or list_sink == []:
+	if G == None or list_source == [] or list_sink == []:
 		raise RuntimeError("invalid config file. State G={}, list_src={},list_sink={}".format(G,list_source, list_sink))
 	return G, list_source, list_sink
 
 
 if __name__ == "__main__":
-	vertices = input_vertices()
-
 	if len(sys.argv) <2:
+		vertices = input_vertices()
 		probability = random.randrange(2,8,1)
 		probability /= 10.0
 		G=nx.fast_gnp_random_graph(vertices,probability)
@@ -416,6 +415,9 @@ if __name__ == "__main__":
 
 		getList(list_src,"Enter sources list (separated with coma) -")
 		getList(list_sink, "Enter sinks list (separated with coma) - ")
+		for v,u in G.edges():
+			cap=random.randrange(2,8,1)
+			G.add_edge(v,u,capacity=cap)
 	else:
 		G, list_src, list_sink = read_data_from_file (sys.argv[1] )
 
@@ -429,9 +431,7 @@ if __name__ == "__main__":
 	print ("{:*^30}".format(""))
 	print ("{:*^30}".format("The weighted edges of graph are "))
 	for v,u in G.edges():
-		cap=random.randrange(2,8,1)
-		G.add_edge(v,u,capacity=cap)
-		print ("[({0},{1}):{2}]".format(v,u,cap)),
+		print ("[({0},{1}):{2}]".format(v,u,G.get_edge_data(v,u))),
 
 	print ("")
 
