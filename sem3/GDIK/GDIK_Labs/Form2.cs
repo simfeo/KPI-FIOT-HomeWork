@@ -58,7 +58,7 @@ namespace GDIK_Labs
             inputQuestionsList.Add(textBox5);
             inputQuestionsList.Add(textBox7);
             inputQuestionsList.Add(textBox9);
-            if (String.IsNullOrEmpty(textBox1.Text ?? textBox3.Text ?? textBox5.Text ?? textBox7.Text ?? textBox9.Text))
+            if (String.IsNullOrEmpty(textBox1.Text ?? textBox4.Text ?? textBox6.Text ?? textBox8.Text ?? textBox10.Text))
             {
                 MessageBox.Show("All questions should be filled!");
             }
@@ -85,7 +85,7 @@ namespace GDIK_Labs
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(textBox2.Text ?? textBox4.Text ?? textBox6.Text ?? textBox8.Text ?? textBox10.Text))
+            if (String.IsNullOrEmpty(textBox2.Text ?? textBox3.Text ?? textBox5.Text ?? textBox7.Text ?? textBox9.Text))
             {
                 MessageBox.Show("All answers should be filled!");
             }

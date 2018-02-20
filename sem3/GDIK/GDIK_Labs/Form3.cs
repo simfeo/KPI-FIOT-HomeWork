@@ -134,6 +134,7 @@ namespace GDIK_Labs
             {
                 MessageBox.Show(@"Whoops... something went definetly wrong");
             }
+            richTextBox2.Clear();
             richTextBox2.AppendText(outtext);
         }
         private void Decrypt_Click(object sender, EventArgs e)
@@ -175,6 +176,7 @@ namespace GDIK_Labs
             {
                 MessageBox.Show(@"Hmm, something went wrong, please check input data.");
             }
+            richTextBox2.Clear();
             richTextBox2.AppendText(outtext);
         }
 

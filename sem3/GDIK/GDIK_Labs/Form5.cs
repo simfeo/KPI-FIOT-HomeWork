@@ -32,11 +32,22 @@ namespace GDIK_Labs
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
+
             dialog.Filter = "Text files|*.txt";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 StreamReader sr = new StreamReader(dialog.FileName, Encoding.Default);
-                string s = sr.ReadLine();
+
+                string s ="";
+                while (true)
+                {
+                    string line = sr.ReadLine();
+                    if (line == null )
+                        break;
+                    s += line + "\n";
+
+                }
+
                 var x = from c in s
                         group c by c into g
                         let count = g.Count()
@@ -47,13 +58,16 @@ namespace GDIK_Labs
                             Count = count,
                         };
 
+                richTextBox1.Text += s;
+                
                 foreach (var count in x)
                 {
                     string a = (String.Format("For symbol '{0}' there are {1} occurences", count.Value, count.Count));
-                    richTextBox1.Text += a + "\r";
+                    richTextBox1.Text += a + "\n";
                 }
+                
                 string b = (String.Format("Total symbols count: {0}", s.Length));
-                richTextBox1.Text += b + "\r";
+                richTextBox1.Text += b + "\n";
             }
 
         }
