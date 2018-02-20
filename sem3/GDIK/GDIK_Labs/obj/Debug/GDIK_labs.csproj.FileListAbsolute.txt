@@ -1,0 +1,13 @@
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\bin\Debug\GDIK_Labs.exe.config
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\bin\Debug\GDIK_Labs.exe
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\bin\Debug\GDIK_Labs.pdb
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\obj\Debug\GDIK_Labs.MainForm.resources
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\obj\Debug\GDIK_Labs.Form2.resources
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\obj\Debug\GDIK_Labs.Form3.resources
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\obj\Debug\GDIK_Labs.Form5.resources
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\obj\Debug\GDIK_Labs.Properties.Resources.resources
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\obj\Debug\GDIK_labs.csproj.GenerateResource.Cache
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\obj\Debug\GDIK_labs.csproj.CoreCompileInputs.cache
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\obj\Debug\GDIK_Labs.exe
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\obj\Debug\GDIK_Labs.pdb
+C:\Users\sim\Documents\homework\sem3\GDIK\GDIK_labs\obj\Debug\GDIK_labs.csprojResolveAssemblyReference.cache

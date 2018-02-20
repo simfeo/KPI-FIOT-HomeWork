@@ -1,0 +1,42 @@
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\bin\Debug\GDIK_Labs.exe.config
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\bin\Debug\GDIK_Labs.exe
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\bin\Debug\GDIK_Labs.pdb
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.csprojResolveAssemblyReference.cache
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.HomeWork.resources
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form2.resources
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form3.resources
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form4.resources
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form5.resources
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Properties.Resources.resources
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.csproj.GenerateResource.Cache
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.csproj.CoreCompileInputs.cache
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.exe
+c:\users\gladiator\source\repos\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.pdb
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\bin\Debug\GDIK_Labs.exe.config
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\bin\Debug\GDIK_Labs.exe
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\bin\Debug\GDIK_Labs.pdb
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.csprojResolveAssemblyReference.cache
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.HomeWork.resources
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form2.resources
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form3.resources
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form4.resources
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form5.resources
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Properties.Resources.resources
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.csproj.GenerateResource.Cache
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.csproj.CoreCompileInputs.cache
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.exe
+C:\Users\GlaDiatoR\Desktop\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.pdb
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\bin\Debug\GDIK_Labs.exe.config
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\bin\Debug\GDIK_Labs.exe
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\bin\Debug\GDIK_Labs.pdb
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.csprojResolveAssemblyReference.cache
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.HomeWork.resources
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form2.resources
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form3.resources
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form4.resources
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Form5.resources
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.Properties.Resources.resources
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.csproj.GenerateResource.Cache
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.csproj.CoreCompileInputs.cache
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.exe
+C:\Users\GlaDiatoR\Desktop\Вужейко В.А.  ЗПІ-зп 61 GDK\GDIK_Labs\GDIK_Labs\obj\Debug\GDIK_Labs.pdb
