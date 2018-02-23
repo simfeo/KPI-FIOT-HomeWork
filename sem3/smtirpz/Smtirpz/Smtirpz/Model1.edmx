@@ -1,0 +1,440 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Abonents" EntityType="Model1.Store.Abonents" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Addresses" EntityType="Model1.Store.Addresses" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AbonentAddresses" EntityType="Model1.Store.AbonentAddresses" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ContractNumbers" EntityType="Model1.Store.ContractNumbers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CallsDBs" EntityType="Model1.Store.CallsDBs" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CallTypes" EntityType="Model1.Store.CallTypes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Destinations" EntityType="Model1.Store.Destinations" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="AbonentAbonentAddress" Association="Model1.Store.AbonentAbonentAddress">
+      <End Role="Abonent" EntitySet="Abonents" />
+      <End Role="AbonentAddress" EntitySet="AbonentAddresses" />
+    </AssociationSet>
+    <AssociationSet Name="AddressAbonentAddress" Association="Model1.Store.AddressAbonentAddress">
+      <End Role="Address" EntitySet="Addresses" />
+      <End Role="AbonentAddress" EntitySet="AbonentAddresses" />
+    </AssociationSet>
+    <AssociationSet Name="AbonentAddressContractNumber" Association="Model1.Store.AbonentAddressContractNumber">
+      <End Role="AbonentAddress" EntitySet="AbonentAddresses" />
+      <End Role="ContractNumber" EntitySet="ContractNumbers" />
+    </AssociationSet>
+    <AssociationSet Name="CallTypesCallsDB" Association="Model1.Store.CallTypesCallsDB">
+      <End Role="CallTypes" EntitySet="CallTypes" />
+      <End Role="CallsDB" EntitySet="CallsDBs" />
+    </AssociationSet>
+    <AssociationSet Name="DestinationsCallsDB" Association="Model1.Store.DestinationsCallsDB">
+      <End Role="Destinations" EntitySet="Destinations" />
+      <End Role="CallsDB" EntitySet="CallsDBs" />
+    </AssociationSet>
+    <AssociationSet Name="ContractNumberCallsDB" Association="Model1.Store.ContractNumberCallsDB">
+      <End Role="ContractNumber" EntitySet="ContractNumbers" />
+      <End Role="CallsDB" EntitySet="CallsDBs" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Abonents">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PasportNumber" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Addresses">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CurrentName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AbonentAddresses">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AbonentID" Type="int" Nullable="false" />
+    <Property Name="AddressID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ContractNumbers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AbonentAdressID" Type="int" Nullable="false" />
+    <Property Name="Discount" Type="float" Nullable="false" />
+    <Property Name="StartTime" Type="datetime" Nullable="false" />
+    <Property Name="DeviseCount" Type="int" Nullable="false" />
+    <Property Name="Blockrator" Type="int" Nullable="false" />
+    <Property Name="Cedit" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CallsDBs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="ContractNum" Type="int" Nullable="false" />
+    <Property Name="StartTime" Type="time" Nullable="false" />
+    <Property Name="DestinationID" Type="int" Nullable="false" />
+    <Property Name="Duration" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CallTypes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Destinations">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Cost" Type="float" Nullable="false" />
+  </EntityType>
+  <Association Name="AbonentAbonentAddress">
+    <End Role="Abonent" Type="Model1.Store.Abonents" Multiplicity="1" />
+    <End Role="AbonentAddress" Type="Model1.Store.AbonentAddresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Abonent">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AbonentAddress">
+        <PropertyRef Name="AbonentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AddressAbonentAddress">
+    <End Role="Address" Type="Model1.Store.Addresses" Multiplicity="1" />
+    <End Role="AbonentAddress" Type="Model1.Store.AbonentAddresses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Address">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AbonentAddress">
+        <PropertyRef Name="AddressID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AbonentAddressContractNumber">
+    <End Role="AbonentAddress" Type="Model1.Store.AbonentAddresses" Multiplicity="1" />
+    <End Role="ContractNumber" Type="Model1.Store.ContractNumbers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AbonentAddress">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ContractNumber">
+        <PropertyRef Name="AbonentAdressID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CallTypesCallsDB">
+    <End Role="CallTypes" Type="Model1.Store.CallTypes" Multiplicity="1" />
+    <End Role="CallsDB" Type="Model1.Store.CallsDBs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CallTypes">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CallsDB">
+        <PropertyRef Name="Type" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DestinationsCallsDB">
+    <End Role="Destinations" Type="Model1.Store.Destinations" Multiplicity="1" />
+    <End Role="CallsDB" Type="Model1.Store.CallsDBs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Destinations">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CallsDB">
+        <PropertyRef Name="DestinationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ContractNumberCallsDB">
+    <End Role="ContractNumber" Type="Model1.Store.ContractNumbers" Multiplicity="1" />
+    <End Role="CallsDB" Type="Model1.Store.CallsDBs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContractNumber">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CallsDB">
+        <PropertyRef Name="ContractNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Abonents" EntityType="Model1.Abonent" />
+          <EntitySet Name="Addresses" EntityType="Model1.Address" />
+          <EntitySet Name="AbonentAddresses" EntityType="Model1.AbonentAddress" />
+          <EntitySet Name="ContractNumbers" EntityType="Model1.ContractNumber" />
+          <EntitySet Name="CallsDBs" EntityType="Model1.CallsDB" />
+          <EntitySet Name="CallTypes" EntityType="Model1.CallTypes" />
+          <EntitySet Name="Destinations" EntityType="Model1.Destinations" />
+          <AssociationSet Name="AbonentAbonentAddress" Association="Model1.AbonentAbonentAddress">
+            <End Role="Abonent" EntitySet="Abonents" />
+            <End Role="AbonentAddress" EntitySet="AbonentAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="AddressAbonentAddress" Association="Model1.AddressAbonentAddress">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="AbonentAddress" EntitySet="AbonentAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="AbonentAddressContractNumber" Association="Model1.AbonentAddressContractNumber">
+            <End Role="AbonentAddress" EntitySet="AbonentAddresses" />
+            <End Role="ContractNumber" EntitySet="ContractNumbers" />
+          </AssociationSet>
+          <AssociationSet Name="CallTypesCallsDB" Association="Model1.CallTypesCallsDB">
+            <End Role="CallTypes" EntitySet="CallTypes" />
+            <End Role="CallsDB" EntitySet="CallsDBs" />
+          </AssociationSet>
+          <AssociationSet Name="DestinationsCallsDB" Association="Model1.DestinationsCallsDB">
+            <End Role="Destinations" EntitySet="Destinations" />
+            <End Role="CallsDB" EntitySet="CallsDBs" />
+          </AssociationSet>
+          <AssociationSet Name="ContractNumberCallsDB" Association="Model1.ContractNumberCallsDB">
+            <End Role="ContractNumber" EntitySet="ContractNumbers" />
+            <End Role="CallsDB" EntitySet="CallsDBs" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Abonent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="PasportNumber" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CurrentName" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AbonentAddress">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AbonentID" Type="Int32" Nullable="false" />
+          <Property Name="AddressID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ContractNumber">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AbonentAdressID" Type="Int32" Nullable="false" />
+          <Property Name="Discount" Type="Double" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" />
+          <Property Name="DeviseCount" Type="Int32" Nullable="false" />
+          <Property Name="Blockrator" Type="Int32" Nullable="false" />
+          <Property Name="Cedit" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CallsDB">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="ContractNum" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" />
+          <Property Name="DestinationID" Type="Int32" Nullable="false" />
+          <Property Name="Duration" Type="Int64" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CallTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Destinations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Cost" Type="Double" Nullable="false" />
+        </EntityType>
+        <Association Name="AbonentAbonentAddress">
+          <End Type="Model1.Abonent" Role="Abonent" Multiplicity="1" />
+          <End Type="Model1.AbonentAddress" Role="AbonentAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Abonent">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AbonentAddress">
+              <PropertyRef Name="AbonentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AddressAbonentAddress">
+          <End Type="Model1.Address" Role="Address" Multiplicity="1" />
+          <End Type="Model1.AbonentAddress" Role="AbonentAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AbonentAddress">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AbonentAddressContractNumber">
+          <End Type="Model1.AbonentAddress" Role="AbonentAddress" Multiplicity="1" />
+          <End Type="Model1.ContractNumber" Role="ContractNumber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AbonentAddress">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ContractNumber">
+              <PropertyRef Name="AbonentAdressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CallTypesCallsDB">
+          <End Type="Model1.CallTypes" Role="CallTypes" Multiplicity="1" />
+          <End Type="Model1.CallsDB" Role="CallsDB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CallTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CallsDB">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DestinationsCallsDB">
+          <End Type="Model1.Destinations" Role="Destinations" Multiplicity="1" />
+          <End Type="Model1.CallsDB" Role="CallsDB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Destinations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CallsDB">
+              <PropertyRef Name="DestinationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ContractNumberCallsDB">
+          <End Type="Model1.ContractNumber" Role="ContractNumber" Multiplicity="1" />
+          <End Type="Model1.CallsDB" Role="CallsDB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContractNumber">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CallsDB">
+              <PropertyRef Name="ContractNum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="Abonents">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Abonent)">
+        <MappingFragment StoreEntitySet="Abonents">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="PasportNumber" ColumnName="PasportNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Addresses">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Address)">
+        <MappingFragment StoreEntitySet="Addresses">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CurrentName" ColumnName="CurrentName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AbonentAddresses">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.AbonentAddress)">
+        <MappingFragment StoreEntitySet="AbonentAddresses">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AbonentID" ColumnName="AbonentID" />
+          <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ContractNumbers">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.ContractNumber)">
+        <MappingFragment StoreEntitySet="ContractNumbers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AbonentAdressID" ColumnName="AbonentAdressID" />
+          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="DeviseCount" ColumnName="DeviseCount" />
+          <ScalarProperty Name="Blockrator" ColumnName="Blockrator" />
+          <ScalarProperty Name="Cedit" ColumnName="Cedit" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CallsDBs">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.CallsDB)">
+        <MappingFragment StoreEntitySet="CallsDBs">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="ContractNum" ColumnName="ContractNum" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="DestinationID" ColumnName="DestinationID" />
+          <ScalarProperty Name="Duration" ColumnName="Duration" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CallTypes">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.CallTypes)">
+        <MappingFragment StoreEntitySet="CallTypes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Destinations">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Destinations)">
+        <MappingFragment StoreEntitySet="Destinations">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Cost" ColumnName="Cost" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
