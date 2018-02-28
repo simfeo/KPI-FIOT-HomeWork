@@ -6,12 +6,27 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9E0ACAA6-B1B1-4A12-A6ED-569ED83E80BD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>MarketInfoMain</RootNamespace>
-    <AssemblyName>MarketInfoExec</AssemblyName>
+    <RootNamespace>MazeMain</RootNamespace>
+    <AssemblyName>MazeExec</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,7 +68,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>base_KKI_icon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -70,29 +86,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormEditGameElement.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormEditGameElement.Designer.cs">
-      <DependentUpon>FormEditGameElement.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormEditLevel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormEditLevel.Designer.cs">
-      <DependentUpon>FormEditLevel.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormElementsStat.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormElementsStat.Designer.cs">
-      <DependentUpon>FormElementsStat.cs</DependentUpon>
     </Compile>
     <Compile Include="FormSplashScreen.cs">
       <SubType>Form</SubType>
@@ -100,22 +98,22 @@
     <Compile Include="FormSplashScreen.Designer.cs">
       <DependentUpon>FormSplashScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Maze.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Maze.Designer.cs">
+      <DependentUpon>Maze.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormEditGameElement.resx">
-      <DependentUpon>FormEditGameElement.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormEditLevel.resx">
-      <DependentUpon>FormEditLevel.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormElementsStat.resx">
-      <DependentUpon>FormElementsStat.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormSplashScreen.resx">
       <DependentUpon>FormSplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Maze.resx">
+      <DependentUpon>Maze.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -141,14 +139,26 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Makiyan_cursovaya_sem3.Data\Makiyan_cursovaya_sem3.Data.csproj">
-      <Project>{17fef584-4510-4177-8257-1debd1fdb248}</Project>
-      <Name>Makiyan_cursovaya_sem3.Data</Name>
-    </ProjectReference>
+    <None Include="Sounds\start.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="base_KKI_icon.ico" />
-    <None Include="Sounds\start.wav" />
+    <None Include="Sounds\end.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sounds\move.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Makiyan_Cursovaya_sem3.Data\Makiyan_Cursovaya_sem3.Data.csproj">
+      <Project>{0e2fce34-d2c6-4494-82ff-4ddf83e7c31e}</Project>
+      <Name>Makiyan_Cursovaya_sem3.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

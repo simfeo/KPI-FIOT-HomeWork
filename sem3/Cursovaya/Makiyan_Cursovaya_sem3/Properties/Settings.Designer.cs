@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MarketInfoMain.Properties {
+namespace MazeMain.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
