@@ -42,7 +42,7 @@ namespace MazeMain.Data
             SQLiteConnection dbConnecction;
             dbConnecction = new SQLiteConnection("Data Source=MyDatabase.sqlite;Version=3;");
             dbConnecction.Open();
-            string sql = "select * from highscores ;";
+            string sql = "select * from highscores order by time asc";
             SQLiteCommand command = new SQLiteCommand(sql, dbConnecction);
             SQLiteDataReader reader = command.ExecuteReader();
             int counter = 0;
