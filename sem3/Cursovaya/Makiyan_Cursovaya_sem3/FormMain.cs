@@ -42,7 +42,8 @@ namespace MazeMain
         {
             Maze mz = new Maze();
             Hide();
-            mz.Show();
+            mz.ShowDialog();
+            Show();
         }
     }
 }

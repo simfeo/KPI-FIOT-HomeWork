@@ -32,6 +32,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // panel1
@@ -50,12 +51,9 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(275, 87);
             this.button1.TabIndex = 2;
-            this.button1.Text = "Replay";
+            this.button1.Text = "Play new game";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            this.button1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button1_KeyDown);
-            this.button1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.button1_KeyPress);
-            this.button1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.button1_KeyUp);
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             this.button1.Leave += new System.EventHandler(this.button1_Leave);
             // 
             // button2
@@ -68,10 +66,18 @@
             this.button2.Text = "Save";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            this.button2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button2_KeyDown);
-            this.button2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.button2_KeyPress);
-            this.button2.KeyUp += new System.Windows.Forms.KeyEventHandler(this.button2_KeyUp);
             this.button2.Leave += new System.EventHandler(this.button2_Leave);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(644, 238);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(220, 44);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "To play use arrowkeys\r\n from keyboard";
             // 
             // Maze
             // 
@@ -79,7 +85,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(902, 612);
-            this.ControlBox = false;
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
@@ -91,12 +97,14 @@
             this.Name = "Maze";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Maze";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Maze_FormClosed);
             this.Load += new System.EventHandler(this.Maze_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Maze_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Maze_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Maze_KeyUp);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.Maze_PreviewKeyDown);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -105,5 +113,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label1;
     }
 }
