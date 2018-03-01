@@ -13,7 +13,14 @@ namespace MazeMain
         {
             InitializeComponent();
             m_logics = new MazeLogic(panel1);
-            m_logics.createMaze();
+            if (m_logics.IsLoadSuccessfully())
+            {
+                m_logics.loadMaze();
+            }
+            else
+            { 
+                m_logics.createMaze();
+            }
         }
         
         private void button1_Click(object sender, EventArgs e)
@@ -104,7 +111,7 @@ namespace MazeMain
 
         private void Maze_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            m_logics.Save();
         }
     }
 }

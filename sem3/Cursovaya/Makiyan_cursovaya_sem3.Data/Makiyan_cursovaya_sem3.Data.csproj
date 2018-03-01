@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BaseNode.cs" />
     <Compile Include="FinishNode.cs" />
+    <Compile Include="MazeInfo.cs" />
     <Compile Include="MazeLink.cs" />
     <Compile Include="MazeLogic.cs" />
     <Compile Include="MazeNode.cs" />

@@ -4,13 +4,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.Serialization;
+using System.IO;
+using System.Xml;
 
 namespace MazeMain.Data
 {
     public class MazeLogic
     {
-        private int[][] gridFinal;
-
         public static int NORTH = 1;
         public static int SOUTH = 2;
         public static int EAST = 4;
@@ -19,19 +20,76 @@ namespace MazeMain.Data
         private const bool HORIZONTAL = false;
         private const bool VERTICAL = true;
         private const int GRID_SIZE = 14;
+        private Boolean loadSucessFully;
         private Panel m_panel;
         private UserNode m_user;
         private BaseNode m_finish;
         private List<BaseNode> m_availableNodes;
-        
+        private MazeInfo mazeInfo;
+
 
         public MazeLogic(Panel panel)
         {
             m_panel = panel;
+            try
+            {
+                //FormMain.levels = (List<Level>)Load("level.xml", typeof(List<Level>));
+                mazeInfo = (MazeInfo)Load("maze.xml", typeof(MazeInfo));
+                loadSucessFully = true;
+            }
+            catch
+            {
+                loadSucessFully = false;
+            }
+        }
+
+        public Boolean IsLoadSuccessfully()
+        {
+            return loadSucessFully;
+        }
+
+        private object Load(string fileName, Type t)
+        {
+            if (File.Exists(fileName))
+            {
+                DataContractSerializer dcs = new DataContractSerializer(t);
+                XmlReader xmlr = XmlReader.Create(fileName);
+                object res = dcs.ReadObject(xmlr);
+                xmlr.Close();
+                return res;
+            }
+            return new MazeInfo();
+        }
+
+        public void Save()
+        {
+            DataContractSerializer dcs = new DataContractSerializer(mazeInfo.GetType());
+            XmlWriter xmlw = XmlWriter.Create("maze.xml");
+            dcs.WriteObject(xmlw, mazeInfo);
+            xmlw.Close();
+        }
+
+        public void loadMaze()
+        {
+            m_panel.Controls.Clear();
+            m_availableNodes = new List<BaseNode>();
+            for (int i = 0; i < mazeInfo.gridFinal.Length; ++i)
+            {
+                for (int j = 0; j < mazeInfo.gridFinal[i].Length; ++j)
+                {
+                    if (mazeInfo.gridFinal[i][j] == 1)
+                    {
+                        m_availableNodes.Add(new BaseNode(m_panel, i, j));
+                    }
+                }
+            }
+            m_user = new UserNode(m_panel, mazeInfo.userPos[0], mazeInfo.userPos[1]);
+            m_finish = new FinishNode(m_panel, GRID_SIZE * 2, GRID_SIZE * 2 - 1);
         }
 
         public void createMaze()
         {
+            mazeInfo.completed = false;
             makeDraftGrid();
             genMazeNewWay();
             drawMaze();
@@ -39,7 +97,8 @@ namespace MazeMain.Data
 
         public bool checkIsEnd()
         {
-            return m_user.GetXY() == m_finish.GetXY();
+            mazeInfo.completed = m_user.GetXY() == m_finish.GetXY();
+            return mazeInfo.completed;
         }
 
 
@@ -49,7 +108,7 @@ namespace MazeMain.Data
             if (direction == "Up")
             {
                 int newY = point.Y - 1;
-                if (newY > 0 && gridFinal[point.X][newY] ==0)
+                if (newY > 0 && mazeInfo.gridFinal[point.X][newY] ==0)
                 {
                     m_user.SetNewLocation(point.X, newY);
                 }
@@ -57,7 +116,7 @@ namespace MazeMain.Data
             else if (direction == "Down")
             {
                 int newY = point.Y + 1;
-                if (newY < GRID_SIZE*2 && gridFinal[point.X][newY] == 0)
+                if (newY < GRID_SIZE*2 && mazeInfo.gridFinal[point.X][newY] == 0)
                 {
                     m_user.SetNewLocation(point.X, newY);
                 }
@@ -65,7 +124,7 @@ namespace MazeMain.Data
             else if (direction == "Left")
             {
                 int newX = point.X - 1;
-                if (newX >= 0 && gridFinal[newX][point.Y] == 0)
+                if (newX >= 0 && mazeInfo.gridFinal[newX][point.Y] == 0)
                 {
                     m_user.SetNewLocation(newX, point.Y);
                 }
@@ -73,7 +132,7 @@ namespace MazeMain.Data
             else if (direction == "Right")
             {
                 int newX = point.X + 1;
-                if (newX <= GRID_SIZE*2 && gridFinal[newX][point.Y] == 0)
+                if (newX <= GRID_SIZE*2 && mazeInfo.gridFinal[newX][point.Y] == 0)
                 {
                     m_user.SetNewLocation(newX, point.Y);
                 }
@@ -82,22 +141,26 @@ namespace MazeMain.Data
             {
                 throw new Exception("wrong direction!");
             }
+            mazeInfo.userPos[0] = m_user.GetXY().X;
+            mazeInfo.userPos[1] = m_user.GetXY().Y;
         }
         private void drawMaze()
         {
             m_panel.Controls.Clear();
             m_availableNodes = new List<BaseNode>();
-            for (int i = 0; i < gridFinal.Length; ++i)
+            for (int i = 0; i < mazeInfo.gridFinal.Length; ++i)
             {
-                for (int j = 0; j < gridFinal[i].Length; ++j)
+                for (int j = 0; j < mazeInfo.gridFinal[i].Length; ++j)
                 {
-                    if (gridFinal[i][j] == 1)
+                    if (mazeInfo.gridFinal[i][j] == 1)
                     {
                         m_availableNodes.Add( new BaseNode(m_panel, i, j));
                     }
                 }
             }
             m_user = new UserNode(m_panel, 0, 1);
+            mazeInfo.userPos[0] = 0;
+            mazeInfo.userPos[1] = 1;
             m_finish = new FinishNode(m_panel, GRID_SIZE * 2, GRID_SIZE*2 - 1);
         }
 
@@ -197,14 +260,15 @@ namespace MazeMain.Data
 
         private void makeDraftGrid()
         {
-            gridFinal = new int[GRID_SIZE * 2 + 1][];
-            for (int i = 0; i < gridFinal.Length; ++i)
-                gridFinal[i] = new int[GRID_SIZE * 2 + 1];
+            mazeInfo.gridFinal = new int[GRID_SIZE * 2 + 1][];
+            mazeInfo.userPos = new int[2];
+            for (int i = 0; i < mazeInfo.gridFinal.Length; ++i)
+                mazeInfo.gridFinal[i] = new int[GRID_SIZE * 2 + 1];
 
-            for (int i = 0; i < gridFinal.Length; ++i)
+            for (int i = 0; i < mazeInfo.gridFinal.Length; ++i)
             {
-                for (int j = 0; j < gridFinal[i].Length; ++j)
-                    gridFinal[i][j] = 0;
+                for (int j = 0; j < mazeInfo.gridFinal[i].Length; ++j)
+                    mazeInfo.gridFinal[i][j] = 0;
             }
         }
 
@@ -217,8 +281,8 @@ namespace MazeMain.Data
                     DrawWalls(nodes[r, c], r * 2 + 1, c * 2 + 1);
                 }
             }
-            gridFinal[0][1] = 0;
-            gridFinal[gridFinal.Length - 1][gridFinal[gridFinal.Length - 1].Length - 2] = 0;
+            mazeInfo.gridFinal[0][1] = 0;
+            mazeInfo.gridFinal[mazeInfo.gridFinal.Length - 1][mazeInfo.gridFinal[mazeInfo.gridFinal.Length - 1].Length - 2] = 0;
         }
 
         private void DrawWalls(MazeNode node, int x, int y)
@@ -240,24 +304,24 @@ namespace MazeMain.Data
             switch (side)
             {
                 case MazeNode.North:
-                    gridFinal[x - 1][y] = 1;
-                    gridFinal[x - 1][y - 1] = 1;
-                    gridFinal[x - 1][y + 1] = 1;
+                    mazeInfo.gridFinal[x - 1][y] = 1;
+                    mazeInfo.gridFinal[x - 1][y - 1] = 1;
+                    mazeInfo.gridFinal[x - 1][y + 1] = 1;
                     break;
                 case MazeNode.South:
-                    gridFinal[x + 1][y] = 1;
-                    gridFinal[x + 1][y - 1] = 1;
-                    gridFinal[x + 1][y + 1] = 1;
+                    mazeInfo.gridFinal[x + 1][y] = 1;
+                    mazeInfo.gridFinal[x + 1][y - 1] = 1;
+                    mazeInfo.gridFinal[x + 1][y + 1] = 1;
                     break;
                 case MazeNode.West:
-                    gridFinal[x][y - 1] = 1;
-                    gridFinal[x - 1][y - 1] = 1;
-                    gridFinal[x + 1][y - 1] = 1;
+                    mazeInfo.gridFinal[x][y - 1] = 1;
+                    mazeInfo.gridFinal[x - 1][y - 1] = 1;
+                    mazeInfo.gridFinal[x + 1][y - 1] = 1;
                     break;
                 case MazeNode.East:
-                    gridFinal[x][y + 1] = 1;
-                    gridFinal[x - 1][y + 1] = 1;
-                    gridFinal[x + 1][y + 1] = 1;
+                    mazeInfo.gridFinal[x][y + 1] = 1;
+                    mazeInfo.gridFinal[x - 1][y + 1] = 1;
+                    mazeInfo.gridFinal[x + 1][y + 1] = 1;
                     break;
             }
         }
