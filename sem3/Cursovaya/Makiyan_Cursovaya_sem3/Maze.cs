@@ -71,7 +71,7 @@ namespace MazeMain
 
                 DialogResult dialog = MessageBox.Show("Congrats! You've complited maze!" +
                     "\n Press Ok, to add exit game" +
-                    "\n or Canctl to play new one. ", "CONGRATS!", MessageBoxButtons.OKCancel);
+                    "\n or Cancel to play new one. ", "CONGRATS!", MessageBoxButtons.OKCancel);
 
                 if (dialog == DialogResult.OK)
                 {

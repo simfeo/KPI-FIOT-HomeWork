@@ -50,7 +50,7 @@ namespace MazeMain.Data
             while (reader.Read() && reader.HasRows && counter <5)
             {
                 ++counter;
-                result += String.Format("{0,-20} - {1}\n", reader[0], reader[1]);
+                result += String.Format("{0,-20} - {1} in sec.\n", reader[0], reader[1]);
                 //Console.WriteLine("Name: " + reader[0] + "\tScore: " + reader[1]);
             }
             dbConnecction.Close();

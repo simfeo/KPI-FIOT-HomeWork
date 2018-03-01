@@ -105,6 +105,7 @@ namespace MazeMain.Data
 
         public void createMaze()
         {
+            mazeInfo.timeSpent = DateTime.Now - DateTime.Now;
             startTime = DateTime.Now;
             mazeInfo.completed = false;
             makeDraftGrid();
