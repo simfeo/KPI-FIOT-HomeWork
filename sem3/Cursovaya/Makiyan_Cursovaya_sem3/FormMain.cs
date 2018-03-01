@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.IO;
 using System.Threading;
-
+using MazeMain.Data;
 
 namespace MazeMain
 {
@@ -24,7 +24,9 @@ namespace MazeMain
             sp.ShowDialog();
 
             InitializeComponent();
-            
+
+            DB_logics db = new DB_logics();
+
             BringToFront();
         }
 
@@ -43,6 +45,14 @@ namespace MazeMain
             Maze mz = new Maze();
             Hide();
             mz.ShowDialog();
+            Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Statistics st = new Statistics();
+            Hide();
+            st.ShowDialog();
             Show();
         }
     }

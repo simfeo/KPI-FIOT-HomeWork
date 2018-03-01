@@ -15,5 +15,7 @@ namespace MazeMain.Data
         public int[][] gridFinal;
         [DataMember]
         public int[] userPos;
+        [DataMember]
+        public TimeSpan timeSpent;
     }
 }

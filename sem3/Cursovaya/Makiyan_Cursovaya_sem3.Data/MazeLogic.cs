@@ -26,6 +26,7 @@ namespace MazeMain.Data
         private BaseNode m_finish;
         private List<BaseNode> m_availableNodes;
         private MazeInfo mazeInfo;
+        private DateTime startTime;
 
 
         public MazeLogic(Panel panel)
@@ -35,12 +36,20 @@ namespace MazeMain.Data
             {
                 //FormMain.levels = (List<Level>)Load("level.xml", typeof(List<Level>));
                 mazeInfo = (MazeInfo)Load("maze.xml", typeof(MazeInfo));
-                loadSucessFully = true;
             }
             catch
             {
+            }
+
+            if (mazeInfo.gridFinal != null)
+            {
+                loadSucessFully = true;
+            }
+            else
+            {
                 loadSucessFully = false;
             }
+
         }
 
         public Boolean IsLoadSuccessfully()
@@ -63,6 +72,7 @@ namespace MazeMain.Data
 
         public void Save()
         {
+            mazeInfo.timeSpent += DateTime.Now - startTime;
             DataContractSerializer dcs = new DataContractSerializer(mazeInfo.GetType());
             XmlWriter xmlw = XmlWriter.Create("maze.xml");
             dcs.WriteObject(xmlw, mazeInfo);
@@ -71,6 +81,12 @@ namespace MazeMain.Data
 
         public void loadMaze()
         {
+            if (mazeInfo.completed)
+            {
+                createMaze();
+                return;
+            }
+            startTime = DateTime.Now;
             m_panel.Controls.Clear();
             m_availableNodes = new List<BaseNode>();
             for (int i = 0; i < mazeInfo.gridFinal.Length; ++i)
@@ -89,6 +105,7 @@ namespace MazeMain.Data
 
         public void createMaze()
         {
+            startTime = DateTime.Now;
             mazeInfo.completed = false;
             makeDraftGrid();
             genMazeNewWay();
@@ -98,11 +115,20 @@ namespace MazeMain.Data
         public bool checkIsEnd()
         {
             mazeInfo.completed = m_user.GetXY() == m_finish.GetXY();
+            if (mazeInfo.completed)
+            {
+                mazeInfo.timeSpent += DateTime.Now - startTime;
+            }
             return mazeInfo.completed;
         }
 
+        public int GetSpentTime()
+        {
+            return (int)mazeInfo.timeSpent.TotalSeconds;
+        }
 
-        public void makeMove(string direction)
+
+        public Boolean makeMove(string direction)
         {
             Point point = m_user.GetXY();
             if (direction == "Up")
@@ -143,6 +169,7 @@ namespace MazeMain.Data
             }
             mazeInfo.userPos[0] = m_user.GetXY().X;
             mazeInfo.userPos[1] = m_user.GetXY().Y;
+            return !(m_user.GetXY() == point);
         }
         private void drawMaze()
         {
