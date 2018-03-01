@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MazeMain.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +15,9 @@ namespace MazeMain
         public Statistics()
         {
             InitializeComponent();
+            DB_logics db = new DB_logics();
+            string res = db.ReadTop5Winners();
+            label2.Text = res;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace MazeMain.Data
                 SQLiteConnection dbConnecction;
                 dbConnecction = new SQLiteConnection("Data Source=MyDatabase.sqlite;Version=3;");
                 dbConnecction.Open();
-                string sql = "create table highscores (name varchar(20), time UNSIGNED BIG INT)";
+                string sql = "create table highscores (name varchar(20), time UNSIGNED BIG INT);";
                 SQLiteCommand command = new SQLiteCommand(sql, dbConnecction);
                 command.ExecuteNonQuery();
                 dbConnecction.Close();
@@ -31,22 +31,30 @@ namespace MazeMain.Data
             SQLiteConnection dbConnecction;
             dbConnecction = new SQLiteConnection("Data Source=MyDatabase.sqlite;Version=3;");
             dbConnecction.Open();
-            string sql = String.Format("insert into highscores (name, time) values ('{0}', {1})", name, time);
+            string sql = String.Format("insert into highscores (name, time) values ('{0}', {1});", name, time);
             SQLiteCommand command = new SQLiteCommand(sql, dbConnecction);
             command.ExecuteNonQuery();
             dbConnecction.Close();
         }
 
-        public void ReadTop5Winners ()
+        public string ReadTop5Winners ()
         {
             SQLiteConnection dbConnecction;
             dbConnecction = new SQLiteConnection("Data Source=MyDatabase.sqlite;Version=3;");
             dbConnecction.Open();
-            string sql = "select * from highscores order by time desc";
+            string sql = "select * from highscores ;";
             SQLiteCommand command = new SQLiteCommand(sql, dbConnecction);
             SQLiteDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-                Console.WriteLine("Name: " + reader["name"] + "\tScore: " + reader["score"]);
+            int counter = 0;
+            string result = "";
+            while (reader.Read() && reader.HasRows && counter <5)
+            {
+                ++counter;
+                result += String.Format("{0,-20} - {1}\n", reader[0], reader[1]);
+                //Console.WriteLine("Name: " + reader[0] + "\tScore: " + reader[1]);
+            }
+            dbConnecction.Close();
+            return result;
         }
     }
 }
