@@ -95,3 +95,7 @@ C:\Users\sim\Documents\homework\sem4\ASP_test\HomewrokAspTest\obj\Debug\Homewrok
 C:\Users\sim\Documents\homework\sem4\ASP_test\HomewrokAspTest\obj\Debug\HomewrokAspTest.csproj.CopyComplete
 C:\Users\sim\Documents\homework\sem4\ASP_test\HomewrokAspTest\obj\Debug\HomewrokAspTest.dll
 C:\Users\sim\Documents\homework\sem4\ASP_test\HomewrokAspTest\obj\Debug\HomewrokAspTest.pdb
+C:\Users\sim\Documents\homework\sem4\ASP_test\HomewrokAspTest\bin\EntityFramework.dll
+C:\Users\sim\Documents\homework\sem4\ASP_test\HomewrokAspTest\bin\EntityFramework.SqlServer.dll
+C:\Users\sim\Documents\homework\sem4\ASP_test\HomewrokAspTest\bin\EntityFramework.xml
+C:\Users\sim\Documents\homework\sem4\ASP_test\HomewrokAspTest\bin\EntityFramework.SqlServer.xml
