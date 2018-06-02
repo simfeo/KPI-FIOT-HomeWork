@@ -8,20 +8,18 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <header>
-        <div class="navbar navbar-header navbar-inverse navbar-fixed-top">
-            <ul class="nav nav-pills">
-                <li class="nav-item">
-                    <a class="nav-link navbar-default" href="/">Home</a>
-                </li>
-            </ul>
-        </div>
-    </header>
+    <ul class="nav nav-pills bg-dark fixed-top">
+        <li class="nav-item">
+            <a class="nav-link active" href="/">Home</a>
+        </li>
+
+    </ul>
 
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer class="navbar-fixed-bottom text-center">
+        
+        <footer class="fixed-bottom text-center">
+            <hr />
             <p>&copy; @DateTime.Now.Year - Phonebook as ASP.NET Application</p>
         </footer>
     </div>

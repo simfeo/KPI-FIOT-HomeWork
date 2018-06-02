@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Api_In_Action";
+}
+<div>
+    <h3>All Phone Numbers</h3>
+    <ul id="phonenumbers" />
+</div>
+
+<div>
+    <h3>Search by ID</h3>
+    <input type="text"   class="form-control" id="prodId" size="20" />
+    <input type="button" class="btn" value="Search" onclick="find();" />
+    <p id="product" />
+</div>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+<script>
+    var uri = '/api/webapi';
+
+    $(document).ready(function () {
+        // Send an AJAX request
+        $.getJSON(uri)
+            .done(function (data) {
+                // On success, 'data' contains a list of products.
+                $.each(data, function (key, item) {
+                    // Add a list item for the product.
+                    $('<li>', { text: formatItem(item) }).appendTo($('#phonenumbers'));
+                });
+            });
+    });
+
+    function formatItem(item) {
+        return item.FirstName + ' ' + item.LastName;
+    }
+
+    function find() {
+        var id = $('#prodId').val();
+        $.getJSON(uri + '/' + id)
+            .done(function (data) {
+                $('#product').text(formatItem(data));
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $('#product').text('Error: ' + err);
+            });
+    }
+</script>
