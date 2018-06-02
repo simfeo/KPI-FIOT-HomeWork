@@ -22,3 +22,42 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+
+.navbar-light {
+    .navbar-brand
+
+{
+    color: $navbar-light-active-color;
+
+    @include hover-focus {
+        color: $navbar-light-active-color;
+    }
+}
+
+minenavbar {
+    .nav-link
+
+{
+    color: $navbar-light-color;
+
+    @include hover-focus {
+        color: $navbar-light-hover-color;
+    }
+
+    &.disabled
+
+{
+    color: $navbar-light-disabled-color;
+}
+
+}
+
+.show > .nav-link,
+.active > .nav-link,
+.nav-link.show,
+.nav-link.active {
+    color: $navbar-light-active-color;
+}
+}
