@@ -17,16 +17,22 @@ namespace PhoneBook.Controllers
                 new PhoneCard {ID = 3, FirstName = "Donald", LastName = "McDonald", BirthDate = new DateTime(2000, 3, 9, 16, 5, 7, 123), Address = "Hell, second ring.", PhoneNumber="+7878787" }
             };
 
+        private IEnumerable<PhoneCard> GetPhoneCards()
+        {
+            PhoneDBWrapper dBWrapper = new PhoneDBWrapper();
+            return dBWrapper.GetPhoneCards();
+        }
+
 
 
         public IEnumerable<PhoneCard> GetAllProducts()
         {
-            return phoneCards;
+            return GetPhoneCards();
         }
 
         public IHttpActionResult GetCard(int id)
         {
-            var product = phoneCards.FirstOrDefault((p) => p.ID == id);
+            var product = GetPhoneCards().FirstOrDefault((p) => p.ID == id);
             if (product == null)
             {
                 return NotFound();

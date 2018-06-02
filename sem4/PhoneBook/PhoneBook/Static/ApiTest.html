@@ -37,7 +37,7 @@
     }
 
     function find() {
-      var id = $('#ID').val();
+        var id = $('#prodId').val();
       $.getJSON(uri + '/' + id)
           .done(function (data) {
             $('#product').text(formatItem(data));
