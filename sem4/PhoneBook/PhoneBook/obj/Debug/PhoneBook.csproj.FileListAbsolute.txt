@@ -98,3 +98,4 @@ C:\Users\sim\Documents\homework\sem4\PhoneBook\PhoneBook\obj\Debug\PhoneBook.csp
 C:\Users\sim\Documents\homework\sem4\PhoneBook\PhoneBook\obj\Debug\PhoneBook.dll
 C:\Users\sim\Documents\homework\sem4\PhoneBook\PhoneBook\obj\Debug\PhoneBook.pdb
 C:\Users\sim\Documents\homework\sem4\PhoneBook\PhoneBook\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\sim\Documents\homework\sem4\PhoneBook\PhoneBook\obj\Debug\PhoneBook.csprojResolveAssemblyReference.cache
