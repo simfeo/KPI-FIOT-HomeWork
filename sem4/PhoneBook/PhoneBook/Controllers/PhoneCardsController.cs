@@ -12,12 +12,12 @@ namespace PhoneBook.Controllers
 {
     public class PhoneCardsController : Controller
     {
-        private PhoneCardDBContext db = new PhoneCardDBContext();
+        private PhoneDBWrapper db = new PhoneDBWrapper();
 
         // GET: PhoneCards
         public ActionResult Index()
         {
-            return View(db.Cards.ToList());
+            return View(db.GetPhoneCards().ToList());
         }
 
         // GET: PhoneCards/Details/5
@@ -27,7 +27,7 @@ namespace PhoneBook.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PhoneCard phoneCard = db.Cards.Find(id);
+            PhoneCard phoneCard = db.Find(id);
             if (phoneCard == null)
             {
                 return HttpNotFound();
@@ -50,8 +50,8 @@ namespace PhoneBook.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Cards.Add(phoneCard);
-                db.SaveChanges();
+                db.Add(phoneCard);
+                db.Save();
                 return RedirectToAction("Index");
             }
 
@@ -65,7 +65,7 @@ namespace PhoneBook.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PhoneCard phoneCard = db.Cards.Find(id);
+            PhoneCard phoneCard = db.Find(id);
             if (phoneCard == null)
             {
                 return HttpNotFound();
@@ -82,8 +82,8 @@ namespace PhoneBook.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(phoneCard).State = EntityState.Modified;
-                db.SaveChanges();
+                db.ChangeState(phoneCard, EntityState.Modified);
+                db.Save();
                 return RedirectToAction("Index");
             }
             return View(phoneCard);
@@ -96,7 +96,7 @@ namespace PhoneBook.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PhoneCard phoneCard = db.Cards.Find(id);
+            PhoneCard phoneCard = db.Find(id);
             if (phoneCard == null)
             {
                 return HttpNotFound();
@@ -109,9 +109,9 @@ namespace PhoneBook.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PhoneCard phoneCard = db.Cards.Find(id);
-            db.Cards.Remove(phoneCard);
-            db.SaveChanges();
+            PhoneCard phoneCard = db.Find(id);
+            db.Remove(phoneCard);
+            db.Save();
             return RedirectToAction("Index");
         }
 
