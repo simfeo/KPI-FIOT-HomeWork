@@ -22,7 +22,8 @@
   <FILE>lab2.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <main><FILE>C:\Users\sim\Documents\homework\sem5\asm\lab2\lab2\main.asm</FILE><LINE>10</LINE></main>
-  <FLOOP><FILE>C:\Users\sim\Documents\homework\sem5\asm\lab2\lab2\main.asm</FILE><LINE>18</LINE></FLOOP>
+  <main><FILE>C:\Users\sim\Documents\homework\sem5\asm\lab2\lab2\main.asm</FILE><LINE>22</LINE></main>
+  <EEPROM_read><FILE>C:\Users\sim\Documents\homework\sem5\asm\lab2\lab2\main.asm</FILE><LINE>10</LINE></EEPROM_read>
+  <FLOOP><FILE>C:\Users\sim\Documents\homework\sem5\asm\lab2\lab2\main.asm</FILE><LINE>30</LINE></FLOOP>
  </LABELS>
 </ASSEMBLER_INFO>

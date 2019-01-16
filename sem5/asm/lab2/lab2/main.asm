@@ -5,6 +5,18 @@
 ; Author : sim
 ;
 
+rjmp main
+
+EEPROM_read:
+sbic EECR,EEWE
+rjmp EEPROM_read
+
+out EEARH, R18
+out EEARL, R17
+sbi EECR,EERE
+
+in R16,EEDR
+ret
 
 ; Replace with your application code
 main:
@@ -31,5 +43,41 @@ EOR R29, R29
 
 ADD R29, R17
 ADD R29, R18
+
+
+;;;;
+
+EOR R16, R16
+
+ldi R17, low(0x60)
+ldi R18, high(0x60)
+rcall EEPROM_read
+
+EOR R21, R21
+add R21, R16
+
+EOR R16, R16
+ldi R17, low(0x63)
+ldi R18, high(0x63)
+rcall EEPROM_read
+add R21, R16
+
+;;;
+EOR R16, R16
+
+ldi R17, low(0x61)
+ldi R18, high(0x61)
+rcall EEPROM_read
+
+EOR R22, R22
+add R22, R16
+
+EOR R16, R16
+ldi R17, low(0x62)
+ldi R18, high(0x62)
+rcall EEPROM_read
+add R22, R16
+
+
 
 ret
