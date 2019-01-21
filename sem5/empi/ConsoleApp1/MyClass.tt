@@ -1,0 +1,29 @@
+﻿<#@ template debug="false" language="C#" #>
+<#@ output extension=".cs" #>
+<# string[] vars = new string [] {"A", "B", "C"}; #>
+class MyClass { 
+<# foreach (string variable in vars) { #>
+	private int <#= variable #> = 0; 
+<# } #>
+
+<# for (int i=0;i < 2;i++) { #> 
+	public void <#= CreateFunctionName(i)#>() 
+	{ 
+	} 
+<# } #> 
+} 
+
+<#+ public string CreateFunctionName(int counter) 
+{ 
+	string result = ""; 
+	switch (counter) 
+	{ 
+		case 0: 
+			result = "Foo"; 
+			break; 
+		case 1: 
+			result = "Bar"; 
+			break; 
+	} 
+	return result; 
+} #>
