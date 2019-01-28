@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import division, print_function
 
-import os 
-os.environ['KERAS_BACKEND'] = 'theano'
-
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers.core import Activation, Dense, Flatten
 from keras.layers.convolutional import Conv2D
 from keras.optimizers import Adam
@@ -65,32 +62,37 @@ INITIAL_EPSILON = 0.1 # starting value of epsilon
 FINAL_EPSILON = 0.0001 # final value of epsilon
 MEMORY_SIZE = 50000 # number of previous transitions to remember
 NUM_EPOCHS_OBSERVE = 100
-NUM_EPOCHS_TRAIN = 2000
+NUM_EPOCHS_TRAIN = 3000
 
 BATCH_SIZE = 32
 NUM_EPOCHS = NUM_EPOCHS_OBSERVE + NUM_EPOCHS_TRAIN
 
-# build the model
-model = Sequential()
-model.add(Conv2D(32, kernel_size=8, strides=4, 
-                 kernel_initializer="normal", 
-                 padding="same",
-                 input_shape=(80, 80, 4)))
-model.add(Activation("relu"))
-model.add(Conv2D(64, kernel_size=4, strides=2, 
-                 kernel_initializer="normal", 
-                 padding="same"))
-model.add(Activation("relu"))
-model.add(Conv2D(64, kernel_size=3, strides=1,
-                 kernel_initializer="normal",
-                 padding="same"))
-model.add(Activation("relu"))
-model.add(Flatten())
-model.add(Dense(512, kernel_initializer="normal"))
-model.add(Activation("relu"))
-model.add(Dense(3, kernel_initializer="normal"))
+if os.path.exists("rl-network.h5"):
+    model = load_model("rl-network.h5")
+    model.load_weights("rl-network.h5")
+else:
+    # build the model
+    model = Sequential()
+    model.add(Conv2D(32, kernel_size=8, strides=4, 
+                    kernel_initializer="normal", 
+                    padding="same",
+                    input_shape=(80, 80, 4)))
+    model.add(Activation("relu"))
+    model.add(Conv2D(64, kernel_size=4, strides=2, 
+                    kernel_initializer="normal", 
+                    padding="same"))
+    model.add(Activation("relu"))
+    model.add(Conv2D(64, kernel_size=3, strides=1,
+                    kernel_initializer="normal",
+                    padding="same"))
+    model.add(Activation("relu"))
+    model.add(Flatten())
+    model.add(Dense(512, kernel_initializer="normal"))
+    model.add(Activation("relu"))
+    model.add(Dense(3, kernel_initializer="normal"))
+    model.compile(optimizer=Adam(lr=1e-6), loss="mse")
 
-model.compile(optimizer=Adam(lr=1e-6), loss="mse")
+
 
 # train network
 game = wrapped_game.MyWrappedGame()
@@ -142,8 +144,8 @@ for e in range(NUM_EPOCHS):
         
     print("Epoch {:04d}/{:d} | Loss {:.5f} | Win Count: {:d}"
           .format(e + 1, NUM_EPOCHS, loss, num_wins))
-    fout.write("{:04d}\t{:.5f}\t{:d}\n"
-          .format(e + 1, loss, num_wins))
+    print ("{:04d}\t{:.5f}\t{:d}\n".format(e + 1, loss, num_wins))
+    fout.write("{:04d}\t{:.5f}\t{:d}\n".format(e + 1, loss, num_wins).encode('utf-8'))
 
     if e % 100 == 0:
         model.save(os.path.join(DATA_DIR, "rl-network.h5"), overwrite=True)
