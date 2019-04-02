@@ -7,7 +7,7 @@ import os
 DATA_DIR = "."
 
 xs, loss_ys, wins_ys = [], [], []
-fin = open(os.path.join(DATA_DIR, "rl-network-results-5100.tsv"), "rb")
+fin = open(os.path.join(DATA_DIR, "rl-network-results.tsv"), "r")
 lno = 0
 for line in fin:
 #    if lno < 1000:

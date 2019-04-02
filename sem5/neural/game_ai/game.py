@@ -37,7 +37,7 @@ class MyGame(object):
         # initialize positions
         self.paddle_x = self.GAME_WIDTH // 2
         self.game_score = 0
-        self.ball_x = random.randint(0, self.GAME_WIDTH)
+        self.ball_x = random.randint(0, self.GAME_WIDTH-self.BALL_WIDTH)
         self.ball_y = self.GAME_CEILING
         self.num_tries = 0
         # set up display, clock, etc
@@ -95,9 +95,10 @@ class MyGame(object):
                     self.game_score += 1
                 else:
                     self.game_score -= 1
-                self.ball_x = random.randint(0, self.GAME_WIDTH)
+                self.ball_x = random.randint(0, self.GAME_WIDTH-self.BALL_WIDTH)
                 self.ball_y = self.GAME_CEILING
                 self.num_tries += 1
+                self.paddle_x = self.GAME_WIDTH // 2
             
             pygame.display.flip()
             

@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import division, print_function
 
-import os 
-os.environ['KERAS_BACKEND'] = 'theano'
-
 from keras.models import load_model
 from keras.optimizers import Adam
 from scipy.misc import imresize
@@ -40,7 +37,7 @@ DATA_DIR = "."
 BATCH_SIZE = 32
 NUM_EPOCHS = 100
 
-model = load_model(os.path.join(DATA_DIR, "rl-network-4100.h5"))
+model = load_model(os.path.join(DATA_DIR, "rl-network.h5"))
 model.compile(optimizer=Adam(lr=1e-6), loss="mse")
 
 # train network
