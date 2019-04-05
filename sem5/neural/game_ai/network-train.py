@@ -1,7 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import division, print_function
 
+<<<<<<< Updated upstream
 from keras.models import Sequential, load_model
+=======
+import os 
+os.environ['KERAS_BACKEND'] = 'theano'
+
+os.environ["THEANO_FLAGS"]='device=cpu,floatX=float32'
+
+from keras.models import Sequential
+>>>>>>> Stashed changes
 from keras.layers.core import Activation, Dense, Flatten
 from keras.layers.convolutional import Conv2D
 from keras.optimizers import Adam
