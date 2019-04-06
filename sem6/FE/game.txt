@@ -1,0 +1,65 @@
+var createScene = function () 
+{
+    let curr_time = 0.0;
+    // This creates a basic Babylon Scene object (non-mesh)
+    var scene = new BABYLON.Scene(engine);
+
+    var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(-10, 50, 0), scene);
+
+// Targets the camera to a particular position. In this case the scene origin
+    camera.setTarget(BABYLON.Vector3.Zero());
+    camera.rotation.y = Math.PI/2;
+
+// Attach the camera to the canvas
+    // camera.attachControl(canvas, true);
+
+    // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1.5, 5, 0), scene);
+
+    // Default intensity is 1. Let's dim the light a small amount
+    light.intensity = 0.5;
+
+    // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+    var box1 = BABYLON.Mesh.CreateBox("box1", 2.0,scene);
+
+    // Move the sphere upward 1/2 its height
+    box1.position.y = 1;
+
+    var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+
+    myMaterial.diffuseColor = new BABYLON.Color3(1, 0, 1);
+    // myMaterial.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
+    // myMaterial.emissiveColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+    myMaterial.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
+
+    box1.material = myMaterial;
+    // box1.collider
+
+    // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
+    var ground = BABYLON.Mesh.CreateGround("ground1", 50, 50, 2, scene);
+
+    scene.onPointerMove = function (evt, pickResult) 
+    {
+        let hip = Math.sqrt((scene.pointerX - canvas.width/2)**2+(scene.pointerY-canvas.height/2)**2);
+        let cos_x = (scene.pointerX - canvas.width/2)/hip;
+        let ang = Math.acos(cos_x);
+        if (scene.pointerY<canvas.height/2)
+        {
+            ang*=-1;
+        }
+
+        box1.rotation.y = ang;
+        return true;
+    };
+
+
+    scene.afterRender = function()
+    {
+        curr_time += scene.getDeterministicFrameTime()/1000;
+        // console.log(curr_time);
+        box1.position.y += (((Math.floor(curr_time)%2) == 0) ? 0.04: (-0.04));//*(10*(curr_time%1));
+        // console.log(box1.position.y);
+    };
+
+    return scene;
+};
