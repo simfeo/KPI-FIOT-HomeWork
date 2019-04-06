@@ -119,6 +119,9 @@
         
             // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
             var ground = BABYLON.Mesh.CreateGround("ground1", 50, 50, 2, scene);
+            // var grass1 = new BABYLON.StandardMaterial("grass1", scene);
+            // grass1.emissiveTexture = new BABYLON.Texture("textures/grass.png", scene);
+            // ground.material = grass1;
         
             scene.onPointerMove = function (evt, pickResult) 
             {
