@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Babylon.js sample code</title>
+
+        <!-- Babylon.js -->
+        <script src="offline/pep.min.js"></script>
+        <script src="offline/dat.gui.min.js"></script>
+        <script src="offline/ammo.js"></script>
+        <script src="offline/cannon.js"></script>
+        <script src="offline/Oimo.js"></script>
+        <script src="offline/gltf_validator.js"></script>
+        <script src="offline/earcut.min.js"></script>
+        <script src="offline/babylon.js"></script>
+        <script src="offline/babylon.inspector.bundle.js"></script>
+        <script src="offline/babylonjs.materials.min.js"></script>
+        <script src="offline/babylonjs.proceduralTextures.min.js"></script>
+        <script src="offline/babylonjs.postProcess.min.js"></script>
+        <script src="offline/babylonjs.loaders.js"></script>
+        <script src="offline/babylonjs.serializers.min.js"></script>
+        <script src="offline/babylon.gui.min.js"></script>
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+        </style>
+    </head>
+<body>
+    <center><button id="bbtn_start" onclick="start_game_f()" style="text-align: center; height: 100px;  width: 100px;  position: absolute;  left: 50%;
+            margin-left: -50px;   top: 50%;  margin-top: -50px;">Try it</button></center>
+    <canvas id="renderCanvas"></canvas>
+    <script>
+        var canvas = document.getElementById("renderCanvas");
+
+        var createScene = function () 
+        {
+            let can_shoot = false;
+            let curr_time = 0.0;
+            let enemy_gen_delta = 1;
+            let bullet_gen_delta = 0.1;
+            let enemy_gen_time = 0;
+            let bullet_gen_time = 0;
+            let enemies = [];
+            let bullets = [];
+        
+            let game_over = false;
+        
+            var max_bullet_dist = 100;
+            var min_offset = 11; 
+            var max_offset = 22;  
+            var en_velocity = 2;
+            var en_coef = 1;
+            var bullet_velocity = 110;
+            var enemy_kills_len = 2;
+
+
+
+            /////////////////////////////////////////
+            ///////// STATISTICS ////////////////////
+            let killed_enemies = 0;
+            let total_shots = 0;            
+            /////////////////////////////////////////
+
+            // This creates a basic Babylon Scene object (non-mesh)
+            var scene = new BABYLON.Scene(engine);
+        
+            var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(-10, 50, 0), scene);
+        
+            scene.collisionsEnabled = true;
+        
+        // Targets the camera to a particular position. In this case the scene origin
+            camera.setTarget(BABYLON.Vector3.Zero());
+            camera.rotation.y = Math.PI/2;
+        
+        // Attach the camera to the canvas
+            // camera.attachControl(canvas, true);
+        
+            // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
+            var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1.5, 5, 0), scene);
+        
+            // Default intensity is 1. Let's dim the light a small amount
+            light.intensity = 0.5;
+        
+            // Our built-in 'sphere' shape. Params: name, subdivs, size, scene
+            var box1 = BABYLON.Mesh.CreateBox("box1", 2.0,scene);
+        
+            // Move the sphere upward 1/2 its height
+            box1.position.y = 1;
+        
+            var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+            myMaterial.diffuseColor = new BABYLON.Color3(1, 0, 1);
+            myMaterial.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
+        
+            var myMaterialEnemy = new BABYLON.StandardMaterial("enemy_mat", scene);
+            myMaterialEnemy.diffuseColor = new BABYLON.Color3(1, 0, 0);
+            // myMaterialEnemy.specularColor = new BABYLON.Color3(0.5, 0.6, 0.87);
+            myMaterialEnemy.emissiveColor = new BABYLON.Color3(0.3, 0.3, 0.3);
+            // myMaterialEnemy.ambientColor = new BABYLON.Color3(0.23, 0.98, 0.53);
+        
+            var myMaterialBullet = new BABYLON.StandardMaterial("bullet_mat", scene);
+            myMaterialBullet.diffuseColor = new BABYLON.Color3(0,0,0);
+            // myMaterialBullet.ambientColor = new BABYLON.Color3(1, 1, 0.53);
+        
+            box1.material = myMaterial;
+            // box1.collider
+        
+            // Our built-in 'ground' shape. Params: name, width, depth, subdivs, scene
+            var ground = BABYLON.Mesh.CreateGround("ground1", 50, 50, 2, scene);
+        
+            scene.onPointerMove = function (evt, pickResult) 
+            {
+                if (game_over)
+                    return true;
+                let hip = Math.sqrt((scene.pointerX - canvas.width/2)**2+(scene.pointerY-canvas.height/2)**2);
+                let cos_x = (scene.pointerX - canvas.width/2)/hip;
+                let ang = Math.acos(cos_x);
+                if (scene.pointerY<canvas.height/2)
+                {
+                    ang*=-1;
+                }
+        
+                box1.rotation.y = ang;
+                return true;
+            };
+        
+            scene.onPointerDown = function(evt, pickResult)
+            {
+                can_shoot = true;
+            };
+        
+            scene.onPointerUp = function(evt, pickResult)
+            {
+                can_shoot = false;
+            };
+        
+        
+            const get_random_pos = function()
+            {
+                var random_p = Math.random() * 22; 
+                random_p *= (Math.random() > 0.5) ? 1 : -1;
+                return random_p;
+            }
+        /////////////////////////////////////////////////////////////////////////////////////
+            scene.afterRender = function()
+            {
+                if (game_over)
+                {
+                    return;
+                }
+                let dt = scene.getDeterministicFrameTime()/1000
+                curr_time += dt;
+                enemy_gen_time += dt
+                if (!can_shoot)
+                {
+                    bullet_gen_time = 0;
+                }
+                // console.log(curr_time);
+                box1.position.y += (((Math.floor(curr_time)%2) == 0) ? 0.04: (-0.04));//*(10*(curr_time%1));
+                // console.log(box1.position.y);
+                if (curr_time-dt < Math.floor(curr_time))
+                {
+                    if (curr_time % 10.0 < 1)
+                    {
+                        en_coef *=1.5;
+                    }
+                }
+        
+        
+        
+        // UPDATE BULLETE POS    
+            
+                for (let i =0; i < bullets.length; ++i)
+                {
+                    let bullet = bullets[i];
+                    let old_hip = Math.sqrt(bullet.position.x**2 + bullet.position.z**2);
+                    let new_hip = old_hip+bullet_velocity*dt;
+        
+                    bullet.position.x = new_hip * (bullet.position.x/old_hip);
+                    bullet.position.z = new_hip * (bullet.position.z/old_hip);
+                    
+                    if (new_hip > max_bullet_dist)
+                    {
+                        bullet.dispose();
+                        bullets[i] = null;
+                        console.log("bullet out of range");
+                        continue;
+                    }
+        
+                    for (let j =0; j < enemies.length; ++j)
+                    {
+                        let enemy = enemies[j];
+                        let dist = Math.sqrt((bullet.position.x - enemy.position.x)**2 + (bullet.position.z - enemy.position.z)**2);
+                        if (dist <= 1)
+                        {
+                            enemy.dispose();
+                            enemies[j] = null;
+                            bullet.dispose();
+                            bullets[i] = null;
+                            killed_enemies +=1;
+                            break;
+                        }
+                    }
+                    enemies = enemies.filter(el => el != null);
+                }
+               bullets = bullets.filter(el => el != null);
+        
+        // BULLETE GEN
+        
+                if (can_shoot)
+                {
+                    if (bullet_gen_time == 0 || (bullet_gen_time > bullet_gen_delta))
+                    {
+                        bullet_gen_time%=bullet_gen_delta;
+                        var bullet = BABYLON.MeshBuilder.CreateBox("bullet", {height: 0.2, width: 0.5, depth: 0.2}, scene);
+                        bullet.material = myMaterialBullet;
+                        bullet.position.y = 1;
+        
+                        bullet.position.z = 3.3 * Math.cos(box1.rotation.y+Math.PI);
+                        bullet.position.x = 3.3 * Math.sin(box1.rotation.y+Math.PI);
+                        bullet.rotation.y = box1.rotation.y+Math.PI/2;
+                        bullets.push(bullet);
+                        total_shots += 1;
+                    }
+                    bullet_gen_time = bullet_gen_time+dt;
+                    // console.log(bullet_gen_time);
+                }
+                
+        // UPDATE ENEMY POS
+                for (let i =0; i < enemies.length; ++i)
+                {
+                    let enemy = enemies[i];
+                    let old_hip = Math.sqrt(enemy.position.x**2 + enemy.position.z**2);
+                    let new_hip = old_hip-en_velocity*dt*en_coef;
+                    enemy.position.x = new_hip * (enemy.position.x/old_hip);
+                    enemy.position.z = new_hip * (enemy.position.z/old_hip);
+                    
+                    if (new_hip < 2)
+                    {
+                        game_over = true;
+                        if(alert('Game Over!' +
+                            "\nenemies killed " + killed_enemies +
+                            "\nsucess_shots " + killed_enemies*1.0/total_shots + 
+                            "\ntotal_shots " + total_shots +
+                            "\n game time " + curr_time
+                            )){}
+                        else
+                        {    
+                            window.location.reload(); 
+                        }
+                    }
+                }
+        // GEN NEW ENEMY POS
+        
+                if (enemy_gen_time > enemy_gen_delta)
+                {
+                    enemy_gen_time %= enemy_gen_delta;
+                    let enemy = BABYLON.Mesh.CreateSphere("enemy", 10, 2, scene);
+                    let x = get_random_pos();
+                    let y = get_random_pos();
+        
+                    for(;;)
+                    {
+                        var dist = Math.sqrt(x**2+y**2);
+                        if (dist > 11)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            x = get_random_pos();
+                            y = get_random_pos();
+                        }
+                    }
+        
+                    enemy.position.x = x;
+                    enemy.position.z = y;
+                    enemy.position.y = 1;
+                    enemy.material = myMaterialEnemy;
+                    enemies.push(enemy);
+                    console.log("new enemy"+enemy.position);
+                }
+            };
+        
+            return scene;
+        };
+        
+
+        var engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+        var scene = createScene();
+
+        let start_game_f = function()
+        {
+            let sss = document.getElementById("bbtn_start");
+            sss.parentNode.removeChild(sss);
+            engine.runRenderLoop(function () {
+                if (scene) {
+                    scene.render();
+                }
+            });
+
+            // Resize
+            window.addEventListener("resize", function () {
+                engine.resize();
+            });
+        }
+    </script>
+</body>
+</html>

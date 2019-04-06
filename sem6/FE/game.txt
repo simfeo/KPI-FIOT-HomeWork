@@ -14,7 +14,8 @@ var createScene = function ()
     var max_bullet_dist = 100;
     var min_offset = 11; 
     var max_offset = 22;  
-    var en_velocity = 11;
+    var en_velocity = 2;
+    var en_coef = 1;
     var bullet_velocity = 110;
     var enemy_kills_len = 2;
     // This creates a basic Babylon Scene object (non-mesh)
@@ -115,7 +116,10 @@ var createScene = function ()
         // console.log(box1.position.y);
         if (curr_time-dt < Math.floor(curr_time))
         {
-            // console.log( Math.floor(curr_time));
+            if (curr_time % 10.0 < 1)
+            {
+                en_coef *=1.5;
+            }
         }
 
 
@@ -134,8 +138,27 @@ var createScene = function ()
             if (new_hip > max_bullet_dist)
             {
                 bullet.dispose();
+                bullets[i] = null;
+                console.log("bullet out of range");
+                continue;
             }
+
+            for (let j =0; j < enemies.length; ++j)
+            {
+                let enemy = enemies[j];
+                let dist = Math.sqrt((bullet.position.x - enemy.position.x)**2 + (bullet.position.z - enemy.position.z)**2);
+                if (dist <= 1)
+                {
+                    enemy.dispose();
+                    enemies[j] = null;
+                    bullet.dispose();
+                    bullets[i] = null;
+                    break;
+                }
+            }
+            enemies = enemies.filter(el => el != null);
         }
+       bullets = bullets.filter(el => el != null);
 
 // BULLETE GEN
 
@@ -162,7 +185,7 @@ var createScene = function ()
         {
             let enemy = enemies[i];
             let old_hip = Math.sqrt(enemy.position.x**2 + enemy.position.z**2);
-            let new_hip = old_hip-en_velocity*dt;
+            let new_hip = old_hip-en_velocity*dt*en_coef;
             enemy.position.x = new_hip * (enemy.position.x/old_hip);
             enemy.position.z = new_hip * (enemy.position.z/old_hip);
             
