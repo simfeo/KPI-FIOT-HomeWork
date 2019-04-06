@@ -16,6 +16,7 @@ var createScene = function ()
     var max_offset = 22;  
     var en_velocity = 11;
     var bullet_velocity = 110;
+    var enemy_kills_len = 2;
     // This creates a basic Babylon Scene object (non-mesh)
     var scene = new BABYLON.Scene(engine);
 
@@ -95,7 +96,7 @@ var createScene = function ()
         random_p *= (Math.random() > 0.5) ? 1 : -1;
         return random_p;
     }
-
+/////////////////////////////////////////////////////////////////////////////////////
     scene.afterRender = function()
     {
         if (game_over)
@@ -104,7 +105,7 @@ var createScene = function ()
         }
         let dt = scene.getDeterministicFrameTime()/1000
         curr_time += dt;
-        enemy_gen_delta += dt
+        enemy_gen_time += dt
         if (!can_shoot)
         {
             bullet_gen_time = 0;
@@ -117,6 +118,24 @@ var createScene = function ()
             // console.log( Math.floor(curr_time));
         }
 
+
+
+// UPDATE BULLETE POS    
+    
+        for (let i =0; i < bullets.length; ++i)
+        {
+            let bullet = bullets[i];
+            let old_hip = Math.sqrt(bullet.position.x**2 + bullet.position.z**2);
+            let new_hip = old_hip+bullet_velocity*dt;
+
+            bullet.position.x = new_hip * (bullet.position.x/old_hip);
+            bullet.position.z = new_hip * (bullet.position.z/old_hip);
+            
+            if (new_hip > max_bullet_dist)
+            {
+                bullet.dispose();
+            }
+        }
 
 // BULLETE GEN
 
@@ -135,20 +154,17 @@ var createScene = function ()
                 bullets.push(bullet);
             }
             bullet_gen_time = bullet_gen_time+dt;
-            console.log(bullet_gen_time);
+            // console.log(bullet_gen_time);
         }
         
-
 // UPDATE ENEMY POS
         for (let i =0; i < enemies.length; ++i)
         {
             let enemy = enemies[i];
             let old_hip = Math.sqrt(enemy.position.x**2 + enemy.position.z**2);
             let new_hip = old_hip-en_velocity*dt;
-            console.log(enemy.position);
             enemy.position.x = new_hip * (enemy.position.x/old_hip);
             enemy.position.z = new_hip * (enemy.position.z/old_hip);
-            // console.log(enemy.position);
             
             if (new_hip < 2)
             {
@@ -156,12 +172,11 @@ var createScene = function ()
             }
         }
 // GEN NEW ENEMY POS
-/*
+
         if (enemy_gen_time > enemy_gen_delta)
         {
             enemy_gen_time %= enemy_gen_delta;
             let enemy = BABYLON.Mesh.CreateSphere("enemy", 10, 2, scene);
-
             let x = get_random_pos();
             let y = get_random_pos();
 
@@ -184,8 +199,8 @@ var createScene = function ()
             enemy.position.y = 1;
             enemy.material = myMaterialEnemy;
             enemies.push(enemy);
+            console.log("new enemy"+enemy.position);
         }
-        */
     };
 
     return scene;
