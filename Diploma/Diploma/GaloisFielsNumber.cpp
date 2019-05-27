@@ -84,8 +84,7 @@ GaloisFielsNumber::GaloisFielsNumber(unsigned int fieldSize, unsigned int number
 		}
 		if (m_power == -1)
 		{
-			m_power = m_number<<1 ^ primitive_polynoms::polynoms[m_gfSize];
-			m_power %= (int)pow(2,m_gfSize);
+			calcPower();
 		}
 	}
 }
@@ -163,4 +162,35 @@ GaloisFielsNumber GaloisFielsNumber::operator/(const GaloisFielsNumber & gfR)
 {
 	//quiet wrong
 	return GaloisFielsNumber(3,3);
+}
+
+void GaloisFielsNumber::calcPower()
+{
+	const unsigned int pm = primitive_polynoms::polynoms[getFieldSize()];
+	unsigned int cand = 0;
+	for (int i = getFieldSize(); i < (int)pow(2, getFieldSize()); ++i)
+	{
+		unsigned int pmShifted = pm;
+		cand = 1 << i;
+		while (true)
+		{
+			if ((cand^pmShifted) > pmShifted)
+			{
+				pmShifted <<= 1;
+				continue;
+			}
+			else
+			{
+				cand ^= pmShifted;
+				pmShifted = pm;
+			}
+			if (cand == getNumber())
+			{
+				m_power = i;
+				return;
+			}
+			if (cand < pmShifted)
+				break;
+		}
+	}
 }

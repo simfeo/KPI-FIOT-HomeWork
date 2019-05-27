@@ -1,29 +1,5 @@
 ﻿  GaloisFielsNumber.cpp
-d:\sim\homework\diploma\diploma\primitivegroups.h(20): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(21): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(22): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(23): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(24): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(25): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(26): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(27): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(28): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(29): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(30): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(31): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(32): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(33): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(34): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(35): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(36): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(37): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(38): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(39): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(40): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(41): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(42): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(43): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(44): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(45): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
-d:\sim\homework\diploma\diploma\primitivegroups.h(46): warning C4554: '<<': check operator precedence for possible error; use parentheses to clarify precedence
+d:\sim\homework\diploma\diploma\galoisfielsnumber.cpp(32): warning C4018: '<': signed/unsigned mismatch
+d:\sim\homework\diploma\diploma\galoisfielsnumber.cpp(38): warning C4018: '<': signed/unsigned mismatch
+d:\sim\homework\diploma\diploma\galoisfielsnumber.cpp(77): warning C4018: '<=': signed/unsigned mismatch
   Diploma.vcxproj -> D:\sim\homework\Diploma\Debug\Diploma.exe

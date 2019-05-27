@@ -23,6 +23,8 @@ public:
 	GaloisFielsNumber operator/(const GaloisFielsNumber& gfR);
 
 private:
+	void calcPower();
+
 	unsigned int m_gfSize;
 	unsigned int m_number;
 	unsigned int m_power;
