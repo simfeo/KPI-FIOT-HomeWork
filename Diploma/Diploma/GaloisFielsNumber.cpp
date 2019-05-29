@@ -3,8 +3,10 @@
 #include <math.h>
 #include <algorithm>
 #include <sstream>
-#include <iostream>
 #include <set>
+
+#include <iostream>
+#include <bitset>
 
 
 bool GaloisFielsNumber::CheckGaloisParam(unsigned int fieldSize, unsigned int number)
@@ -179,32 +181,18 @@ GaloisFielsNumber GaloisFielsNumber::operator-(const GaloisFielsNumber& gfR)
 
 GaloisFielsNumber GaloisFielsNumber::operator*(const GaloisFielsNumber & gfR)
 {
-	unsigned int production = 0;
-	unsigned int gfNumA = getNumber();
-	unsigned int gfNumB = getNumber();
-
-	while (gfNumA && gfNumB)
-	{
-		if (gfNumB & 1)
-			production ^= gfNumA;
-		if (gfNumA & (1 << sizeof(unsigned int))) //overflow check
-		{
-			gfNumA = (gfNumA << 1) ^ primitive_polynoms::polynoms[getFieldSize()];
-		}
-		else
-		{
-			gfNumA <<= 1;
-		}
-		gfNumB >>= 1;
-	}
-
-	return GaloisFielsNumber(getFieldSize(), production);
+	int new_pow = getPower() + gfR.getPower();
+	new_pow %= ((int)pow(2,getFieldSize())-1);
+	int num = GetGaloisNumberFromPower(getFieldSize(), new_pow);
+	return GaloisFielsNumber(getFieldSize(), num);
 }
 
 GaloisFielsNumber GaloisFielsNumber::operator/(const GaloisFielsNumber & gfR)
 {
-	//quiet wrong
-	return GaloisFielsNumber(3,3);
+	int new_pow = getPower() - gfR.getPower();
+	new_pow = new_pow > 0 ? new_pow : new_pow + (int)pow(2, getFieldSize())-1;
+	int num = GetGaloisNumberFromPower(getFieldSize(), new_pow);
+	return GaloisFielsNumber(getFieldSize(), num);
 }
 
 void GaloisFielsNumber::calcPower()
@@ -238,8 +226,8 @@ void GaloisFielsNumber::calcPower()
 	}
 }
 
-/*
-static unsigned int multGF(unsigned int gfNumA, unsigned int gfNumB)
+
+static unsigned int multGF(unsigned int gfNumA, unsigned int gfNumB, unsigned int primitivePolynom)
 {
 	unsigned int production = 0;
 	while (gfNumA && gfNumB)
@@ -248,7 +236,7 @@ static unsigned int multGF(unsigned int gfNumA, unsigned int gfNumB)
 			production ^= gfNumA;
 		if (gfNumA & (1 << sizeof(unsigned int))) //overflow check
 		{
-			gfNumA = (gfNumA << 1) ^ primitive_polynoms::polynoms[getFieldSize()];
+			gfNumA = (gfNumA << 1) ^ primitivePolynom;
 		}
 		else
 		{
@@ -258,7 +246,7 @@ static unsigned int multGF(unsigned int gfNumA, unsigned int gfNumB)
 	}
 	return production;
 }
-*/
+
 
 void GaloisFielsNumber::calcMiminal()
 {
@@ -277,7 +265,7 @@ void GaloisFielsNumber::calcMiminal()
 		int tmpPow = ((int)pow(p, i)) % ((int)pow(2, m));
 		cyclotomicClasses.insert((s*tmpPow) % (((int)pow(2, m)) -1));
 	}
-
+	/*
 	//std::sort(cyclotomicClasses.begin(), cyclotomicClasses.end());
 	std::cout << "power " << s << " ";
 	for (auto el : cyclotomicClasses)
@@ -286,13 +274,16 @@ void GaloisFielsNumber::calcMiminal()
 	}
 
 	std::cout << std::endl;
+	*/
 	
 
 	m_minimalPolinom = 1;
 	for (int num: cyclotomicClasses)
 	{
 		int galoisNum = GetGaloisNumberFromPower(getFieldSize(), num);
-		//m_minimalPolinom *= (1+galoisNum)
+		//std::cout << std::bitset<8>(galoisNum) << " ";
+		m_minimalPolinom *= multGF(m_minimalPolinom,galoisNum + 2, primitive_polynoms::polynoms[m]);
 	}
+	//std::cout<<std::endl << "minimal is " << std::bitset<8>(m_minimalPolinom)<<std::endl;
 
 }
