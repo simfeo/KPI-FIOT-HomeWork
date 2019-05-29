@@ -5,9 +5,98 @@
 #include <sstream>
 #include <set>
 
+/*
 #include <iostream>
 #include <bitset>
+*/
 
+class A
+{
+public:
+	A(int pow):m_pow(pow)
+	{
+	
+	}
+	const int getPow() const
+	{
+		return m_pow;
+	}
+private:
+	int m_pow;
+};
+
+class X
+{
+public:
+	X(int pow):m_pow(pow)
+	{
+
+	}
+
+	const int getPow() const
+	{
+		return m_pow;
+	}
+private:
+	int m_pow;
+};
+
+class MultXA
+{
+public:
+	MultXA(const A& a)
+		: m_resultA(a.getPow()),
+		m_resultX(1),
+		m_shouldUnpack(true)
+	{
+
+	}
+
+	MultXA(const X& x)
+		: m_resultA(1),
+		m_resultX(x.getPow()),
+		m_shouldUnpack(false)
+	{
+
+	}
+
+	bool getShouldUnpack()
+	{
+		return m_shouldUnpack;
+	}
+
+	static A mult(A a1, A a2)
+	{
+		return A(a1.getPow() + a2.getPow());
+	}
+
+	static A mult(A a1, X x1)
+	{
+		return A(a1.getPow() + x1.getPow());
+	}
+
+	static A mult(X x1, A a1)
+	{
+		return A(a1.getPow() + x1.getPow());
+	}
+
+	static X mult(X x1, X x2)
+	{
+		return X(x1.getPow() + x2.getPow());
+	}
+
+	int getPow()
+	{
+		if (m_shouldUnpack)
+			return m_resultA.getPow();
+		else
+			return m_resultX.getPow();
+	}
+private:
+	A		m_resultA;
+	X		m_resultX;
+	bool	m_shouldUnpack;
+};
 
 bool GaloisFielsNumber::CheckGaloisParam(unsigned int fieldSize, unsigned int number)
 {
@@ -260,10 +349,11 @@ void GaloisFielsNumber::calcMiminal()
 
 	int p = 2; // beacuse filed is binary
 	int m = getFieldSize();
+	int realSize = (int)pow(2, m);
 	for (int i = 0; i < m; ++i)
 	{
-		int tmpPow = ((int)pow(p, i)) % ((int)pow(2, m));
-		cyclotomicClasses.insert((s*tmpPow) % (((int)pow(2, m)) -1));
+		int tmpPow = ((int)pow(p, i)) % realSize;
+		cyclotomicClasses.insert((s * tmpPow) % (realSize - 1));
 	}
 	/*
 	//std::sort(cyclotomicClasses.begin(), cyclotomicClasses.end());
@@ -277,13 +367,67 @@ void GaloisFielsNumber::calcMiminal()
 	*/
 	
 
-	m_minimalPolinom = 1;
-	for (int num: cyclotomicClasses)
+	std::vector<MultXA> polynom;
+	for (int num : cyclotomicClasses)
 	{
-		int galoisNum = GetGaloisNumberFromPower(getFieldSize(), num);
 		//std::cout << std::bitset<8>(galoisNum) << " ";
-		m_minimalPolinom *= multGF(m_minimalPolinom,galoisNum + 2, primitive_polynoms::polynoms[m]);
+		if (polynom.empty())
+		{
+			polynom.push_back(MultXA(X(1)));
+			polynom.push_back(MultXA(A(num)));
+		}
+		else
+		{
+			std::vector<MultXA> newPolynom;
+			for (auto& el : polynom)
+			{
+				if (el.getShouldUnpack())
+				{
+					X x(1);
+					A a(el.getPow());
+					newPolynom.push_back(MultXA(MultXA::mult(x, a)));
+				}
+				else
+				{
+					X x1(1);
+					X x2(el.getPow());
+					newPolynom.push_back(MultXA(MultXA::mult(x1, x2)));
+				}
+			}
+
+			for (auto& el : polynom)
+			{
+				if (el.getShouldUnpack())
+				{
+					A a1(num);
+					A a2(el.getPow());
+					newPolynom.push_back(MultXA(MultXA::mult(a1, a2)));
+				}
+				else
+				{
+					A a(num);
+					X x(el.getPow());
+					newPolynom.push_back(MultXA(MultXA::mult(a, x)));
+				}
+			}
+			polynom = newPolynom;
+		}
 	}
+
+	m_minimalPolinom = 0;
+	for (auto el : polynom)
+	{
+		if (el.getShouldUnpack())
+		{
+			int pow = el.getPow() % (realSize - 1);
+			m_minimalPolinom ^= GetGaloisNumberFromPower(getFieldSize(), pow);
+		}
+		else
+		{
+			m_minimalPolinom ^= 1 << el.getPow();
+		}
+	}
+
 	//std::cout<<std::endl << "minimal is " << std::bitset<8>(m_minimalPolinom)<<std::endl;
 
 }

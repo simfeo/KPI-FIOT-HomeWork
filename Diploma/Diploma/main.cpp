@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iomanip>
+#include <bitset>
 
 
 #include "GaloisFielsNumber.h"
@@ -28,7 +29,7 @@ int main(int argc, char** argv)
 
 	for (auto& el : numberVec)
 	{
-		std::cout <<std::setw(4)<< el.getNumber() << " " <<std::setw(5)<< el.getBinaryView() << " " <<std::setw(20)<< el.getAlgAdiitStr()<<" "<<std::setw(3)<<el.getPower()<<std::endl;
+		std::cout <<std::setw(4)<< el.getNumber() << " " <<std::setw(5)<< el.getBinaryView() << " " <<std::setw(20)<< el.getAlgAdiitStr()<<" "<<std::setw(3)<<el.getPower()<< " minimal polynom "<<std::bitset<8>(el.getMiminalPolinom())<<std::endl;
 	}
 
 	return 0;
