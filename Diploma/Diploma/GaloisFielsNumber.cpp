@@ -3,6 +3,8 @@
 #include <math.h>
 #include <algorithm>
 #include <sstream>
+#include <iostream>
+#include <set>
 
 
 bool GaloisFielsNumber::CheckGaloisParam(unsigned int fieldSize, unsigned int number)
@@ -236,9 +238,31 @@ void GaloisFielsNumber::calcPower()
 	}
 }
 
+/*
+static unsigned int multGF(unsigned int gfNumA, unsigned int gfNumB)
+{
+	unsigned int production = 0;
+	while (gfNumA && gfNumB)
+	{
+		if (gfNumB & 1)
+			production ^= gfNumA;
+		if (gfNumA & (1 << sizeof(unsigned int))) //overflow check
+		{
+			gfNumA = (gfNumA << 1) ^ primitive_polynoms::polynoms[getFieldSize()];
+		}
+		else
+		{
+			gfNumA <<= 1;
+		}
+		gfNumB >>= 1;
+	}
+	return production;
+}
+*/
+
 void GaloisFielsNumber::calcMiminal()
 {
-	std::vector<int> cyclotomicClasses;
+	std::set <int> cyclotomicClasses;
 	int s = getPower();
 	if (!s)
 	{
@@ -251,12 +275,24 @@ void GaloisFielsNumber::calcMiminal()
 	for (int i = 0; i < m; ++i)
 	{
 		int tmpPow = ((int)pow(p, i)) % ((int)pow(2, m));
-		cyclotomicClasses.push_back(s*tmpPow);
+		cyclotomicClasses.insert((s*tmpPow) % (((int)pow(2, m)) -1));
 	}
 
-	for (int i = 0; i < cyclotomicClasses.size(); ++i)
+	//std::sort(cyclotomicClasses.begin(), cyclotomicClasses.end());
+	std::cout << "power " << s << " ";
+	for (auto el : cyclotomicClasses)
 	{
-		int galoisNum = GetGaloisNumberFromPower(getFieldSize(), cyclotomicClasses[i]);
+		std::cout << el << " ";
+	}
+
+	std::cout << std::endl;
+	
+
+	m_minimalPolinom = 1;
+	for (int num: cyclotomicClasses)
+	{
+		int galoisNum = GetGaloisNumberFromPower(getFieldSize(), num);
+		//m_minimalPolinom *= (1+galoisNum)
 	}
 
 }
