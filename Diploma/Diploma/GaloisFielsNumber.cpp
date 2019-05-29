@@ -25,6 +25,40 @@ bool GaloisFielsNumber::CheckGaloisParam(unsigned int fieldSize, unsigned int nu
 	return true;
 }
 
+int GaloisFielsNumber::GetGaloisNumberFromPower(unsigned int fieldSize, unsigned int power)
+{
+	if (power < fieldSize)
+	{
+		return (int)pow(2,power);
+	}
+	else
+	{
+		power = 1 << power;
+	}
+
+	const unsigned int pm = primitive_polynoms::polynoms[fieldSize];
+
+	unsigned int pmShifted = pm;
+	while (true)
+	{
+		if ((power^pmShifted) > pmShifted)
+		{
+			pmShifted <<= 1;
+			continue;
+		}
+		else
+		{
+			power ^= pmShifted;
+			pmShifted = pm;
+		}
+		if (power < pm)
+		{
+			return power;
+		}
+	}
+
+}
+
 GaloisFielsNumber::GaloisFielsNumber(unsigned int fieldSize, unsigned int number):
 	m_gfSize(fieldSize),
 	m_number(number)
@@ -86,6 +120,8 @@ GaloisFielsNumber::GaloisFielsNumber(unsigned int fieldSize, unsigned int number
 		{
 			calcPower();
 		}
+
+		calcMiminal();
 	}
 }
 
@@ -102,6 +138,11 @@ const unsigned int GaloisFielsNumber::getPower() const
 const unsigned int GaloisFielsNumber::getFieldSize() const
 {
 	return m_gfSize;
+}
+
+const unsigned int GaloisFielsNumber::getMiminalPolinom() const
+{
+	return m_minimalPolinom;
 }
 
 const std::string GaloisFielsNumber::getBinaryView() const
@@ -193,4 +234,29 @@ void GaloisFielsNumber::calcPower()
 				break;
 		}
 	}
+}
+
+void GaloisFielsNumber::calcMiminal()
+{
+	std::vector<int> cyclotomicClasses;
+	int s = getPower();
+	if (!s)
+	{
+		m_minimalPolinom = (1 << 1) + GetGaloisNumberFromPower(getFieldSize(), getPower());
+		return;
+	}
+
+	int p = 2; // beacuse filed is binary
+	int m = getFieldSize();
+	for (int i = 0; i < m; ++i)
+	{
+		int tmpPow = ((int)pow(p, i)) % ((int)pow(2, m));
+		cyclotomicClasses.push_back(s*tmpPow);
+	}
+
+	for (int i = 0; i < cyclotomicClasses.size(); ++i)
+	{
+		int galoisNum = GetGaloisNumberFromPower(getFieldSize(), cyclotomicClasses[i]);
+	}
+
 }

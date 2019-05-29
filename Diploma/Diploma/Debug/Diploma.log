@@ -1,5 +1,6 @@
 ﻿  GaloisFielsNumber.cpp
-d:\sim\homework\diploma\diploma\galoisfielsnumber.cpp(32): warning C4018: '<': signed/unsigned mismatch
-d:\sim\homework\diploma\diploma\galoisfielsnumber.cpp(38): warning C4018: '<': signed/unsigned mismatch
-d:\sim\homework\diploma\diploma\galoisfielsnumber.cpp(77): warning C4018: '<=': signed/unsigned mismatch
+d:\sim\homework\diploma\diploma\galoisfielsnumber.cpp(66): warning C4018: '<': signed/unsigned mismatch
+d:\sim\homework\diploma\diploma\galoisfielsnumber.cpp(72): warning C4018: '<': signed/unsigned mismatch
+d:\sim\homework\diploma\diploma\galoisfielsnumber.cpp(111): warning C4018: '<=': signed/unsigned mismatch
+d:\sim\homework\diploma\diploma\galoisfielsnumber.cpp(257): warning C4018: '<': signed/unsigned mismatch
   Diploma.vcxproj -> D:\sim\homework\Diploma\Debug\Diploma.exe
