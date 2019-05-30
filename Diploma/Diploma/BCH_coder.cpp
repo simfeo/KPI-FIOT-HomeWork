@@ -4,7 +4,8 @@
 #include <math.h>
 #include <vector>
 #include <set>
-
+#include <memory>
+#include <stdint.h>
 
 
 
@@ -54,7 +55,7 @@ static std::vector<MultXA> createPolynomialEquation(int fieldSize, int t)
 	return polynom;
 }
 
-
+#pragma mark Encoder_Part
 
 BCH_Encoder::BCH_Encoder(const int fieldSize, const int t):
 	m_isSuccessful(true),
@@ -68,13 +69,17 @@ BCH_Encoder::BCH_Encoder(const int fieldSize, const int t):
 		m_isSuccessful = false;
 		return;
 	}
-
-
+	
 	auto polynom = createPolynomialEquation(fieldSize, t);
 	// find acutal g(x) for BCH
 	unsigned int gx = 0; //g(x) Least common multiple
 	for (auto el : polynom)
 	{
+		if (el.getPow() > (sizeof(m_polynom)*8 -1))
+		{
+			m_isSuccessful = false;
+			return;
+		}
 		gx ^= 1 << el.getPow();
 	}
 	m_polynom = gx;
@@ -119,4 +124,53 @@ int BCH_Encoder::getMessageLength() const
 int BCH_Encoder::getTotalLength() const
 {
 	return m_power+m_infoMessageLength;
+}
+
+std::vector<char> BCH_Encoder::encode(const uint64_t inMessage) const
+{
+	int nBites = getTotalLength()/sizeof(char)+1;
+
+	uint64_t Ra = inMessage; // division residue
+	uint64_t pmShifted = m_polynom;
+	while (true)
+	{
+		if ((Ra^pmShifted) > pmShifted)
+		{
+			pmShifted <<= 1;
+			continue;
+		}
+		else
+		{
+			Ra ^= pmShifted;
+			pmShifted = m_polynom;
+		}
+		if (Ra < m_polynom)
+		{
+			break;
+		}
+	}
+
+}
+
+#pragma mark Codec_Part
+
+BCH_Codec::BCH_Codec(const int fieldSize, const int t):
+	m_bch(BCH_Encoder(fieldSize, t))
+{
+}
+
+BCH_Codec::BCH_Codec(const BCH_Encoder & bch):
+	m_bch(bch)
+{
+
+}
+
+bool BCH_Codec::isEncoderSuccessfull()
+{
+	return m_bch.getIsSuccessful();
+}
+
+EncodedMessage BCH_Codec::Encode(std::vector<char> inMessage)
+{
+	return EncodedMessage();
 }
