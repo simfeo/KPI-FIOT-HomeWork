@@ -11,10 +11,11 @@
 #include <bitset>
 */
 
+#define MAX_GALOIS_FILED_SIZE 28 // have no primitive polynoms for more then 28 in table
 
 bool GaloisFielsNumber::CheckGaloisParam(unsigned int fieldSize, unsigned int number)
 {
-	if (fieldSize < 2)
+	if (fieldSize < 2 || fieldSize > MAX_GALOIS_FILED_SIZE)
 	{
 		return false;
 	}

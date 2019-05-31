@@ -5,9 +5,8 @@
 #include <vector>
 #include <set>
 #include <memory>
-#include <stdint.h>
 
-
+#define MAX_GALOIS_FILED_SIZE 28 // have no primitive polynoms for more then 28 in table
 
 static std::vector<MultXA> createPolynomialEquation(int fieldSize, int t)
 {
@@ -25,7 +24,7 @@ static std::vector<MultXA> createPolynomialEquation(int fieldSize, int t)
 	for (auto& pol : minimalsCoefs)
 	{
 		std::vector<MultXA> tmpPolynom;
-		for (int i = sizeof(pol) * 8; i >= 0; --i)
+		for (int i = sizeof(pol) * 8-1; i >= 0; --i)
 		{
 			decltype(pol) mask = 1 << i;
 			if (mask & pol)
@@ -40,12 +39,12 @@ static std::vector<MultXA> createPolynomialEquation(int fieldSize, int t)
 		else
 		{
 			std::vector<MultXA> newPolynom;
-			for (auto& el : polynom)
+			for (auto& el1 : polynom)
 			{
-				for (auto& el1 : tmpPolynom)
+				for (auto& el2 : tmpPolynom)
 				{
-					X x1(el.getPow());
-					X x2(el.getPow());
+					X x1(el1.getPow());
+					X x2(el2.getPow());
 					newPolynom.push_back(MultXA(MultXA::mult(x1, x2)));
 				}
 			}
@@ -61,8 +60,20 @@ BCH_Encoder::BCH_Encoder(const int fieldSize, const int t):
 	m_isSuccessful(true),
 	m_fieldSize(fieldSize)
 {
+	if (fieldSize > MAX_GALOIS_FILED_SIZE)
+	{
+		m_isSuccessful = false;
+		return;
+	}
+
 	int q = 2; //cause our code is binary
 	int n = (int)pow(2, fieldSize)-1;
+
+	if (n > sizeof(unsigned long)*8)
+	{
+		m_isSuccessful = false;
+		return;
+	}
 
 	if ((2 * t + 1) > n)
 	{
@@ -72,10 +83,10 @@ BCH_Encoder::BCH_Encoder(const int fieldSize, const int t):
 	
 	auto polynom = createPolynomialEquation(fieldSize, t);
 	// find acutal g(x) for BCH
-	unsigned int gx = 0; //g(x) Least common multiple
+	unsigned long gx = 0; //g(x) Least common multiple
 	for (auto el : polynom)
 	{
-		if (el.getPow() > (sizeof(m_polynom)*8 -1))
+		if (el.getPow() > (sizeof(m_polynom)*8 -2))
 		{
 			m_isSuccessful = false;
 			return;
@@ -86,7 +97,7 @@ BCH_Encoder::BCH_Encoder(const int fieldSize, const int t):
 
 	// power of g(x)
 	m_power = 0;
-	for (int i = sizeof(gx) * 8; i >= 0; --i)
+	for (int i = sizeof(gx) * 8 -1; i >= 0; --i)
 	{
 		decltype(gx) mask = 1 << i;
 		if (mask & gx)
@@ -95,6 +106,7 @@ BCH_Encoder::BCH_Encoder(const int fieldSize, const int t):
 			break;
 		}
 	}
+	m_infoMessageLength = n - m_power;
 }
 
 BCH_Encoder::BCH_Encoder(const BCH_Encoder & bchIn):
@@ -126,12 +138,11 @@ int BCH_Encoder::getTotalLength() const
 	return m_power+m_infoMessageLength;
 }
 
-std::vector<char> BCH_Encoder::encode(const uint64_t inMessage) const
+unsigned long BCH_Encoder::encode(const unsigned long inMessage) const
 {
-	int nBites = getTotalLength()/sizeof(char)+1;
 
-	uint64_t Ra = inMessage; // division residue
-	uint64_t pmShifted = m_polynom;
+	unsigned long Ra = inMessage; // division residue
+	unsigned long pmShifted = m_polynom;
 	while (true)
 	{
 		if ((Ra^pmShifted) > pmShifted)
@@ -149,6 +160,11 @@ std::vector<char> BCH_Encoder::encode(const uint64_t inMessage) const
 			break;
 		}
 	}
+
+	unsigned long resMessage = 0;
+	resMessage ^= Ra;
+	resMessage ^= inMessage;
+	return resMessage;
 
 }
 
@@ -170,7 +186,69 @@ bool BCH_Codec::isEncoderSuccessfull()
 	return m_bch.getIsSuccessful();
 }
 
-EncodedMessage BCH_Codec::Encode(std::vector<char> inMessage)
+unsigned char BCH_Codec::readBiteNum(const std::vector<unsigned char>& inMessage, unsigned int num) const
 {
-	return EncodedMessage();
+	if (num >= inMessage.size() * 8)
+	{
+		return false;
+	}
+
+	int vecpos = num / (sizeof(char) * 8);
+	int vecshift = (8-(num % (sizeof(char) * 8)))-1;
+
+	unsigned char mask = 1 << vecshift;
+	return (mask & inMessage[vecpos]) ? 1 : 0;
 }
+
+void BCH_Codec::writeBiteNum(std::vector<unsigned char>& outMessage, unsigned int num, unsigned char value)
+{
+	int vecpos = num / (sizeof(char) * 8);
+	int vecshift = (8 - (num % (sizeof(char) * 8))) - 1;
+
+	char mask = value << vecshift;
+	outMessage[vecpos] = outMessage[vecpos] ^ mask;
+}
+
+EncodedMessage BCH_Codec::Encode(const std::vector<unsigned char>& inMessage)
+{
+	EncodedMessage resMes;
+	if (!m_bch.getIsSuccessful())
+	{
+		resMes.totalLengthInBites = 0;
+		return resMes;
+	}
+
+	resMes.totalLengthInBites = ((inMessage.size() * sizeof(char)*8) / m_bch.getMessageLength())*m_bch.getTotalLength();
+	if ((inMessage.size() * sizeof(char) ) % m_bch.getMessageLength())
+	{
+		resMes.totalLengthInBites += m_bch.getTotalLength();
+	}
+
+	for (int i = 0; i < (resMes.totalLengthInBites + 7) / (sizeof(char)*8); ++i)
+	{
+		resMes.encodedMessage.push_back(char(0));
+	}
+
+	int currentPosRead = 0;
+	int currentPosWrite = 0;
+
+	while (currentPosWrite < (resMes.totalLengthInBites - 1))
+	{
+		unsigned long mess = 0;
+		for (int i = 0; i < m_bch.getMessageLength(); ++i)
+		{
+			mess = (mess << 1) ^ static_cast<unsigned long>(readBiteNum(inMessage, currentPosRead));
+			++currentPosRead;
+		}
+		unsigned long res = m_bch.encode(mess<<m_bch.getPower());
+		for (int i = m_bch.getTotalLength()-1; i >=0 ; --i)
+		{
+			unsigned long mask = 1 << i;
+
+			writeBiteNum(resMes.encodedMessage, currentPosWrite, (res&mask) ? 1 : 0);
+			++currentPosWrite;
+		}
+	}
+	return resMes;
+}
+
