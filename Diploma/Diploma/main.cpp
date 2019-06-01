@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 		std::cout <<std::setw(4)<< el.getNumber() << " " <<std::setw(5)<< el.getBinaryView() << " " <<std::setw(20)<< el.getAlgAdiitStr()<<" "<<std::setw(3)<<el.getPower()<< " minimal polynom "<<std::bitset<8>(el.getMiminalPolinom())<<std::endl;
 	}
 
-	std::vector<unsigned char> sim = { 's','i','m' };
+	std::vector<unsigned char> sim = { 'k','a','t','y','a'};
 
 	BCH_Codec bb (4, 2);
 	

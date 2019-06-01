@@ -150,6 +150,7 @@ unsigned long BCH_EncoderDecoder::encode(const unsigned long inMessage) const
 
 	unsigned long Ra = inMessage; // division residue
 	unsigned long pmShifted = m_polynom;
+	unsigned long stopSign = 1 << getPower();
 	while (true)
 	{
 		if ((Ra^pmShifted) > pmShifted)
@@ -162,7 +163,7 @@ unsigned long BCH_EncoderDecoder::encode(const unsigned long inMessage) const
 			Ra ^= pmShifted;
 			pmShifted = m_polynom;
 		}
-		if (Ra < m_polynom)
+		if (Ra < stopSign)
 		{
 			break;
 		}
@@ -181,6 +182,7 @@ unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
 
 	unsigned long Ra = inMessage; // division residue
 	unsigned long pmShifted = m_polynom;
+	unsigned long stopSign = 1 << getPower();
 	while (true)
 	{
 		if ((Ra^pmShifted) > pmShifted)
@@ -193,7 +195,7 @@ unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
 			Ra ^= pmShifted;
 			pmShifted = m_polynom;
 		}
-		if (Ra < m_polynom)
+		if (Ra < stopSign)
 		{
 			break;
 		}
@@ -271,6 +273,8 @@ void BCH_Codec::writeBiteNumToEmptyVec(std::vector<unsigned char>& outMessage, u
 }
 
 
+#include <iostream>
+#include <bitset>
 
 EncodedMessage BCH_Codec::Encode(const std::vector<unsigned char>& inMessage) const 
 {
@@ -367,7 +371,6 @@ std::vector<unsigned char> BCH_Codec::Decode(const EncodedMessage inMessage)
 			return std::vector<unsigned char>();
 		}
 	}
-
 	return decodedMessage;
 }
 
