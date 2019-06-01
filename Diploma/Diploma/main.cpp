@@ -40,5 +40,7 @@ int main(int argc, char** argv)
 	
 	auto res = bb.Encode(sim);
 
+	auto decoded = bb.Decode(res);
+
 	return 0;
 }

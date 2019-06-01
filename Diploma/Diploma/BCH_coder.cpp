@@ -56,8 +56,9 @@ static std::vector<MultXA> createPolynomialEquation(int fieldSize, int t)
 
 #pragma mark Encoder_Part
 
-BCH_Encoder::BCH_Encoder(const int fieldSize, const int t):
+BCH_EncoderDecoder::BCH_EncoderDecoder(const int fieldSize, const int t) :
 	m_isSuccessful(true),
+	m_isDecodeSuccessful(false),
 	m_fieldSize(fieldSize)
 {
 	if (fieldSize > MAX_GALOIS_FILED_SIZE)
@@ -109,36 +110,42 @@ BCH_Encoder::BCH_Encoder(const int fieldSize, const int t):
 	m_infoMessageLength = n - m_power;
 }
 
-BCH_Encoder::BCH_Encoder(const BCH_Encoder & bchIn):
+BCH_EncoderDecoder::BCH_EncoderDecoder(const BCH_EncoderDecoder & bchIn):
 	m_power(bchIn.m_power),
 	m_polynom(bchIn.m_polynom),
 	m_isSuccessful(bchIn.m_isSuccessful),
+	m_isDecodeSuccessful(bchIn.m_isDecodeSuccessful),
 	m_infoMessageLength(bchIn.m_infoMessageLength),
 	m_fieldSize(bchIn.m_fieldSize)
 {
 }
 
-bool BCH_Encoder::getIsSuccessful() const
+bool BCH_EncoderDecoder::getIsEncoderDecoderConstucted() const
 {
 	return m_isSuccessful;
 }
 
-int BCH_Encoder::getPower() const
+bool BCH_EncoderDecoder::getIsLastDecodeSucessful() const
+{
+	return m_isDecodeSuccessful;
+}
+
+int BCH_EncoderDecoder::getPower() const
 {
 	return m_power;
 }
 
-int BCH_Encoder::getMessageLength() const
+int BCH_EncoderDecoder::getMessageLength() const
 {
 	return m_infoMessageLength;
 }
 
-int BCH_Encoder::getTotalLength() const
+int BCH_EncoderDecoder::getTotalLength() const
 {
 	return m_power+m_infoMessageLength;
 }
 
-unsigned long BCH_Encoder::encode(const unsigned long inMessage) const
+unsigned long BCH_EncoderDecoder::encode(const unsigned long inMessage) const
 {
 
 	unsigned long Ra = inMessage; // division residue
@@ -168,22 +175,57 @@ unsigned long BCH_Encoder::encode(const unsigned long inMessage) const
 
 }
 
+unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
+{
+	m_isDecodeSuccessful = false;
+
+	unsigned long Ra = inMessage; // division residue
+	unsigned long pmShifted = m_polynom;
+	while (true)
+	{
+		if ((Ra^pmShifted) > pmShifted)
+		{
+			pmShifted <<= 1;
+			continue;
+		}
+		else
+		{
+			Ra ^= pmShifted;
+			pmShifted = m_polynom;
+		}
+		if (Ra < m_polynom)
+		{
+			break;
+		}
+	}
+
+	if (Ra == 0)
+	{
+		m_isDecodeSuccessful = true;
+		unsigned long resMessage = 0;
+		resMessage = inMessage >> getPower();
+		return resMessage;
+	}
+
+	return 0;
+}
+
 #pragma mark Codec_Part
 
 BCH_Codec::BCH_Codec(const int fieldSize, const int t):
-	m_bch(BCH_Encoder(fieldSize, t))
+	m_bch(BCH_EncoderDecoder(fieldSize, t))
 {
 }
 
-BCH_Codec::BCH_Codec(const BCH_Encoder & bch):
+BCH_Codec::BCH_Codec(const BCH_EncoderDecoder & bch):
 	m_bch(bch)
 {
 
 }
 
-bool BCH_Codec::isEncoderSuccessfull()
+bool BCH_Codec::isEncoderSuccessfull() const 
 {
-	return m_bch.getIsSuccessful();
+	return m_bch.getIsEncoderDecoderConstucted();
 }
 
 unsigned char BCH_Codec::readBiteNum(const std::vector<unsigned char>& inMessage, unsigned int num) const
@@ -200,7 +242,7 @@ unsigned char BCH_Codec::readBiteNum(const std::vector<unsigned char>& inMessage
 	return (mask & inMessage[vecpos]) ? 1 : 0;
 }
 
-void BCH_Codec::writeBiteNum(std::vector<unsigned char>& outMessage, unsigned int num, unsigned char value)
+void BCH_Codec::writeBiteNum(std::vector<unsigned char>& outMessage, unsigned int num, unsigned char value) const
 {
 	int vecpos = num / (sizeof(char) * 8);
 	int vecshift = (8 - (num % (sizeof(char) * 8))) - 1;
@@ -209,10 +251,31 @@ void BCH_Codec::writeBiteNum(std::vector<unsigned char>& outMessage, unsigned in
 	outMessage[vecpos] = outMessage[vecpos] ^ mask;
 }
 
-EncodedMessage BCH_Codec::Encode(const std::vector<unsigned char>& inMessage)
+void BCH_Codec::writeBiteNumToEmptyVec(std::vector<unsigned char>& outMessage, unsigned int num, unsigned char value) const
+{
+	int vecpos = num / (sizeof(char) * 8);
+	int vecshift = (8 - (num % (sizeof(char) * 8))) - 1;
+
+	if (outMessage.empty())
+	{
+		outMessage.push_back(0);
+	}
+
+	while (outMessage.size() <= vecpos)
+	{
+		outMessage.push_back(0);
+	}
+	
+	char mask = value << vecshift;
+	outMessage[vecpos] = outMessage[vecpos] ^ mask;
+}
+
+
+
+EncodedMessage BCH_Codec::Encode(const std::vector<unsigned char>& inMessage) const 
 {
 	EncodedMessage resMes;
-	if (!m_bch.getIsSuccessful())
+	if (!m_bch.getIsEncoderDecoderConstucted())
 	{
 		resMes.totalLengthInBites = 0;
 		return resMes;
@@ -235,12 +298,15 @@ EncodedMessage BCH_Codec::Encode(const std::vector<unsigned char>& inMessage)
 	while (currentPosWrite < (resMes.totalLengthInBites - 1))
 	{
 		unsigned long mess = 0;
+		// read block
 		for (int i = 0; i < m_bch.getMessageLength(); ++i)
 		{
 			mess = (mess << 1) ^ static_cast<unsigned long>(readBiteNum(inMessage, currentPosRead));
 			++currentPosRead;
 		}
+		// encode block
 		unsigned long res = m_bch.encode(mess<<m_bch.getPower());
+		// store encoded data
 		for (int i = m_bch.getTotalLength()-1; i >=0 ; --i)
 		{
 			unsigned long mask = 1 << i;
@@ -249,6 +315,59 @@ EncodedMessage BCH_Codec::Encode(const std::vector<unsigned char>& inMessage)
 			++currentPosWrite;
 		}
 	}
+	resMes.originalMessageLenghtInBites = inMessage.size()*8;
 	return resMes;
+}
+
+std::vector<unsigned char> BCH_Codec::Decode(const EncodedMessage inMessage)
+{
+	if (!m_bch.getIsEncoderDecoderConstucted())
+	{
+		return std::vector<unsigned char>();
+	}
+
+	if (inMessage.encodedMessage.size() == 0 || inMessage.originalMessageLenghtInBites == 0)
+	{
+		return std::vector<unsigned char>();
+	}
+
+	std::vector<unsigned char> decodedMessage;
+
+	int currentPosRead = 0;
+	int currentPosWrite = 0;
+
+	while (currentPosRead < (inMessage.totalLengthInBites - 1))
+	{
+		unsigned long mess = 0;
+		// read block
+		for (int i = 0; i < m_bch.getTotalLength(); ++i)
+		{
+			mess = (mess << 1) ^ static_cast<unsigned long>(readBiteNum(inMessage.encodedMessage, currentPosRead));
+			++currentPosRead;
+		}
+		// encode block
+		unsigned long res = m_bch.decode(mess);
+		if (m_bch.getIsLastDecodeSucessful())
+		{
+			// store encoded data
+			for (int i = m_bch.getMessageLength() - 1; i >= 0; --i)
+			{
+				unsigned long mask = 1 << i;
+
+				writeBiteNumToEmptyVec(decodedMessage, currentPosWrite, (res&mask) ? 1 : 0);
+				++currentPosWrite;
+				if (currentPosWrite >= inMessage.originalMessageLenghtInBites)
+				{
+					break;
+				}
+			}
+		}
+		else
+		{
+			return std::vector<unsigned char>();
+		}
+	}
+
+	return decodedMessage;
 }
 
