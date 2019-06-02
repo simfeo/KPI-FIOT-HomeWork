@@ -1,6 +1,6 @@
 #include "BCH_coder.h"
 #include "MultXA.h"
-#include "GaloisFielsNumber.h"
+#include "GaloisFieldNumber.h"
 #include <math.h>
 #include <vector>
 #include <set>
@@ -11,11 +11,11 @@
 static std::vector<MultXA> createPolynomialEquation(int fieldSize, int t)
 {
 	// find unique roots of g(x)
-	std::vector<GaloisFielsNumber> galoisNumbers;
+	std::vector<GaloisFieldNumber> galoisNumbers;
 	std::set<unsigned int> minimalsCoefs;
 	for (int i = 1; i < 2 * t + 1; ++i)
 	{
-		galoisNumbers.push_back(GaloisFielsNumber(fieldSize, GaloisFielsNumber::GetGaloisNumberFromPower(fieldSize, i)));
+		galoisNumbers.push_back(GaloisFieldNumber(fieldSize, GaloisFieldNumber::GetGaloisNumberFromPower(fieldSize, i)));
 		minimalsCoefs.insert(galoisNumbers[i - 1].getMiminalPolinom());
 	}
 
@@ -59,7 +59,8 @@ static std::vector<MultXA> createPolynomialEquation(int fieldSize, int t)
 BCH_EncoderDecoder::BCH_EncoderDecoder(const int fieldSize, const int t) :
 	m_isSuccessful(true),
 	m_isDecodeSuccessful(false),
-	m_fieldSize(fieldSize)
+	m_fieldSize(fieldSize),
+	m_maxErrorsNum(t)
 {
 	if (fieldSize > MAX_GALOIS_FILED_SIZE)
 	{
@@ -116,7 +117,8 @@ BCH_EncoderDecoder::BCH_EncoderDecoder(const BCH_EncoderDecoder & bchIn):
 	m_isSuccessful(bchIn.m_isSuccessful),
 	m_isDecodeSuccessful(bchIn.m_isDecodeSuccessful),
 	m_infoMessageLength(bchIn.m_infoMessageLength),
-	m_fieldSize(bchIn.m_fieldSize)
+	m_fieldSize(bchIn.m_fieldSize),
+	m_maxErrorsNum(bchIn.m_maxErrorsNum)
 {
 }
 
@@ -208,6 +210,83 @@ unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
 		resMessage = inMessage >> getPower();
 		return resMessage;
 	}
+
+	return 0;
+}
+
+unsigned long BCH_EncoderDecoder::tryToWithDecodeErrors(const unsigned long inMessage)
+{
+	std::vector<GaloisFieldNumber> syndromes;
+	for (int j = 1; j < 2 * m_maxErrorsNum + 1; ++j)
+	{
+		unsigned long syndrome = 0;
+		for (int i = 0; i < getTotalLength(); ++i)
+		{
+			unsigned long mask = 1 << i;
+			if (mask&inMessage)
+			{
+				unsigned int power = (i * j) % ((unsigned int)pow(2, m_fieldSize) - 1);
+				GaloisFieldNumber gfn (m_fieldSize, GaloisFieldNumber::GetGaloisNumberFromPower(m_fieldSize, power));
+				syndrome ^= gfn.getNumber();
+			}
+		}
+		syndromes.push_back(GaloisFieldNumber(m_fieldSize, syndrome));
+	}
+
+	std::vector<GaloisFieldNumber> cx, bx, tx;
+	
+	for (int i = 0; i < 2 * m_maxErrorsNum; ++i)
+	{
+		cx.push_back(GaloisFieldNumber(m_fieldSize, 1));
+	}
+	bx = cx;
+
+	GaloisFieldNumber b (m_fieldSize, 1);
+
+	int L = 0; //current found errors
+	int m = -1;
+	unsigned long N = syndromes.size();
+
+	for (unsigned long n = 1; n < N; ++n)
+	{
+		GaloisFieldNumber d = syndromes[n];
+		for (int k = 1; k <= L; ++k)
+		{
+			d = d + cx[k] * syndromes[n - k];
+		}
+
+		//--------------------------------------------------------
+		if (d.getPower() == 0) // d.getNumber() == 1
+		{
+			tx = cx;
+			for (unsigned int i = 0; (i + n - m) < N; ++i)
+			{
+				cx[n - m + i] = cx[n - m + i] + bx[i];
+			}
+
+			if (2 * L <= n)
+			{
+				L = n + 1 - L;
+				m = n;
+				bx = tx;
+			}
+		}
+	}
+
+	GaloisFieldNumber cxlast = cx[cx.size() - 1];
+
+	unsigned int deg = 0;
+
+	for (unsigned long i = 0; i < sizeof(unsigned long) * 8 - 1; ++i)
+	{
+		unsigned long mask = 1 << i;
+		if (cxlast.getNumber()&mask)
+		{
+			++deg;
+		}
+	}
+
+
 
 	return 0;
 }

@@ -24,18 +24,24 @@ public:
 	unsigned long encode(const unsigned long inMessage) const;
 	unsigned long decode(const unsigned long inMessage);
 private:
+	unsigned long tryToWithDecodeErrors(const unsigned long inMessage);
+
+
 	// flag to check is encoder created correctly
 	bool			m_isSuccessful;
 	// flag to check is encoder created correctly
 	bool			m_isDecodeSuccessful;
-	// gx - minimal polynomial for galois number
-	unsigned long long	m_polynom;
 	// size of galois field
 	int				m_fieldSize;
 	// power of gx
 	int				m_power; 
 	// lenght in bites how many bites of info message can be encoded
 	int				m_infoMessageLength;
+	// max erorrors number
+	int				m_maxErrorsNum;
+	// gx - minimal polynomial for galois number
+	unsigned long long	m_polynom;
+
 };
 
 struct EncodedMessage

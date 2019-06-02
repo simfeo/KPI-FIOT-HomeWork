@@ -7,21 +7,21 @@
 #include <bitset>
 
 
-#include "GaloisFielsNumber.h"
+#include "GaloisFieldNumber.h"
 
 #include "BCH_coder.h"
 
 int main(int argc, char** argv)
 {
 	int n = 4;
-	std::vector<GaloisFielsNumber> numberVec;
+	std::vector<GaloisFieldNumber> numberVec;
 	std::vector<std::string> numberVectorVec;
 	int nSize = static_cast<int>(pow(2, n));
 	for (int i =0; i < nSize; ++i)
 	{
-		if (GaloisFielsNumber::CheckGaloisParam(n, i))
+		if (GaloisFieldNumber::CheckGaloisParam(n, i))
 		{
-			numberVec.push_back(GaloisFielsNumber(n, i));
+			numberVec.push_back(GaloisFieldNumber(n, i));
 		}
 		else
 		{

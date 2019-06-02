@@ -1,4 +1,4 @@
-#include "GaloisFielsNumber.h"
+#include "GaloisFieldNumber.h"
 #include "PrimitiveGroups.h"
 #include "MultXA.h"
 #include <math.h>
@@ -13,7 +13,7 @@
 
 #define MAX_GALOIS_FILED_SIZE 28 // have no primitive polynoms for more then 28 in table
 
-bool GaloisFielsNumber::CheckGaloisParam(unsigned int fieldSize, unsigned int number)
+bool GaloisFieldNumber::CheckGaloisParam(unsigned int fieldSize, unsigned int number)
 {
 	if (fieldSize < 2 || fieldSize > MAX_GALOIS_FILED_SIZE)
 	{
@@ -33,7 +33,7 @@ bool GaloisFielsNumber::CheckGaloisParam(unsigned int fieldSize, unsigned int nu
 	return true;
 }
 
-int GaloisFielsNumber::GetGaloisNumberFromPower(unsigned int fieldSize, unsigned int power)
+int GaloisFieldNumber::GetGaloisNumberFromPower(unsigned int fieldSize, unsigned int power)
 {
 	if (power < fieldSize)
 	{
@@ -67,7 +67,7 @@ int GaloisFielsNumber::GetGaloisNumberFromPower(unsigned int fieldSize, unsigned
 
 }
 
-GaloisFielsNumber::GaloisFielsNumber(unsigned int fieldSize, unsigned int number):
+GaloisFieldNumber::GaloisFieldNumber(unsigned int fieldSize, unsigned int number):
 	m_gfSize(fieldSize),
 	m_number(number)
 {
@@ -133,27 +133,27 @@ GaloisFielsNumber::GaloisFielsNumber(unsigned int fieldSize, unsigned int number
 	}
 }
 
-const unsigned int GaloisFielsNumber::getNumber() const
+const unsigned int GaloisFieldNumber::getNumber() const
 {
 	return m_number;
 }
 
-const unsigned int GaloisFielsNumber::getPower() const
+const unsigned int GaloisFieldNumber::getPower() const
 {
 	return m_power;
 }
 
-const unsigned int GaloisFielsNumber::getFieldSize() const
+const unsigned int GaloisFieldNumber::getFieldSize() const
 {
 	return m_gfSize;
 }
 
-const unsigned int GaloisFielsNumber::getMiminalPolinom() const
+const unsigned int GaloisFieldNumber::getMiminalPolinom() const
 {
 	return m_minimalPolinom;
 }
 
-const std::string GaloisFielsNumber::getBinaryView() const
+const std::string GaloisFieldNumber::getBinaryView() const
 {
 	std::stringstream sbuf;
 	for (unsigned int i =0; i < m_binary.size(); ++i)
@@ -163,43 +163,43 @@ const std::string GaloisFielsNumber::getBinaryView() const
 	return sbuf.str();
 }
 
-const std::string GaloisFielsNumber::getAlgAdiitStr() const
+const std::string GaloisFieldNumber::getAlgAdiitStr() const
 {
 	return m_algAdditStr;
 }
 
-GaloisFielsNumber GaloisFielsNumber::operator+(const GaloisFielsNumber & gfR)
+GaloisFieldNumber GaloisFieldNumber::operator+(const GaloisFieldNumber & gfR)
 {
 	int m_new_num = m_number ^ gfR.getNumber();
 	if (getFieldSize() == gfR.getFieldSize())
 	{
-		return GaloisFielsNumber(m_gfSize, m_new_num);
+		return GaloisFieldNumber(m_gfSize, m_new_num);
 	}
-	return GaloisFielsNumber(std::max(m_gfSize, gfR.getFieldSize()), m_new_num);
+	return GaloisFieldNumber(std::max(m_gfSize, gfR.getFieldSize()), m_new_num);
 }
 
-GaloisFielsNumber GaloisFielsNumber::operator-(const GaloisFielsNumber& gfR)
+GaloisFieldNumber GaloisFieldNumber::operator-(const GaloisFieldNumber& gfR)
 {
 	return *this + gfR;
 }
 
-GaloisFielsNumber GaloisFielsNumber::operator*(const GaloisFielsNumber & gfR)
+GaloisFieldNumber GaloisFieldNumber::operator*(const GaloisFieldNumber & gfR)
 {
 	int new_pow = getPower() + gfR.getPower();
 	new_pow %= ((int)pow(2,getFieldSize())-1);
 	int num = GetGaloisNumberFromPower(getFieldSize(), new_pow);
-	return GaloisFielsNumber(getFieldSize(), num);
+	return GaloisFieldNumber(getFieldSize(), num);
 }
 
-GaloisFielsNumber GaloisFielsNumber::operator/(const GaloisFielsNumber & gfR)
+GaloisFieldNumber GaloisFieldNumber::operator/(const GaloisFieldNumber & gfR)
 {
 	int new_pow = getPower() - gfR.getPower();
 	new_pow = new_pow > 0 ? new_pow : new_pow + (int)pow(2, getFieldSize())-1;
 	int num = GetGaloisNumberFromPower(getFieldSize(), new_pow);
-	return GaloisFielsNumber(getFieldSize(), num);
+	return GaloisFieldNumber(getFieldSize(), num);
 }
 
-void GaloisFielsNumber::calcPower()
+void GaloisFieldNumber::calcPower()
 {
 	const unsigned int pm = primitive_polynoms::polynoms[getFieldSize()];
 	unsigned int cand = 0;
@@ -252,7 +252,7 @@ static unsigned int multGF(unsigned int gfNumA, unsigned int gfNumB, unsigned in
 }
 
 
-void GaloisFielsNumber::calcMiminal()
+void GaloisFieldNumber::calcMiminal()
 {
 	std::set <int> cyclotomicClasses;
 	int s = getPower();
