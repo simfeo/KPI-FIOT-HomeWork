@@ -185,6 +185,11 @@ GaloisFieldNumber GaloisFieldNumber::operator-(const GaloisFieldNumber& gfR)
 
 GaloisFieldNumber GaloisFieldNumber::operator*(const GaloisFieldNumber & gfR)
 {
+	if (getNumber() == 0 || gfR.getNumber() == 0)
+	{
+		return GaloisFieldNumber(getFieldSize(), 0);
+	}
+
 	int new_pow = getPower() + gfR.getPower();
 	new_pow %= ((int)pow(2,getFieldSize())-1);
 	int num = GetGaloisNumberFromPower(getFieldSize(), new_pow);

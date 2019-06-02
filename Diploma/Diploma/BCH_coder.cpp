@@ -208,6 +208,8 @@ unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
 		m_isDecodeSuccessful = true;
 		unsigned long resMessage = 0;
 		resMessage = inMessage >> getPower();
+
+		tryToWithDecodeErrors(inMessage^(1<<3));
 		return resMessage;
 	}
 
@@ -235,33 +237,33 @@ unsigned long BCH_EncoderDecoder::tryToWithDecodeErrors(const unsigned long inMe
 
 	std::vector<GaloisFieldNumber> cx, bx, tx;
 	
-	for (int i = 0; i < 2 * m_maxErrorsNum; ++i)
+	cx.push_back(GaloisFieldNumber(m_fieldSize, 1));
+	for (int i = 1; i < 2 * m_maxErrorsNum; ++i)
 	{
-		cx.push_back(GaloisFieldNumber(m_fieldSize, 1));
+		cx.push_back(GaloisFieldNumber(m_fieldSize, 0));
 	}
 	bx = cx;
 
-	GaloisFieldNumber b (m_fieldSize, 1);
-
+	GaloisFieldNumber d (m_fieldSize, 0);
 	int L = 0; //current found errors
 	int m = -1;
 	unsigned long N = syndromes.size();
 
-	for (unsigned long n = 1; n < N; ++n)
+	for (unsigned long n = 0; n < N; ++n)
 	{
-		GaloisFieldNumber d = syndromes[n];
-		for (int k = 1; k <= L; ++k)
+		for (int k = 0; k <= L; ++k)
 		{
 			d = d + cx[k] * syndromes[n - k];
 		}
 
 		//--------------------------------------------------------
-		if (d.getPower() == 0) // d.getNumber() == 1
+		if (d.getPower() != 0) // d.getNumber() == 1
 		{
 			tx = cx;
 			for (unsigned int i = 0; (i + n - m) < N; ++i)
 			{
-				cx[n - m + i] = cx[n - m + i] + bx[i];
+				int index = n - m + i;
+				cx[index] = cx[index] + bx[i];
 			}
 
 			if (2 * L <= n)
