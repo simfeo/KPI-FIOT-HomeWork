@@ -235,45 +235,135 @@ unsigned long BCH_EncoderDecoder::tryToWithDecodeErrors(const unsigned long inMe
 		syndromes.push_back(GaloisFieldNumber(m_fieldSize, syndrome));
 	}
 
-	std::vector<GaloisFieldNumber> cx, bx, tx;
+	std::vector<GaloisFieldNumber> cx, bx, dx, tx;
 	
 	cx.push_back(GaloisFieldNumber(m_fieldSize, 1));
-	for (int i = 1; i < 2 * m_maxErrorsNum; ++i)
+	for (int i = 1; i <= 2 * m_maxErrorsNum; ++i)
 	{
 		cx.push_back(GaloisFieldNumber(m_fieldSize, 0));
 	}
 	bx = cx;
-
-	GaloisFieldNumber d (m_fieldSize, 0);
+	tx.reserve(cx.size());
+	/*
 	int L = 0; //current found errors
 	int m = -1;
 	unsigned long N = syndromes.size();
 
+	
 	for (unsigned long n = 0; n < N; ++n)
 	{
-		for (int k = 0; k <= L; ++k)
+		GaloisFieldNumber d = syndromes[n];
+		for (int k = 1; k <= L; ++k)
 		{
-			d = d + cx[k] * syndromes[n - k];
+			int index = n - 1;
+			d = d + cx[k] * syndromes[index];
 		}
 
 		//--------------------------------------------------------
 		if (d.getPower() != 0) // d.getNumber() == 1
 		{
 			tx = cx;
-			for (unsigned int i = 0; (i + n - m) < N; ++i)
+			int topInd = n - m;
+			for (unsigned int i = 0; (i + topInd) < N; ++i)
 			{
 				int index = n - m + i;
-				cx[index] = cx[index] + bx[i];
+				cx[index] = cx[index] + bx[i]*GaloisFieldNumber(m_fieldSize, GaloisFieldNumber::GetGaloisNumberFromPower(m_fieldSize, topInd));
 			}
 
-			if (2 * L <= n)
+			if (L <= (n/2))
 			{
 				L = n + 1 - L;
 				m = n;
 				bx = tx;
 			}
 		}
+		*/
+
+	/*
+	unsigned int L = 0;
+	dx[0] = syndromes[0];
+	for (int r = 0; r < 2 * m_maxErrorsNum; ++r)
+	{
+		GaloisFieldNumber d = syndromes[r - 1];
+		for (int j = 0; j < L; ++j)
+		{
+			GaloisFieldNumber add = cx[j] * syndromes[r - j - 1];
+			d = d + add;
+			if (j == L - 1)
+			{
+				dx[j] = d;
+			}
+		}
+		
+
+		if (dx[r].getPower() != 0)
+		{
+			tx[r] = cx[r] + dx[r] * bx[r];
+
+			if (r >= 2 * L)
+			{
+
+			}
+			else
+			{
+				cx = tx;
+				for (int i = 0; i <= r; ++i)
+				{
+					bx[i] = bx[i] * GaloisFieldNumber(m_fieldSize, );
+				}
+			}
+
+		}
+		else
+		{
+			bx[r]=
+		}
+
 	}
+	
+	}
+	*/
+
+	int m = -1;
+	unsigned int L = 0;
+	for (int r = 1; r <= m_maxErrorsNum*2; ++r)
+	{
+
+		GaloisFieldNumber d = syndromes[r-1];
+
+		for (int i = 1; i <= L ; ++i)
+		{
+			d = d + cx[i] * syndromes[r - i - 1];
+		}
+
+		if (d.getNumber() != 0)
+		{
+			GaloisFieldNumber t = cx[r-1]+d*GaloisFieldNumber(m_fieldSize,2)*bx[r-1];
+			
+			if (2*L <= r-1)
+			{
+				L = r-L;
+				unsigned int dd = d.getPower();
+				unsigned int gpow = (unsigned int)pow(2, m_fieldSize)-1;
+				dd *= gpow - 2;
+				dd %= gpow;
+				bx[r] = GaloisFieldNumber(m_fieldSize, GaloisFieldNumber::GetGaloisNumberFromPower(m_fieldSize, dd))*cx[r - 1];
+				cx[r] = t;
+			}
+			else
+			{
+				cx[r] = t;
+				bx[r] = GaloisFieldNumber(m_fieldSize, 2)*bx[r - 1];
+			}
+		}
+		else
+		{
+			cx[r] = cx[r-1];
+			bx[r] = GaloisFieldNumber(m_fieldSize, 2)*bx[r - 1];
+		}
+
+	}
+
 
 	GaloisFieldNumber cxlast = cx[cx.size() - 1];
 
