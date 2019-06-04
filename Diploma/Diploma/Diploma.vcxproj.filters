@@ -21,12 +21,24 @@
     <ClCompile Include="GaloisFielsNumber.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BCH_coder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultXA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GaloisFielsNumber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PrimitiveGroups.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BCH_coder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultXA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

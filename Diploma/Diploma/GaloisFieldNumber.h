@@ -5,13 +5,13 @@
 /*
  * This class represents galois number in filed size n
 */
-class GaloisFielsNumber
+class GaloisFieldNumber
 {
 public:
 	// Check aparma of galois filed before creation
 	static bool CheckGaloisParam(unsigned int fieldSize, unsigned int number);
 	static int  GetGaloisNumberFromPower(unsigned int fieldSize, unsigned int power);
-	GaloisFielsNumber(unsigned int fieldSize, unsigned int number);
+	GaloisFieldNumber(unsigned int fieldSize, unsigned int number);
 	const unsigned int	getNumber() const;
 	const unsigned int	getPower() const;
 	const unsigned int	getFieldSize() const;
@@ -19,10 +19,10 @@ public:
 	const std::string	getBinaryView() const;
 	const std::string	getAlgAdiitStr() const;
 
-	GaloisFielsNumber operator+(const GaloisFielsNumber& gfR);
-	GaloisFielsNumber operator-(const GaloisFielsNumber& gfR);
-	GaloisFielsNumber operator*(const GaloisFielsNumber& gfR);
-	GaloisFielsNumber operator/(const GaloisFielsNumber& gfR);
+	GaloisFieldNumber operator+(const GaloisFieldNumber& gfR);
+	GaloisFieldNumber operator-(const GaloisFieldNumber& gfR);
+	GaloisFieldNumber operator*(const GaloisFieldNumber& gfR);
+	GaloisFieldNumber operator/(const GaloisFieldNumber& gfR);
 
 private:
 	void calcPower();
