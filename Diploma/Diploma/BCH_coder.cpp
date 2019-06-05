@@ -251,12 +251,8 @@ unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
 {
 	m_isDecodeSuccessful = false;
 
-	unsigned long mm = inMessage;
-	mm ^= 1<<10;
-	mm ^= 1 << 3;
-
 	unsigned long stopSign = 1 << getPower();
-	unsigned long Ra = getRemainder(mm, m_polynom, stopSign);
+	unsigned long Ra = getRemainder(inMessage, m_polynom, stopSign);
 
 	
 	if (Ra == 0)
@@ -270,7 +266,7 @@ unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
 	else
 	{
 		unsigned long resMessage = 0;
-		return calcOrig(mm, m_maxErrorsNum);
+		return calcOrig(inMessage, m_maxErrorsNum);
 	}
 
 	return 0;
