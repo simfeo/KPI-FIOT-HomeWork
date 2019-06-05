@@ -116,13 +116,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BCH_coder.cpp" />
-    <ClCompile Include="GaloisFielsNumber.cpp" />
+    <ClCompile Include="GaloisFieldNumber.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MultXA.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BCH_coder.h" />
-    <ClInclude Include="GaloisFielsNumber.h" />
+    <ClInclude Include="GaloisFieldNumber.h" />
     <ClInclude Include="MultXA.h" />
     <ClInclude Include="PrimitiveGroups.h" />
   </ItemGroup>

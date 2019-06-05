@@ -178,13 +178,11 @@ unsigned long BCH_EncoderDecoder::encode(const unsigned long inMessage) const
 
 }
 
-unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
+static unsigned long getRemainder(const unsigned long inMessage, const unsigned long polynom,  const unsigned long stopSign)
 {
-	m_isDecodeSuccessful = false;
 
 	unsigned long Ra = inMessage; // division residue
-	unsigned long pmShifted = m_polynom;
-	unsigned long stopSign = 1 << getPower();
+	unsigned long pmShifted = polynom;
 	while (true)
 	{
 		if ((Ra^pmShifted) > pmShifted)
@@ -195,22 +193,84 @@ unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
 		else
 		{
 			Ra ^= pmShifted;
-			pmShifted = m_polynom;
+			pmShifted = polynom;
 		}
 		if (Ra < stopSign)
 		{
 			break;
 		}
 	}
+	return Ra;
+}
 
+
+static unsigned int getDegree(unsigned long polynom)
+{
+	unsigned int deg = 0;
+	for (unsigned long i = 0; i < sizeof(unsigned long) * 8 - 1; ++i)
+	{
+		unsigned long mask = 1 << i;
+		if (polynom & mask)
+		{
+			++deg;
+		}
+	}
+	return deg;
+}
+
+
+unsigned long BCH_EncoderDecoder::calcOrig(const unsigned long inMessage, int depth)
+{
+	unsigned long stopSign = 1 << getPower();
+	unsigned long Ra = 0;
+	for (unsigned long i = 0; i < (unsigned int)pow(2, m_fieldSize) - 1; ++i)
+	{
+		if (depth == 1)
+		{
+			Ra = getRemainder(inMessage ^ (1 << i), m_polynom, stopSign);
+			if (Ra == 0)
+			{	
+				m_isDecodeSuccessful = true;
+				return (inMessage ^ (1 << i)) >> getPower();
+			}
+		}
+		else
+		{
+			Ra = calcOrig(inMessage ^ (1 << i), depth - 1);
+			if (m_isDecodeSuccessful)
+			{
+				return Ra;
+			}
+		}
+	}
+	return 0;
+}
+
+
+unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
+{
+	m_isDecodeSuccessful = false;
+
+	unsigned long mm = inMessage;
+	mm ^= 1<<10;
+	mm ^= 1 << 3;
+
+	unsigned long stopSign = 1 << getPower();
+	unsigned long Ra = getRemainder(mm, m_polynom, stopSign);
+
+	
 	if (Ra == 0)
 	{
 		m_isDecodeSuccessful = true;
 		unsigned long resMessage = 0;
 		resMessage = inMessage >> getPower();
 
-		tryToWithDecodeErrors(inMessage^(1<<3));
 		return resMessage;
+	}
+	else
+	{
+		unsigned long resMessage = 0;
+		return calcOrig(mm, m_maxErrorsNum);
 	}
 
 	return 0;
