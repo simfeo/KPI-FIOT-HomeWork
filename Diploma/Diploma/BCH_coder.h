@@ -25,6 +25,7 @@ public:
 	unsigned long decode(const unsigned long inMessage);
 private:
 	unsigned long tryToWithDecodeErrors(const unsigned long inMessage);
+	unsigned long calcOrig(const unsigned long inMessage, int depth);
 
 
 	// flag to check is encoder created correctly
