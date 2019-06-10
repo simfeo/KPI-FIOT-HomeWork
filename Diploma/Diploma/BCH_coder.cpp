@@ -223,20 +223,45 @@ unsigned long BCH_EncoderDecoder::calcOrig(const unsigned long inMessage, int de
 {
 	unsigned long stopSign = 1 << getPower();
 	unsigned long Ra = 0;
-	for (unsigned long i = 0; i < (unsigned int)pow(2, m_fieldSize) - 1; ++i)
+	for (unsigned long i = 0; i < (unsigned int)pow(2, m_fieldSize); ++i)
 	{
 		if (depth == 1)
 		{
-			Ra = getRemainder(inMessage ^ (1 << i), m_polynom, stopSign);
+			if (i == 0)
+			{
+				Ra = getRemainder(inMessage, m_polynom, stopSign);
+			}
+			else
+			{
+				Ra = getRemainder(inMessage ^ (1 << (i-1)), m_polynom, stopSign);
+			}
 			if (Ra == 0)
 			{	
+				unsigned long out = 0;
+				if (i == 0)
+				{
+					out = inMessage >> getPower();
+				}
+				else
+				{
+					out = (inMessage ^ (1 << i - 1)) >> getPower();
+				}
+
 				m_isDecodeSuccessful = true;
-				return (inMessage ^ (1 << i)) >> getPower();
+				return out;
 			}
 		}
 		else
 		{
-			Ra = calcOrig(inMessage ^ (1 << i), depth - 1);
+			if (i == 0)
+			{
+				Ra = calcOrig(inMessage, depth - 1);
+			}
+			else
+			{
+				Ra = calcOrig(inMessage ^ (1 << (i-1)), depth - 1);
+			}
+
 			if (m_isDecodeSuccessful)
 			{
 				return Ra;
@@ -257,7 +282,7 @@ unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
 	
 	if (Ra == 0)
 	{
-		m_isDecodeSuccessful = true;
+		m_isDecodeSuccessful = true; 
 		unsigned long resMessage = 0;
 		resMessage = inMessage >> getPower();
 
