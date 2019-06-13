@@ -27,7 +27,9 @@ int main(int argc, char** argv)
 	
 	auto res = bb.Encode(ss);
 	
-	res.encodedMessage[1] = res.encodedMessage[1] ^ (1 << 4);
+	res.encodedMessage[0] = res.encodedMessage[0] ^ (1 << 3);
+	res.encodedMessage[0] = res.encodedMessage[0] ^ (1 << 4);
+	res.encodedMessage[0] = res.encodedMessage[0] ^ (1 << 6); // too much errors
 
 	std::cout << "Decoded word" << std::endl;
 

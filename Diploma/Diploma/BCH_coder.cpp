@@ -218,7 +218,7 @@ static unsigned int getDegree(unsigned long polynom)
 	return deg;
 }
 
-
+//brut force solution
 unsigned long BCH_EncoderDecoder::calcOrig(const unsigned long inMessage, int depth)
 {
 	unsigned long stopSign = 1 << getPower();
@@ -409,7 +409,17 @@ unsigned long BCH_EncoderDecoder::tryToWithDecodeErrors(const unsigned long inMe
 	auto cxlast = cx[cx.size() - 1];
 	std::vector<unsigned int> ans;
 	
-	unsigned int deg = 0;
+	
+
+	unsigned int maxA = 0;
+	for (auto el : cxlast)
+	{
+		maxA = maxA < el.getPowX() ? el.getPowX() : maxA;
+	}
+	if (maxA > m_maxErrorsNum)
+	{
+		return 0;
+	}
 
 	unsigned long  mess = inMessage;
 	unsigned long stopSign = 1 << getPower();
@@ -444,7 +454,6 @@ unsigned long BCH_EncoderDecoder::tryToWithDecodeErrors(const unsigned long inMe
 			}
 		}
 	}
-	
 
 	return 0;
 }
