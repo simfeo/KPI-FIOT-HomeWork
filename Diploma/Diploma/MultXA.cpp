@@ -1,5 +1,5 @@
 #include "MultXA.h"
-
+#include <math.h>
 
 
 MultXA::MultXA(const A& a)
@@ -49,4 +49,31 @@ int MultXA::getPow()
 		return m_resultA.getPow();
 	else
 		return m_resultX.getPow();
+}
+
+
+/////////////////////////////
+
+MultXaForBch::MultXaForBch(const A & a, const X & x, unsigned int power):
+	m_resultA(a.getPow()),
+	m_resultX(x.getPow()),
+	m_power(power)
+{
+}
+
+const unsigned int MultXaForBch::getPowA() const
+{
+	return m_resultA.getPow();
+}
+
+const unsigned int MultXaForBch::getPowX() const
+{
+	return m_resultX.getPow();
+}
+
+MultXaForBch MultXaForBch::operator*(const MultXaForBch & gfR)
+{
+	unsigned int powerX = (getPowX()+gfR.getPowX()) % (static_cast<unsigned int>(pow(2, m_power) - 1));
+	unsigned int powerA = (getPowA()+gfR.getPowA()) % (static_cast<unsigned int>(pow(2, m_power) - 1));
+	return MultXaForBch(powerA, powerX, m_power);
 }

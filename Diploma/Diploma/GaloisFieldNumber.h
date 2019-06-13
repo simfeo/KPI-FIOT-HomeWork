@@ -23,6 +23,7 @@ public:
 	GaloisFieldNumber operator-(const GaloisFieldNumber& gfR);
 	GaloisFieldNumber operator*(const GaloisFieldNumber& gfR);
 	GaloisFieldNumber operator/(const GaloisFieldNumber& gfR);
+	GaloisFieldNumber power (unsigned int power);
 
 private:
 	void calcPower();

@@ -204,6 +204,13 @@ GaloisFieldNumber GaloisFieldNumber::operator/(const GaloisFieldNumber & gfR)
 	return GaloisFieldNumber(getFieldSize(), num);
 }
 
+GaloisFieldNumber GaloisFieldNumber::power(unsigned int power)
+{
+	int new_pow = getPower() * power;
+	new_pow = new_pow% ((int)pow(2, getFieldSize()) - 1);
+	return GaloisFieldNumber(getFieldSize(), GaloisFieldNumber::GetGaloisNumberFromPower(getFieldSize(), new_pow));
+}
+
 void GaloisFieldNumber::calcPower()
 {
 	const unsigned int pm = primitive_polynoms::polynoms[getFieldSize()];

@@ -51,3 +51,20 @@ private:
 	X		m_resultX;
 	bool	m_shouldUnpack;
 };
+
+class MultXaForBch
+{
+public:
+	MultXaForBch(const A& a, const X& x, unsigned int power);
+
+	const unsigned int getPowA() const;
+	const unsigned int getPowX() const;
+
+	MultXaForBch operator*(const MultXaForBch& gfR);
+
+private:
+	unsigned int m_power;
+	A		m_resultA;
+	X		m_resultX;
+	bool	m_shouldUnpack;
+};

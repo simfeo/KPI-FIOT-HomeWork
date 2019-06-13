@@ -290,8 +290,9 @@ unsigned long BCH_EncoderDecoder::decode(const unsigned long inMessage)
 	}
 	else
 	{
-		unsigned long resMessage = 0;
-		return calcOrig(inMessage, m_maxErrorsNum);
+		//unsigned long resMessage = 0;
+		//return calcOrig(inMessage, m_maxErrorsNum);
+		return tryToWithDecodeErrors(inMessage);
 	}
 
 	return 0;
@@ -316,150 +317,134 @@ unsigned long BCH_EncoderDecoder::tryToWithDecodeErrors(const unsigned long inMe
 		syndromes.push_back(GaloisFieldNumber(m_fieldSize, syndrome));
 	}
 
-	std::vector<GaloisFieldNumber> cx, bx, dx, tx;
+	std::vector<GaloisFieldNumber> dx;
+	std::vector<std::vector<MultXaForBch>> cx, bx; //, tx;
 	
-	cx.push_back(GaloisFieldNumber(m_fieldSize, 1));
-	for (int i = 1; i <= 2 * m_maxErrorsNum; ++i)
+	std::vector<MultXaForBch>tmp;
+	tmp.push_back(MultXaForBch(A(0), X(0), m_fieldSize));
+	cx.push_back(tmp);
+	//cx.reserve(2 * m_maxErrorsNum + 1);
+	for (int i = 0; i < 2 * m_maxErrorsNum; ++i)
 	{
-		cx.push_back(GaloisFieldNumber(m_fieldSize, 0));
+		cx.push_back(std::vector<MultXaForBch>());
 	}
 	bx = cx;
-	tx.reserve(cx.size());
-	/*
-	int L = 0; //current found errors
-	int m = -1;
-	unsigned long N = syndromes.size();
 
-	
-	for (unsigned long n = 0; n < N; ++n)
-	{
-		GaloisFieldNumber d = syndromes[n];
-		for (int k = 1; k <= L; ++k)
-		{
-			int index = n - 1;
-			d = d + cx[k] * syndromes[index];
-		}
 
-		//--------------------------------------------------------
-		if (d.getPower() != 0) // d.getNumber() == 1
-		{
-			tx = cx;
-			int topInd = n - m;
-			for (unsigned int i = 0; (i + topInd) < N; ++i)
-			{
-				int index = n - m + i;
-				cx[index] = cx[index] + bx[i]*GaloisFieldNumber(m_fieldSize, GaloisFieldNumber::GetGaloisNumberFromPower(m_fieldSize, topInd));
-			}
-
-			if (L <= (n/2))
-			{
-				L = n + 1 - L;
-				m = n;
-				bx = tx;
-			}
-		}
-		*/
-
-	/*
-	unsigned int L = 0;
-	dx[0] = syndromes[0];
-	for (int r = 0; r < 2 * m_maxErrorsNum; ++r)
-	{
-		GaloisFieldNumber d = syndromes[r - 1];
-		for (int j = 0; j < L; ++j)
-		{
-			GaloisFieldNumber add = cx[j] * syndromes[r - j - 1];
-			d = d + add;
-			if (j == L - 1)
-			{
-				dx[j] = d;
-			}
-		}
-		
-
-		if (dx[r].getPower() != 0)
-		{
-			tx[r] = cx[r] + dx[r] * bx[r];
-
-			if (r >= 2 * L)
-			{
-
-			}
-			else
-			{
-				cx = tx;
-				for (int i = 0; i <= r; ++i)
-				{
-					bx[i] = bx[i] * GaloisFieldNumber(m_fieldSize, );
-				}
-			}
-
-		}
-		else
-		{
-			bx[r]=
-		}
-
-	}
-	
-	}
-	*/
-
-	int m = -1;
 	unsigned int L = 0;
 	for (int r = 1; r <= m_maxErrorsNum*2; ++r)
 	{
 
 		GaloisFieldNumber d = syndromes[r-1];
 
-		for (int i = 1; i <= L ; ++i)
+		if (r % 2)
 		{
-			d = d + cx[i] * syndromes[r - i - 1];
+
+			for (int i = 1; i <= L; ++i)
+			{
+				unsigned int maxA = 0;
+				for (auto el : cx[i])
+				{
+					maxA = maxA < el.getPowA() ? el.getPowA() : maxA;
+				}
+				GaloisFieldNumber g(m_fieldSize, GaloisFieldNumber::GetGaloisNumberFromPower(m_fieldSize, maxA));
+				d = d + g * syndromes[r - i - 1];
+			}
+		}
+		else
+		{
+			d = GaloisFieldNumber(m_fieldSize, 0); // every second d is 0, skip cals
 		}
 
 		if (d.getNumber() != 0)
 		{
-			GaloisFieldNumber t = cx[r-1]+d*GaloisFieldNumber(m_fieldSize,2)*bx[r-1];
-			
+			MultXaForBch sd (d.getPower(), 0, m_fieldSize);
+			MultXaForBch sx (0, 1, m_fieldSize);
+			auto t = cx[r - 1]; // +d * GaloisFieldNumber(m_fieldSize, 2)*bx[r - 1];
+			for (auto el : bx[r - 1])
+			{
+				t.push_back(sd* sx* el);
+			}
+
 			if (2*L <= r-1)
 			{
 				L = r-L;
 				unsigned int dd = d.getPower();
-				unsigned int gpow = (unsigned int)pow(2, m_fieldSize)-1;
-				dd *= gpow - 2;
-				dd %= gpow;
-				bx[r] = GaloisFieldNumber(m_fieldSize, GaloisFieldNumber::GetGaloisNumberFromPower(m_fieldSize, dd))*cx[r - 1];
+				int dpow = static_cast<int>(sd.getPowA());
+				dpow *= -1;
+				dpow += ((unsigned int)pow(2, m_fieldSize) - 1);
+				MultXaForBch sd1(dpow, 0, m_fieldSize);
+				for (auto el : cx[r - 1])
+				{
+					bx[r].push_back(sd1*el);
+				}
+
 				cx[r] = t;
 			}
 			else
 			{
 				cx[r] = t;
-				bx[r] = GaloisFieldNumber(m_fieldSize, 2)*bx[r - 1];
+				//bx[r] = GaloisFieldNumber(m_fieldSize, 2)*bx[r - 1];
+
+				for (auto el : bx[r - 1])
+				{
+					bx[r].push_back(sx* el);
+				}
 			}
 		}
 		else
 		{
 			cx[r] = cx[r-1];
-			bx[r] = GaloisFieldNumber(m_fieldSize, 2)*bx[r - 1];
+			MultXaForBch sx(0, 1, m_fieldSize);
+			for (auto el : bx[r - 1])
+			{
+				bx[r].push_back(sx* el);
+			}
+			//bx[r] = GaloisFieldNumber(m_fieldSize, 2)*bx[r - 1];
 		}
 
 	}
 
 
-	GaloisFieldNumber cxlast = cx[cx.size() - 1];
-
+	auto cxlast = cx[cx.size() - 1];
+	std::vector<unsigned int> ans;
+	
 	unsigned int deg = 0;
 
-	for (unsigned long i = 0; i < sizeof(unsigned long) * 8 - 1; ++i)
+	unsigned long  mess = inMessage;
+	unsigned long stopSign = 1 << getPower();
+
+	for (unsigned long i = 1; i < static_cast<unsigned int>(pow(2,m_fieldSize)); ++i)
 	{
-		unsigned long mask = 1 << i;
-		if (cxlast.getNumber()&mask)
+		GaloisFieldNumber res(m_fieldSize, 0);
+		GaloisFieldNumber gf(m_fieldSize, i);
+		for (auto el : cxlast)
 		{
-			++deg;
+			GaloisFieldNumber x = GaloisFieldNumber(m_fieldSize, GaloisFieldNumber::GetGaloisNumberFromPower(m_fieldSize, el.getPowX()*i));
+			GaloisFieldNumber alfa = GaloisFieldNumber(m_fieldSize, GaloisFieldNumber::GetGaloisNumberFromPower(m_fieldSize, el.getPowA()));
+			res = res + x*alfa;
+		}
+		if (res.getNumber() == 0)
+		{
+			int dpow = i;
+			dpow *= -1;
+			dpow += ((unsigned int)pow(2, m_fieldSize) - 1);
+			unsigned long mask = 1 << dpow;
+			mess ^= mask;
+
+			unsigned long Ra = getRemainder(mess, m_polynom, stopSign);
+
+			if (Ra == 0)
+			{
+				m_isDecodeSuccessful = true;
+				unsigned long resMessage = 0;
+				resMessage = mess >> getPower();
+
+				return resMessage;
+			}
 		}
 	}
-
-
+	
 
 	return 0;
 }
