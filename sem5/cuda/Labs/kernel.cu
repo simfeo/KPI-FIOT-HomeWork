@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 		// write to outfile
 
 		// Add vectors in parallel.
-		cudaStatus = addWithCuda(tmpBufC, tmpBufA , tmpBufC, CH_BUF_LEN);
+		cudaStatus = addWithCuda(tmpBufC, tmpBufA , tmpBufB, CH_BUF_LEN);
 		if (cudaStatus != cudaSuccess) {
 			std::cout << "addWithCuda failed!" << std::endl;;
 			return 1;
